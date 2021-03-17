@@ -65,9 +65,9 @@ extern vu32 Transition_Date[10];//过渡变量
 #define SET_V_TRAN                  Transition_Date[0]   //设置电压过渡变量
 #define SET_I_TRAN                  Transition_Date[1]   //设置电流过渡变量
 #define SET_R_Current               Transition_Date[2]   //CR模式换算设置电流值
-#define SET_P_Current								Transition_Date[3]   //CP模式换算设置电流值
-#define SET_S_Current								Transition_Date[4]   //短路模式加载的设置电流值
-#define SET_R_LED							    	Transition_Date[5]   //LED模式换算设置加载电阻
+#define SET_P_Current				Transition_Date[3]   //CP模式换算设置电流值
+#define SET_S_Current				Transition_Date[4]   //短路模式加载的设置电流值
+#define SET_R_LED					Transition_Date[5]   //LED模式换算设置加载电阻
 
 
 extern vu32 Run_Control[50];	
@@ -76,60 +76,60 @@ extern vu32 Run_Control[50];
 #define R_DATE                      Run_Control[2]   //电阻测量值
 #define Power_DATE                  Run_Control[3]   //功率测量值
 
-#define	MES_VOLT_MAX								Run_Control[4]   //测量电压峰值VP+
-#define	MES_VOLT_MIN								Run_Control[5]  //测量电压峰值VP-
-#define	MES_VOLT_PTP								Run_Control[6]  //测量电压峰峰值
+#define	MES_VOLT_MAX				Run_Control[4]   //测量电压峰值VP+
+#define	MES_VOLT_MIN				Run_Control[5]  //测量电压峰值VP-
+#define	MES_VOLT_PTP				Run_Control[6]  //测量电压峰峰值
 
-#define	MES_CURR_MAX								Run_Control[7]   //测量电流峰值VP+
-#define	MES_CURR_MIN								Run_Control[8]   //测量电流峰值VP-
-#define	MES_CURR_PTP							  Run_Control[9]   //测量电流峰峰值   
+#define	MES_CURR_MAX				Run_Control[7]   //测量电流峰值VP+
+#define	MES_CURR_MIN				Run_Control[8]   //测量电流峰值VP-
+#define	MES_CURR_PTP				Run_Control[9]   //测量电流峰峰值   
 /*****************以上寄存器为只读寄存器严禁程序操作**********************/
 
-#define Operation_MODE 						  Run_Control[10]   //操作模式开关 0-面板操作  1-远程操作(通讯)
-#define protect_Flage 						  Run_Control[11]   //各种保护标志 1.过功率保护  2.输入反接保护标志  3.输入过压保护标志  4.负载过流保护标志 
+#define Operation_MODE 				Run_Control[10]   //操作模式开关 0-面板操作  1-远程操作(通讯)
+#define protect_Flage 				Run_Control[11]   //各种保护标志 1.过功率保护  2.输入反接保护标志  3.输入过压保护标志  4.负载过流保护标志 
 
 #define onoff_ch                    Run_Control[12]   //ON/OFF 0-关闭所有  1-打开负载  
-#define MODE                        Run_Control[13]   //模式开关  0-CC  1-CV  2-CR 3-CP 4-LED 5-电池模式 6-动态模式
-#define I_Gear_SW								    Run_Control[14]   //电流档位切换开关  0-低档位  1-高档位
-#define V_Gear_SW								    Run_Control[15]   //电压档位切换开关  0-低档位  1-高档位
-#define ADDR								        Run_Control[16]   //本机地址
-#define Baud_rate								    Run_Control[17]   //波特率
-#define Sence_SW 								    Run_Control[18]   //远端测量开关
+#define MODE                        Run_Control[13]   //模式开关  0-CC  1-CV  2-CR 3-CP 4-动态模式 5-LED 6-短路模式
+#define I_Gear_SW					Run_Control[14]   //电流档位切换开关  0-低档位  1-高档位
+#define V_Gear_SW					Run_Control[15]   //电压档位切换开关  0-低档位  1-高档位
+#define ADDR						Run_Control[16]   //本机地址
+#define Baud_rate					Run_Control[17]   //波特率
+#define Sence_SW 					Run_Control[18]   //远端测量开关
 
 #define SET_Voltage                 Run_Control[19]   //设置电压值
 #define SET_Current                 Run_Control[20]   //设置电流值
 #define SET_Resist                  Run_Control[21]   //设置电阻值
 #define SET_Power                   Run_Control[22]   //设置功率值
-#define OVP_Voltage 							  Run_Control[23]   //OVP
-#define OCP_Current								  Run_Control[24]   //OCP
-#define OPP_POWER							      Run_Control[25]   //OPP
-#define MAX_P											  Run_Control[26]   //最大限制功率
-#define MAX_V											  Run_Control[27]   //最大限制电压
-#define MAX_I											  Run_Control[28]   //最大限制电流
-#define VON_Voltage							    Run_Control[29]   //加载电压
-#define VOFF_Voltage						    Run_Control[30]   //卸载电压
-#define I_Rise_Time 						    Run_Control[31]   //电流爬升率
-#define I_Down_Time 						    Run_Control[32]   //电流下降率
-#define CV_Down_Time 						    Run_Control[33]   //CV模式电压下降时间
+#define OVP_Voltage 				Run_Control[23]   //OVP
+#define OCP_Current					Run_Control[24]   //OCP
+#define OPP_POWER					Run_Control[25]   //OPP
+#define MAX_P						Run_Control[26]   //最大限制功率
+#define MAX_V						Run_Control[27]   //最大限制电压
+#define MAX_I						Run_Control[28]   //最大限制电流
+#define VON_Voltage					Run_Control[29]   //加载电压
+#define VOFF_Voltage				Run_Control[30]   //卸载电压
+#define I_Rise_Time 				Run_Control[31]   //电流爬升率
+#define I_Down_Time 				Run_Control[32]   //电流下降率
+#define CV_Down_Time 				Run_Control[33]   //CV模式电压下降时间
 
-#define LED_VO 						          Run_Control[34]   //LED模式顺向工作电压
-#define LED_IO 						          Run_Control[35]   //LED模式顺向工作电流
-#define LED_RD 						          Run_Control[36]   //LED模式RD系数，此参数是用来计算加载电压阈值范围为0-100%，例如：设置VO为30V RD-0.2  此时加载电压应为30*0.2=6，VI=30-6=24V。
+#define LED_VO 						Run_Control[34]   //LED模式顺向工作电压
+#define LED_IO 						Run_Control[35]   //LED模式顺向工作电流
+#define LED_RD 						Run_Control[36]   //LED模式RD系数，此参数是用来计算加载电压阈值范围为0-100%，例如：设置VO为30V RD-0.2  此时加载电压应为30*0.2=6，VI=30-6=24V。
 
-#define DYNA_Ia 						        Run_Control[37]   //动态模式拉载电流A
-#define DYNA_Ib 						        Run_Control[38]   //动态模式拉载电流B
-#define DYNA_Ta   					        Run_Control[39]   //动态模式拉载持续时间A
-#define DYNA_Tb						          Run_Control[40]   //动态模式拉载持续时间B
-#define DYNA_IRise						      Run_Control[41]   //动态模式电流上升率
-#define DYNA_IDown						      Run_Control[42]   //动态模式电流下降率
-#define DYNA_MODE						        Run_Control[43]   //动态模式触发模式选择
+#define DYNA_Ia 					Run_Control[37]   //动态模式拉载电流A
+#define DYNA_Ib 					Run_Control[38]   //动态模式拉载电流B
+#define DYNA_Ta   					Run_Control[39]   //动态模式拉载持续时间A
+#define DYNA_Tb						Run_Control[40]   //动态模式拉载持续时间B
+#define DYNA_IRise					Run_Control[41]   //动态模式电流上升率
+#define DYNA_IDown					Run_Control[42]   //动态模式电流下降率
+#define DYNA_MODE					Run_Control[43]   //动态模式触发模式选择
 
-#define QC_MODE						          Run_Control[44]   //快充模式选择开关
-#define Class_5						          Run_Control[45]   //5V
-#define Class_9						          Run_Control[46]   //9V
-#define Class_12						        Run_Control[47]   //12V
-#define Class_15						        Run_Control[48]   //15V
-#define Class_20						        Run_Control[49]   //20V
+#define QC_MODE						Run_Control[44]   //快充模式选择开关
+#define Class_5						Run_Control[45]   //5V
+#define Class_9						Run_Control[46]   //9V
+#define Class_12					Run_Control[47]   //12V
+#define Class_15					Run_Control[48]   //15V
+#define Class_20					Run_Control[49]   //20V
 /***********以上寄存器可读可写*****************************************/
 
 
@@ -181,12 +181,13 @@ extern vu32 Correct_Strong[12];//校准系数
 #define  SET_ReadA_Offset_MID_HIG   Correct_Strong[11]
 //---------------------------
 extern vu8 UART_Buffer_Rece[200];
-extern vu8 UART_Buffer_Send[20];
+extern vu8 UART_Buffer_Send[200];
 //============================================================================= 
 #define Receive_BUFFERSIZE   10
 #define V_LOW_MAX   140000   //电压低档最高电压
 #define V_HIG_MAX   120000   //电压高档最高电压
 #define I_LOW_MAX   200000   //电流低档位最高限制电流
+#define POWER_MAX   600000   //电流低档位最高限制电流
 //=============================================================================
 #endif
 /******************* (C) COPYRIGHT 2015 KUNKIN *****END OF FILE*************************/

@@ -34,11 +34,11 @@ void Temp_Comapre(void)	  //温度来控制风扇
 		GPIO_SetBits(GPIOA,GPIO_Pin_5);//OFF
 		protect_Flage=5;//过温度保护
 	}		
-	if((NTC_value<=1500)||(NTC1_value<=1500))//开风扇
+	if((NTC_value<=2250)||(NTC1_value<=2250))//开风扇
 	{
 		IO_FAN_ON;
 	}
-	else if((NTC_value>=1700)&&(NTC1_value>=1700))//关风扇
+	else if((NTC_value>=2300)&&(NTC1_value>=2300))//关风扇
 	{
 		IO_FAN_OFF;
 	}
@@ -49,6 +49,13 @@ void All_protect(void)
 	 vu32 temp_power;
 	
   /*************过功率保护***************/
+	if(Power_DATE > POWER_MAX)
+	{
+		PR_T1=0;
+		onoff_ch=0;
+		GPIO_SetBits(GPIOA,GPIO_Pin_5);//OFF
+		protect_Flage=1;//过功率保护
+	}
 	if((I_Gear_SW==0)&&(V_Gear_SW==1))
 	{
 		temp_power=Current/10;
@@ -70,7 +77,7 @@ void All_protect(void)
 	{
 		temp_power=Current;
 		temp_power=temp_power*(Voltage/10);
-		temp_power=temp_power/100000;
+		temp_power=temp_power/1000;
 		if(temp_power>MAX_P)//过功率保护
 		{
 			PR_T2++;
@@ -87,7 +94,7 @@ void All_protect(void)
 	{
 		temp_power=Current/10;
 		temp_power=temp_power*(Voltage/10);
-		temp_power=temp_power/100000;
+		temp_power=temp_power/1000;
 		if(temp_power>MAX_P)//过功率保护
 		{
 			PR_T3++;
@@ -104,7 +111,7 @@ void All_protect(void)
 	{
 		temp_power=Current;
 		temp_power=temp_power*Voltage;
-		temp_power=temp_power/100000;
+		temp_power=temp_power/1000;
 		if(temp_power>MAX_P)//过功率保护
 		{
 			PR_T4++;
@@ -118,18 +125,18 @@ void All_protect(void)
 		}
 	}
 	
- /**************反接保护************************/
-	if(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_7)==0)//反接保护
-	{
-		onoff_ch=0;
-		GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭拉载
-		protect_Flage=2;//反接保护
-		GPIO_SetBits(GPIOB,GPIO_Pin_8);//打开蜂鸣器
-	}
-	else 
-	{
-		GPIO_ResetBits(GPIOB,GPIO_Pin_8);//关闭蜂鸣器
-	}
+// /**************反接保护************************/
+//	if(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_7)==0)//反接保护
+//	{
+//		onoff_ch=0;
+//		GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭拉载
+//		protect_Flage=2;//反接保护
+//		GPIO_SetBits(GPIOB,GPIO_Pin_8);//打开蜂鸣器
+//	}
+//	else 
+//	{
+//		GPIO_ResetBits(GPIOB,GPIO_Pin_8);//关闭蜂鸣器
+//	}
 	/************过压保护************************/
 	if((Voltage>MAX_V)&&(V_Gear_SW==1))//过压保护
 	{

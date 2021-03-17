@@ -20,8 +20,10 @@ extern struct bitDefine
 #define AD7689_CNV_0			GPIO_ResetBits(GPIOB,GPIO_Pin_12);
 #define AD7689_CNV_1			GPIO_SetBits(GPIOB,GPIO_Pin_12);
 vu16 AD7689_Buffer[8];
-vu16 Ad7689_Fit_Imon[10];
-vu16 Ad7689_Fit_Vmon[10];
+vu16 Ad7689_Fit_Imon[100];
+vu16 Ad7689_Fit_Vmon[100];
+vu16 END_Fit_Imon[20];
+vu16 END_Fit_Vmon[20];
 void AD7689_InitializeSPI2(void)
 {
 	SPI_InitTypeDef  SPI_InitStructure;
@@ -129,12 +131,49 @@ void AD7689_Scan_CH(void)
 {
 	vu8 i,f,d;
 	vu32 sum1;
-	vu16 var_chI,var_chV;
+	static vu8 var_chI,var_chV;
 	static vu8 I_cont,V_cont;
 	for(i=0;i<8;i++)
 	{
 		AD7689_Buffer[i]=SPI_AD7689_Read(1, i);
-		Vmon_value=AD7689_Buffer[2];
-		Imon_value=AD7689_Buffer[3];
+		Ad7689_Fit_Imon[I_cont]=AD7689_Buffer[3];
+		Ad7689_Fit_Vmon[V_cont]=AD7689_Buffer[2];
+		
+		//Vmon_value=AD7689_Buffer[2];
+		//Imon_value=AD7689_Buffer[3];
+	}
+	I_cont++;
+	V_cont++;
+	if(I_cont>49)
+	{
+		I_cont=0;
+		sum1=0;
+		for(f=0;f<50;f++)
+		{
+			sum1 +=Ad7689_Fit_Imon[f];
+		}
+		
+		END_Fit_Imon[var_chI]=sum1/50;
+		var_chI++;
+	}
+	if(var_chI>2)
+	{
+		var_chI=0;
+		sum1=0;
+		for(f=0;f<3;f++)
+		{
+			sum1 +=END_Fit_Imon[f];
+		}
+		Imon_value=sum1/3;
+	}
+	if(V_cont>99)
+	{
+		V_cont=0;
+		sum1=0;
+		for(d=0;d<100;d++)
+		{
+			sum1 +=Ad7689_Fit_Vmon[d];
+		}
+		Vmon_value=sum1/100;
 	}
 }

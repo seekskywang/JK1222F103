@@ -28,7 +28,7 @@ extern struct bitDefine
 	unsigned bit7: 1;
 } flagA,flagB,flagC,flagD;
 vu8 UART_Buffer_Rece[200];
-vu8 UART_Buffer_Send[20];
+vu8 UART_Buffer_Send[200];
 vu8 UART_Buffer_Size;
 vu8 Transmit_BUFFERsize;
 vu8 t_USART;
@@ -109,12 +109,12 @@ void USART2_Configuration(void)//串口初始化函数
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2 | RCC_APB2Periph_GPIOA, ENABLE);
 	
 	/* USART1 GPIO config */
-	/* Configure USART1 Tx (PA.09) as alternate function push-pull */
+	/* Configure USART1 Tx (PA.02) as alternate function push-pull */
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);    
-	/* Configure USART1 Rx (PA.10) as input floating */
+	/* Configure USART1 Rx (PA.03) as input floating */
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
@@ -133,7 +133,7 @@ void USART2_Configuration(void)//串口初始化函数
 	/******使能串口接收中断******************/
 	USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);	
 	USART_Cmd(USART2, ENABLE);//使能串口1
-  USART_ClearFlag(USART2, USART_FLAG_TC);
+    USART_ClearFlag(USART2, USART_FLAG_TC);
   
 }
 
@@ -186,7 +186,16 @@ void UART1_Send(void)
   }
 	UART_SEND_flag=0;//发送完成一帧数据		
 }
-
+void UART2_Send(void)
+{
+	vu8 i=0;
+	for(i =0 ; i < Transmit_BUFFERsize; i++)
+  {
+			USART_SendData(USART2,UART_Buffer_Send[i]);
+			while (USART_GetFlagStatus(USART2,USART_FLAG_TXE) == RESET);//等待发送完成
+  }
+	UART_SEND_flag=0;//发送完成一帧数据		
+}
 
 /**********************************************************************************************************
 *	函 数 名: Baud_SET

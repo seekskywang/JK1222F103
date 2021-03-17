@@ -26,6 +26,7 @@
 #include "bsp_SysTick.h"
 #include "my_register.h"
 #include "AD7689.h"
+#include "modbus.h"
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
   */
@@ -148,12 +149,12 @@ void DebugMon_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  TimingDelay_Decrement();
+    TimingDelay_Decrement();
 	if(flag_Tim_USART==1)//串口清零计数
 	{
 		t_USART++;
 	}
-	if(t_USART>30)//大约2.6ms
+	if(t_USART>20)//大约2.6ms
 	{
 		t_USART=0;
 		flag_Tim_USART=0;
@@ -188,6 +189,111 @@ void USART1_IRQHandler(void)
 			t_USART=0;	
 			return ;
 		}
+		
+		UART_Buffer_Size++;
+		if(UART_Buffer_Size>200)
+		{
+			UART_Buffer_Size=0;
+			UART_Buffer_Rece_flag=0;
+			t_USART=0;	
+		}
+
+	}
+}
+
+void USART2_IRQHandler(void)
+{
+	flag_Tim_USART=1;
+	if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
+	{
+		USART_ClearITPendingBit( USART2, USART_IT_RXNE );
+		UART_Buffer_Rece[UART_Buffer_Size]=USART_ReceiveData(USART2);
+
+		if( UART_Buffer_Rece[0]== 0x01)
+		{
+			if(UART_Buffer_Rece[1]== 0x06)
+			{
+				if(UART_Buffer_Size>8)//设置参数
+				{
+					UART_Buffer_Size=0;	  	   		   
+					UART_Buffer_Rece_flag=1;
+					flag_Tim_USART=0;
+					t_USART=0;
+					if(UART_Buffer_Rece_flag==1)
+					{
+						UART_Buffer_Rece_flag=0;
+						UART_Action();//处理数据
+					}
+					return ;
+				}
+			}else if(UART_Buffer_Rece[1]== 0x10){
+				if(UART_Buffer_Size==132+28)//参数设置
+				{
+					UART_Buffer_Size=0;	  	   		   
+					UART_Buffer_Rece_flag=1;
+					flag_Tim_USART=0;
+					t_USART=0;
+					if(UART_Buffer_Rece_flag==1)
+					{
+						UART_Buffer_Rece_flag=0;
+						UART_Action();//处理数据
+					}
+					return ;
+				}
+			}else if(UART_Buffer_Rece[1]== 0x03){
+				if(UART_Buffer_Size==7)//读数据
+				{
+					UART_Buffer_Size=0;	  	   		   
+					UART_Buffer_Rece_flag=1;
+					flag_Tim_USART=0;
+					t_USART=0;
+					if(UART_Buffer_Rece_flag==1)
+					{
+						UART_Buffer_Rece_flag=0;
+						UART_Action();//处理数据
+					}
+					return ;
+				}
+			}else if(UART_Buffer_Rece[1]== 0xA5){
+				if(UART_Buffer_Size==8)//校准
+				{
+					UART_Buffer_Size=0;	  	   		   
+					UART_Buffer_Rece_flag=1;
+					flag_Tim_USART=0;
+					t_USART=0;
+					if(UART_Buffer_Rece_flag==1)
+					{
+						UART_Buffer_Rece_flag=0;
+						UART_Action();//处理数据
+					}
+					return ;
+				}
+			}
+		}else if( UART_Buffer_Rece[0]== 0x00)//写入地址
+		{
+			if(UART_Buffer_Size>8)//地址
+			{
+				UART_Buffer_Size=0;	  	   		   
+				UART_Buffer_Rece_flag=1;
+				flag_Tim_USART=0;
+				t_USART=0;
+				if(UART_Buffer_Rece_flag==1)
+				{
+					UART_Buffer_Rece_flag=0;
+					UART_Action();//处理数据
+				}
+				return ;
+			}
+		}
+//		else if(UART_Buffer_Rece[UART_Buffer_Size] == 0x0A) //scpi指令用 判断尾指令是否为\n
+//		{
+//			flag_NOR_CODE=1;
+//			UART_Buffer_Size=0;
+//			flag_Tim_USART=0;				
+//			t_USART=0;	
+//			return ;
+//		}
+		
 
 		UART_Buffer_Size++;
 		if(UART_Buffer_Size>200)
@@ -195,15 +301,8 @@ void USART1_IRQHandler(void)
 			UART_Buffer_Size=0;
 			UART_Buffer_Rece_flag=0;
 			t_USART=0;	
-		}		
-	}
-}
-
-void USART2_IRQHandler(void)
-{
-	if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
-	{
-		USART_ClearITPendingBit( USART2, USART_IT_RXNE );
+		}
+		
 	}
 }
 void USART3_IRQHandler(void)

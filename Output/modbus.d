@@ -37,3 +37,4 @@
 ..\output\modbus.o: ..\Include\my_register.h
 ..\output\modbus.o: ..\Include\flash.h
 ..\output\modbus.o: ..\Include\my_register.h
+..\output\modbus.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

@@ -11,6 +11,7 @@
 #include "modbus.h" 
 #include "stm32f10x.h"
 #include "flash.h"
+#include <string.h>
 //===================================================================//
 extern struct bitDefine
 {
@@ -23,6 +24,7 @@ extern struct bitDefine
 	unsigned bit6: 1;
 	unsigned bit7: 1;
 } flagA,flagB,flagC,flagD,flagE;
+u8 testflag;
 /*************************校准参数************************************/
 vu8 DAC_Flag;//DAC是否加载标志
 vu32 Modify_A_READ;
@@ -47,7 +49,7 @@ void UART_Action(void)
 {//RUT格式：
 	//ADDR  命令码  读寄存器的起始地址高   读寄存器的起始地址低  读数据字个数高字节   读数据个数低字节  CRC高 CRC低
 	//返回格式：ADDR 命令码 返回数据字节数  数据高  数据低 ..... CRC高  CRC低
-	if ((UART_Buffer_Rece[0] == ADDR)||(UART_Buffer_Rece[0] == 0))
+	if ((UART_Buffer_Rece[0] == 0x01/*ADDR*/)||(UART_Buffer_Rece[0] == 0))
 	{
 		if (UART_Buffer_Rece[1] == (0x03))	//命令3 读数据   
 		{																		 
@@ -60,7 +62,7 @@ void UART_Action(void)
 				{
 					if ((UART_Buffer_Rece[3] + UART_Buffer_Rece[5]) < 0xFF)		//如果最后一个读取的寄存器地址在可读范围内
 					{							
-						UART_Buffer_Send[0] = ADDR;
+						UART_Buffer_Send[0] = 0x01/*ADDR*/;
 						UART_Buffer_Send[1] = 0x03;
 						UART_Buffer_Send[2] = UART_Buffer_Rece[5]*4;
 						for (i=0;i<UART_Buffer_Send[2];i++)
@@ -87,13 +89,14 @@ void UART_Action(void)
 						UART_Buffer_Send[4 + UART_Buffer_Send[2]] = crc_result;
 						Transmit_BUFFERsize = UART_Buffer_Send[2] + 5;
 						UART_SEND_flag=1;
+						UART2_Send();
 					}
 				}
 			}	
 		}
 	} 
 //===============================写寄存器=================================
-	if ((UART_Buffer_Rece[0] == ADDR) || (UART_Buffer_Rece[0] == 0))	 
+	if ((UART_Buffer_Rece[0] == 0x01/*ADDR*/) || (UART_Buffer_Rece[0] == 0))	 
 	{
 		vu8 var8;
 		vu8 a=0;
@@ -120,7 +123,11 @@ void UART_Action(void)
 						{UART_Buffer_Send[a] = UART_Buffer_Rece[a];}
 						Transmit_BUFFERsize = 10;						//原样数据返回，不计算CRC
 						UART_SEND_flag=1;
+						UART2_Send();
 					}
+					Flag_Save_SW = 1;
+//					Wite_Runcont();
+					memset((char *)UART_Buffer_Rece,0,sizeof(UART_Buffer_Rece));
 				}
 			}
 		}
@@ -141,10 +148,13 @@ void UART_Action(void)
 					var32=(var32<<16)+var16;
 					Run_Control[UART_Buffer_Rece[3]+var8] = var32;			    //将数据写入指定的地址
 				}
-
-				if (UART_Buffer_Rece[0] == ADDR)					  //广播模式不返回数据
+				if(Run_Control[15] != 1)
 				{
-					UART_Buffer_Send[0] = ADDR;
+					testflag ++;
+				}
+				if (UART_Buffer_Rece[0] == 0x01/*ADDR*/)					  //广播模式不返回数据
+				{
+					UART_Buffer_Send[0] = 0x01/*ADDR*/;
 					UART_Buffer_Send[1] = 16;
 					UART_Buffer_Send[2] = UART_Buffer_Rece[2];
 					UART_Buffer_Send[3] = UART_Buffer_Rece[3];
@@ -155,26 +165,30 @@ void UART_Action(void)
 					UART_Buffer_Send[7] = crc_result;				 
 					Transmit_BUFFERsize = 8;					     //设置发送字节数长度
 					UART_SEND_flag=1;
+					UART2_Send();
 				}
+				Flag_Save_SW = 1;
+//				Wite_Runcont();
+				memset((char *)UART_Buffer_Rece,0,sizeof(UART_Buffer_Rece));
 			}
 		}			 
 	}
 /*************************************以下为校准部分**************************************************************************/
-	if ((UART_Buffer_Rece[0] == 0x01)&&(UART_Buffer_Rece[2] == 0xA5))	 
+	if ((UART_Buffer_Rece[0] == 0x01)&&(UART_Buffer_Rece[1] == 0xA5))	 
 	{
 		vu16 crc_result;
-		crc_result = (UART_Buffer_Rece[8] << 8) + UART_Buffer_Rece[9];
-	  if (crc_result == Hardware_CRC(UART_Buffer_Rece,8))
+		crc_result = (UART_Buffer_Rece[7] << 8) + UART_Buffer_Rece[8];
+	    if(crc_result == Hardware_CRC(UART_Buffer_Rece,7))
 		{
 	/*******************电压测量低档校准**************************************/	
-			if(UART_Buffer_Rece[1] == 0x01)
+			if(UART_Buffer_Rece[2] == 0x01)
 			{
 				Modify_A_READ = Vmon_value;//测量电压值
 				Modify_C_READ = Contr_DACVlue;//设置电压值
 				Modify_A_ACT = (UART_Buffer_Rece[3] << 8) + UART_Buffer_Rece[4];//读取高段
 				Modify_A_ACT=(Modify_A_ACT<<16)+(UART_Buffer_Rece[5] << 8) + UART_Buffer_Rece[6];//读取低段
 			}
-			if (UART_Buffer_Rece[1] == 0x02)			   //电压测量校准完成
+			if (UART_Buffer_Rece[2] == 0x02)			   //电压测量校准完成
 			{
 				vu32 var16;
 				vu32 var32a;
@@ -239,7 +253,7 @@ void UART_Action(void)
 				DAC_Flag=0;
 			}
 			/*******************电压测量高档位校准**************************************/	
-			if(UART_Buffer_Rece[1] == 0x0C)
+			if(UART_Buffer_Rece[2] == 0x03)
 			{
 				Modify_A_READ = Vmon_value;//测量电压值
 				Modify_C_READ = Contr_DACVlue;//设置电压值
@@ -247,7 +261,7 @@ void UART_Action(void)
 				Modify_A_ACT=(Modify_A_ACT<<16)+(UART_Buffer_Rece[5] << 8) + UART_Buffer_Rece[6];//读取低段
 			}
 			/*******************电压测量中段校准*************************/	
-			if (UART_Buffer_Rece[1] == 0x04)			   
+			if (UART_Buffer_Rece[2] == 0x04)			   
 			{
 				vu32 var16;
 				vu32 var32a;
@@ -311,7 +325,7 @@ void UART_Action(void)
 				Flash_Write_all();	//参数写进FLASH
 			}
 			/*******************电压测量和控制高段校准*****************/
-			if (UART_Buffer_Rece[1] == 0x05)			   //电压测量校准完成
+			if (UART_Buffer_Rece[2] == 0x05)			   //电压测量校准完成
 			{
 				vu32 var16;
 				vu32 var32a;
@@ -380,7 +394,7 @@ void UART_Action(void)
 			}
 			
 			/******************电流测量和控制低档校准********************/	
-			if (UART_Buffer_Rece[1] == 0x06)			   //CC模式电流测量校准
+			if (UART_Buffer_Rece[2] == 0x06)			   //CC模式电流测量校准
 			{
 				Modify_A_READ = Imon_value;//测量电流
 				Modify_C_READ = Contr_DACVlue;//设置电流
@@ -388,7 +402,7 @@ void UART_Action(void)
 				Modify_A_ACT=(Modify_A_ACT<<16)+(UART_Buffer_Rece[5] << 8) + UART_Buffer_Rece[6];//读取低段
 			}
 
-			if (UART_Buffer_Rece[1] == 0x07)			   //电流测量校准完成
+			if (UART_Buffer_Rece[2] == 0x07)			   //电流测量校准完成
 			{
 				vu32 var16;
 				vu32 var32a;
@@ -452,7 +466,7 @@ void UART_Action(void)
 				DAC_Flag=0;
 			}
 	/******************电流测量和控制中段校准*********************/
-			if (UART_Buffer_Rece[1] == 0x08)			  
+			if (UART_Buffer_Rece[2] == 0x08)			  
 			{
 				Modify_A_READ = Imon_value;
 				Modify_C_READ = Contr_DACVlue;
@@ -460,7 +474,7 @@ void UART_Action(void)
 				Modify_A_ACT=(Modify_A_ACT<<16)+(UART_Buffer_Rece[5] << 8) + UART_Buffer_Rece[6];//读取低段
 			}
 
-			if (UART_Buffer_Rece[1] == 0x09)			  
+			if (UART_Buffer_Rece[2] == 0x09)			  
 			{
 				vu32 var16;
 				vu32 var32a;
@@ -523,7 +537,7 @@ void UART_Action(void)
 			}
 			
 			/****************电流测量和控制高段校准*****************/
-			if (UART_Buffer_Rece[1] == 0x0A)			  
+			if (UART_Buffer_Rece[2] == 0x0A)			  
 			{
 				vu32 var16;
 				vu32 var32a;
@@ -586,7 +600,7 @@ void UART_Action(void)
 				DAC_Flag=0;
 			}
 	/********************接受DA值********************************/
-			if (UART_Buffer_Rece[1] == 0x0B)//接受电压DAC值
+			if (UART_Buffer_Rece[2] == 0x0B)//接受电压DAC值
 			{
 				DAC_Flag=0x01;
 				Contr_DACVlue = (UART_Buffer_Rece[5] << 8) + UART_Buffer_Rece[6];
@@ -619,13 +633,13 @@ void Transformation_ADC(void)
 		var32 = 0;
 		if(I_Gear_SW==0)//电流低档
 		{
-			Power_DATE=(Voltage/10)*(Current/100);//计算实时功率
+			Power_DATE=(Voltage/10)*(Current/10);//计算实时功率
 			Power_DATE=Power_DATE/1000;//统一精确到小数点后3位
 			R_DATE=(Voltage*10000/Current);//计算实时电阻  统一精确到小数点后3位
 		}
 		else//电流高档
 		{
-			Power_DATE=(Voltage/10)*(Current/10);//计算实时功率
+			Power_DATE=(Voltage/10)*(Current/1);//计算实时功率
 			Power_DATE=Power_DATE/1000;
 			R_DATE=(Voltage*1000/Current);//计算实时电阻
 		}
@@ -667,13 +681,13 @@ void Transformation_ADC(void)
 		}
 		if(I_Gear_SW==0)
 		{
-			Power_DATE=Voltage*(Current/100);//计算实时功率
+			Power_DATE=Voltage*(Current/10);//计算实时功率
 			Power_DATE=Power_DATE/1000;
 			R_DATE=(Voltage*100000/Current);//计算实时电阻
 		}
 		else
 		{
-			Power_DATE=Voltage*(Current/10);//计算实时功率
+			Power_DATE=Voltage*(Current/1);//计算实时功率
 			Power_DATE=Power_DATE/1000;
 			R_DATE=(Voltage*10000/Current);//计算实时电阻
 		}
@@ -979,11 +993,11 @@ void Transformation_ADC(void)
 			{
 				if(V_Gear_SW==0)
 				{
-					SET_P_Current=(SET_Power*10000)/(Voltage/10);//CP模式电流高档最小分辨率为0.01瓦
+					SET_P_Current=(SET_Power*1000)/(Voltage/10);//CP模式电流高档最小分辨率为0.01瓦
 				}
 				else
 				{
-					SET_P_Current=(SET_Power*10000)/Voltage;//CP模式电流高档最小分辨率为0.01瓦
+					SET_P_Current=(SET_Power*1000)/Voltage;//CP模式电流高档最小分辨率为0.01瓦
 				}
 				var32 = SET_P_Current;
 				var32=var32<<12;   

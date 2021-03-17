@@ -236,6 +236,54 @@ void Flash_Write_all (void)
 	EEPROM_WriteByte(0x65,Polar4);
 	EEPROM_WriteByte(0x66,Polar5);
 	IWDG_ReloadCounter(); //喂狗
+	/************设置参数存储*******************/
+	data_8bit = MODE >> 24;
+	EEPROM_WriteByte(0x67, data_8bit);
+	data_8bit = MODE >> 16;
+	EEPROM_WriteByte(0x68, data_8bit);
+	data_8bit = MODE >> 8;
+	EEPROM_WriteByte(0x69, data_8bit);
+	EEPROM_WriteByte(0x6A, MODE);
+	
+	data_8bit = I_Gear_SW >> 24;
+	EEPROM_WriteByte(0x6B, data_8bit);
+	data_8bit = I_Gear_SW >> 16;
+	EEPROM_WriteByte(0x6C, data_8bit);
+	data_8bit = I_Gear_SW >> 8;
+	EEPROM_WriteByte(0x6D, data_8bit);
+	EEPROM_WriteByte(0x6E, I_Gear_SW);
+	
+	data_8bit = V_Gear_SW >> 24;
+	EEPROM_WriteByte(0x6F, data_8bit);
+	data_8bit = V_Gear_SW >> 16;
+	EEPROM_WriteByte(0x70, data_8bit);
+	data_8bit = V_Gear_SW >> 8;
+	EEPROM_WriteByte(0x71, data_8bit);
+	EEPROM_WriteByte(0x72, V_Gear_SW);
+	
+	data_8bit = ADDR >> 24;
+	EEPROM_WriteByte(0x73, data_8bit);
+	data_8bit = ADDR >> 16;
+	EEPROM_WriteByte(0x74, data_8bit);
+	data_8bit = ADDR >> 8;
+	EEPROM_WriteByte(0x75, data_8bit);
+	EEPROM_WriteByte(0x76, ADDR);
+	
+	data_8bit = ADDR >> 24;
+	EEPROM_WriteByte(0x73, data_8bit);
+	data_8bit = ADDR >> 16;
+	EEPROM_WriteByte(0x74, data_8bit);
+	data_8bit = ADDR >> 8;
+	EEPROM_WriteByte(0x75, data_8bit);
+	EEPROM_WriteByte(0x76, ADDR);
+	
+	data_8bit = Sence_SW >> 24;
+	EEPROM_WriteByte(0x77, data_8bit);
+	data_8bit = Sence_SW >> 16;
+	EEPROM_WriteByte(0x78, data_8bit);
+	data_8bit = Sence_SW >> 8;
+	EEPROM_WriteByte(0x79, data_8bit);
+	EEPROM_WriteByte(0x7A, Sence_SW);
 }
 //===========================================================================//
 void EEPROM_READ_Coeff(void)
@@ -485,7 +533,7 @@ void Wite_Runcont(void)//将运行参数写入EEPROM
 	{
     /***********************存储单个寄存器****************************/
 		Flag_Save_SW=0;//清除标志位只保存一次
-		ADDR_CONT=Setcontr_ADDR;
+		ADDR_CONT=UART_Buffer_Rece[3];
 		switch (ADDR_CONT)
 		{
 			case 13:

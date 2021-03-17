@@ -24,7 +24,7 @@ extern struct bitDefine
 	unsigned bit7: 1;
 } flagA,flagB,flagC,flagD,flagE;
 vu8 Von_CONT;//拉载开启门槛单次计数器
-
+vu8 oldmode;
 
 /***************************************
 函数名:Sence_SW_CONT
@@ -51,10 +51,12 @@ void I_SW_COTNR(void)
 {
 	if(I_Gear_SW==1)
 	{
+//		GPIO_SetBits(GPIOB,GPIO_Pin_1);//电流测量为低档位
 		GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
 	}
 	else
 	{
+//		GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
 		GPIO_SetBits(GPIOB,GPIO_Pin_1);//电流测量为低档位
 	}
 	if(I_Gear_SW==0)
@@ -100,14 +102,29 @@ void worke_mode(void)
 /**********模式切换**********************/
 	if(MODE==0)
 	{
+		if(oldmode != MODE)
+		{
+			TIME_1MS_OVER=0;//打开爬升标志
+			TIME_1MS_flag=0;//清零时间标志
+		}
 		GPIO_ResetBits(GPIOB,GPIO_Pin_0);//CC模式
 	}
 	else if(MODE==1)
 	{
+		if(oldmode != MODE)
+		{
+			TIME_1MS_OVER=0;//打开爬升标志
+			TIME_1MS_flag=0;//清零时间标志
+		}
 		GPIO_SetBits(GPIOB,GPIO_Pin_0);//CV模式
 	}
 	else if(MODE==2)
 	{
+		if(oldmode != MODE)
+		{
+			TIME_1MS_OVER=0;//打开爬升标志
+			TIME_1MS_flag=0;//清零时间标志
+		}
 		GPIO_ResetBits(GPIOB,GPIO_Pin_0);//CR模式
 		if(SET_Resist==0)
 		{
@@ -116,10 +133,20 @@ void worke_mode(void)
 	}
 	else if(MODE==3)
 	{
+		if(oldmode != MODE)
+		{
+			TIME_1MS_OVER=0;//打开爬升标志
+			TIME_1MS_flag=0;//清零时间标志
+		}
 		GPIO_ResetBits(GPIOB,GPIO_Pin_0);//CP模式
 	}
 	else if(MODE==4)//动态模式
 	{
+		if(oldmode != MODE)
+		{
+			TIME_1MS_OVER=0;//打开爬升标志
+			TIME_1MS_flag=0;//清零时间标志
+		}
 		GPIO_ResetBits(GPIOB,GPIO_Pin_0);//CC模式拉载
 	}
 	else if(MODE==5)//LED模式 LED模式电压档位默认切换到高档位
@@ -130,6 +157,11 @@ void worke_mode(void)
 	}
 	else if(MODE==6)//短路模式
 	{
+		if(oldmode != MODE)
+		{
+			TIME_1MS_OVER=0;//打开爬升标志
+			TIME_1MS_flag=0;//清零时间标志
+		}
 		GPIO_ResetBits(GPIOB,GPIO_Pin_0);//CC模式拉载
 		if(I_Gear_SW==0)
 		{
@@ -140,6 +172,7 @@ void worke_mode(void)
 			SET_S_Current=180000;//短路模式下直接加载最大电流值
 		}
 	}
+	oldmode = MODE;
 /*************ON/OFF开关***************************/
 	if(onoff_ch==0)
 	{
@@ -158,6 +191,7 @@ void worke_mode(void)
 			{
 				if(Voltage<VOFF_Voltage)//判断测量电压是否小于卸载电压
 				{
+					onoff_ch = 0;
 					GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
 					SET_I_TRAN=0;
 					SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用
@@ -175,6 +209,7 @@ void worke_mode(void)
 				}
 				else if((Voltage<VON_Voltage)&&(Von_CONT==0))
 				{
+					onoff_ch = 0;
 					GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
 					SET_I_TRAN=0;
 					SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用
@@ -187,6 +222,7 @@ void worke_mode(void)
 			{
 				if(Voltage<(VOFF_Voltage*10))//判断测量电压是否小于卸载电压
 				{
+					onoff_ch = 0;
 					GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
 					SET_I_TRAN=0;
 					SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用
@@ -204,6 +240,7 @@ void worke_mode(void)
 				}
 				else if((Voltage<(VON_Voltage*10))&&(Von_CONT==0))
 				{
+					onoff_ch = 0;
 					GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
 					SET_I_TRAN=0;
 					SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用

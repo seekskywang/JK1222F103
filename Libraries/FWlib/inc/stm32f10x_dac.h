@@ -281,7 +281,7 @@ void DAC_StructInit(DAC_InitTypeDef* DAC_InitStruct);
 void DAC_Cmd(uint32_t DAC_Channel, FunctionalState NewState);
 #if defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || defined (STM32F10X_HD_VL)
 void DAC_ITConfig(uint32_t DAC_Channel, uint32_t DAC_IT, FunctionalState NewState);
-#endif
+#endif 
 void DAC_DMACmd(uint32_t DAC_Channel, FunctionalState NewState);
 void DAC_SoftwareTriggerCmd(uint32_t DAC_Channel, FunctionalState NewState);
 void DAC_DualSoftwareTriggerCmd(FunctionalState NewState);

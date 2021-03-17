@@ -48,27 +48,30 @@ int main(void)
 	ADC1_DMA_Init();
 	i2c_CfgGpio();
 	EEPROM_READ_Coeff();//读取校准参数
-	USART_Configuration();
+//	USART_Configuration();
+	USART2_Configuration();
 	TIM6_Config();
 	IWDG_Inte();
+//	IO_FAN_OFF;
+	ADDR = 1;
 	while(1)
 	{
 		IWDG_ReloadCounter(); //喂狗
-		if(UART_Buffer_Rece_flag==1)
-		{
-			UART_Buffer_Rece_flag=0;
-			UART_Action();//接收一帧数据
-			Baud_SET();//设置串口波特率
-			MAXPAR_limit();//运行参数最大值限制
-		}
-		Me_SCPI_TASK(); //SCPI串口任务
-		Wite_Runcont();//将运行参数写入EEPROM
+//		if(UART_Buffer_Rece_flag==1)
+//		{
+//			UART_Buffer_Rece_flag=0;
+//			UART_Action();//接收一帧数据
+////			Baud_SET();//设置串口波特率
+////			MAXPAR_limit();//运行参数最大值限制
+//		}
+//		Me_SCPI_TASK(); //SCPI串口任务
+//		Wite_Runcont();//将运行参数写入EEPROM
 		AD5541_Send(Contr_DACVlue);//设置DAC值
 		AD7689_Scan_CH();//读取AD7689 AD值
 		if(DAC_Flag == 0x00)
 		{		
 			Transformation_ADC(); 
-		  All_protect();//各种保护			
+		    All_protect();//各种保护			
 		}
 		if(Flag_ADC_Full==1) //NTC
 		{
