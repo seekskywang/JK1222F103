@@ -48,7 +48,7 @@ int main(void)
 	ADC1_DMA_Init();
 	i2c_CfgGpio();
 	EEPROM_READ_Coeff();//读取校准参数
-//	USART_Configuration();
+	USART_Configuration();
 	USART2_Configuration();
 	TIM6_Config();
 	IWDG_Inte();
