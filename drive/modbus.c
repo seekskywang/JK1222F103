@@ -608,6 +608,138 @@ void UART_Action(void)
 		}
  }
 }
+
+
+void UART1_Action(void)
+{//RUT格式：
+	//ADDR  命令码  读寄存器的起始地址高   读寄存器的起始地址低  读数据字个数高字节   读数据个数低字节  CRC高 CRC低
+	//返回格式：ADDR 命令码 返回数据字节数  数据高  数据低 ..... CRC高  CRC低
+	if ((UART_Buffer_Rece1[0] == 0x01/*ADDR*/)||(UART_Buffer_Rece1[0] == 0))
+	{
+		if (UART_Buffer_Rece1[1] == (0x03))	//命令3 读数据   
+		{																		 
+			vu8 i;
+			vu16 crc_result;
+			crc_result = (UART_Buffer_Rece1[6] << 8) + UART_Buffer_Rece1[7];
+			if ((crc_result == Hardware_CRC(UART_Buffer_Rece1,6)) ||(crc_result == 0) )
+			{
+				if (UART_Buffer_Rece1[3] < 0xFF)    								//如果寄存器在可读范围内
+				{
+					if ((UART_Buffer_Rece1[3] + UART_Buffer_Rece1[5]) < 0xFF)		//如果最后一个读取的寄存器地址在可读范围内
+					{							
+						UART_Buffer_Send1[0] = 0x01/*ADDR*/;
+						UART_Buffer_Send1[1] = 0x03;
+						UART_Buffer_Send1[2] = UART_Buffer_Rece1[5]*4;
+						for (i=0;i<UART_Buffer_Send1[2];i++)
+						{
+							if ((i % 4) == 0) 
+							{
+								UART_Buffer_Send1[3 + i] = Run_Control[UART_Buffer_Rece1[3] + i / 4] >> 24;//高位在前
+							}
+							else if((i % 4) == 1)
+							{
+								UART_Buffer_Send1[3 + i] = Run_Control[UART_Buffer_Rece1[3] + i / 4] >> 16;//高位在前
+							}
+							else if((i % 4) == 2)
+							{
+								UART_Buffer_Send1[3 + i] = Run_Control[UART_Buffer_Rece1[3] + i / 4] >> 8;//高位在前
+							}
+							else 
+							{
+								UART_Buffer_Send1[3 + i] = Run_Control[UART_Buffer_Rece1[3] + i / 4];			
+							}															
+						}
+						crc_result = Hardware_CRC(UART_Buffer_Send,UART_Buffer_Send1[2] + 3);
+						UART_Buffer_Send1[3 + UART_Buffer_Send1[2]] = crc_result >> 8;
+						UART_Buffer_Send1[4 + UART_Buffer_Send1[2]] = crc_result;
+						Transmit_BUFFERsize = UART_Buffer_Send1[2] + 5;
+						UART_SEND_flag=1;
+						UART1_Send();
+					}
+				}
+			}	
+		}
+	} 
+//===============================写寄存器=================================
+	if ((UART_Buffer_Rece1[0] == 0x01/*ADDR*/) || (UART_Buffer_Rece1[0] == 0))	 
+	{
+		vu8 var8; 
+		vu8 a=0;
+		vu16 var16;
+		vu16 crc_result;
+		vu32 var32;
+//=========================以下命令6 写单个寄存器===========================
+		if (UART_Buffer_Rece1[1] == 0X06)                                 //判断第二个字节是否为命令6
+		{
+			if (UART_Buffer_Rece1[3] < 0xFF)							  //判断需要写的地址是否在可写范围内
+			{
+				crc_result = (UART_Buffer_Rece1[8] << 8) + UART_Buffer_Rece1[9];
+				if ((crc_result == Hardware_CRC(UART_Buffer_Rece1,8)) ||(crc_result == 0) )		  //检查CRC
+				{
+					var32 = (UART_Buffer_Rece1[4] << 8) + UART_Buffer_Rece1[5];	//第5 6个字节为要写入的数据
+					var16=(UART_Buffer_Rece1[6] << 8) + UART_Buffer_Rece1[7];	//第6  7个字节为要写入的数据
+					var8 = UART_Buffer_Rece1[3];	        						//第3 4个字节为要写入的地址
+					var32=(var32<<16)+var16;
+					Run_Control[var8] = var32;			    //将数据写入指定的地址
+
+					if (UART_Buffer_Rece1[0] == ADDR)							//广播模式下不返回数据
+					{
+						for (a=0;a<10;a++)
+						{UART_Buffer_Send1[a] = UART_Buffer_Rece1[a];}
+						Transmit_BUFFERsize = 10;						//原样数据返回，不计算CRC
+						UART_SEND_flag=1;
+						UART1_Send();
+					}
+					Flag_Save_SW = 1;
+//					Wite_Runcont();
+					memset((char *)UART_Buffer_Rece1,0,sizeof(UART_Buffer_Rece1));
+				}
+			}
+		}
+//=======================================以下是命令16，连写寄存器===========================================
+//功能码16格式:
+//     地址 命令 写入起始地址高  写入起始地址低 写入字数高  写入字数低 写入寄存器个数  数据高 数据低 ......CRC高 CRC低
+//返回数据格式:
+//     地址 命令 写入起始地址高  写入起始地址低  写入字节数高 写入字节数低  CRC高  CRC低 
+		if (UART_Buffer_Rece1[1] == 0X10)										  
+		{	
+			crc_result = ((UART_Buffer_Rece1[(UART_Buffer_Rece1[6]*4)+7]) << 8) + UART_Buffer_Rece1[(UART_Buffer_Rece1[6]*4)+8];
+			if (crc_result == Hardware_CRC(UART_Buffer_Rece1,(UART_Buffer_Rece1[6]*4)+7)) 	  //检查CRC
+			{												
+				for (var8=0;var8<UART_Buffer_Rece1[6];var8++) 
+				{
+					var32 = (UART_Buffer_Rece1[var8*4+7] << 8) + UART_Buffer_Rece1[var8*4+8];
+					var16=(UART_Buffer_Rece1[var8*4+9] << 8) + UART_Buffer_Rece1[var8*4+10];	//这里是写入的是32位寄存器所以是*4
+					var32=(var32<<16)+var16;
+					Run_Control[UART_Buffer_Rece1[3]+var8] = var32;			    //将数据写入指定的地址
+				}
+				if(Run_Control[15] != 1)
+				{
+					testflag ++;
+				}
+				if (UART_Buffer_Rece1[0] == 0x01/*ADDR*/)					  //广播模式不返回数据
+				{
+					UART_Buffer_Send1[0] = 0x01/*ADDR*/;
+					UART_Buffer_Send1[1] = 16;
+					UART_Buffer_Send1[2] = UART_Buffer_Rece[2];
+					UART_Buffer_Send1[3] = UART_Buffer_Rece[3];
+					UART_Buffer_Send1[4] = UART_Buffer_Rece[4];
+					UART_Buffer_Send1[5] = UART_Buffer_Rece[5];
+					crc_result = Hardware_CRC(UART_Buffer_Send,6);	 //计算CRC码
+					UART_Buffer_Send1[6] = crc_result>>8;
+					UART_Buffer_Send1[7] = crc_result;				 
+					Transmit_BUFFERsize = 8;					     //设置发送字节数长度
+					UART_SEND_flag=1;
+					UART1_Send();
+				}
+				Flag_Save_SW = 1;
+//				Wite_Runcont();
+				memset((char *)UART_Buffer_Rece1,0,sizeof(UART_Buffer_Rece1));
+			}
+		}			 
+	}
+
+}
 //===============================AD值转换成测量值============================================//
 void Transformation_ADC(void)  
 {

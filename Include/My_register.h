@@ -51,6 +51,7 @@ extern vu16 t_1S;
 extern vu16 t_5S;
 extern vu8 t_USART;
 extern vu8 Setcontr_ADDR;//设置参数存入FLASH位置
+extern vu8 UART1_Buffer_Rece_flag;
 //--------------------------
 extern vu8 UART_Buffer_Size;//串口接收数据长度
 extern vu8 Transmit_BUFFERsize;
@@ -182,6 +183,8 @@ extern vu32 Correct_Strong[12];//校准系数
 //---------------------------
 extern vu8 UART_Buffer_Rece[200];
 extern vu8 UART_Buffer_Send[200];
+extern vu8 UART_Buffer_Rece1[200];
+extern vu8 UART_Buffer_Send1[200];
 //============================================================================= 
 #define Receive_BUFFERSIZE   10
 #define V_LOW_MAX   140000   //电压低档最高电压

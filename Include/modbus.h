@@ -12,6 +12,7 @@
 #define _modbus_h_
 
 void UART_Action(void);
+void UART1_Action(void);
 void Transformation_ADC(void);
 vu16 Hardware_CRC(vu8 *p_buffer,vu8 count);
 #endif

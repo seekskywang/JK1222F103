@@ -29,6 +29,8 @@ extern struct bitDefine
 } flagA,flagB,flagC,flagD;
 vu8 UART_Buffer_Rece[200];
 vu8 UART_Buffer_Send[200];
+vu8 UART_Buffer_Rece1[200];
+vu8 UART_Buffer_Send1[200];
 vu8 UART_Buffer_Size;
 vu8 Transmit_BUFFERsize;
 vu8 t_USART;
@@ -181,7 +183,7 @@ void UART1_Send(void)
 	vu8 i=0;
 	for(i =0 ; i < Transmit_BUFFERsize; i++)
   {
-			USART_SendData(USART1,UART_Buffer_Send[i]);
+			USART_SendData(USART1,UART_Buffer_Send1[i]);
 			while (USART_GetFlagStatus(USART1,USART_FLAG_TXE) == RESET);//等待发送完成
   }
 	UART_SEND_flag=0;//发送完成一帧数据		
