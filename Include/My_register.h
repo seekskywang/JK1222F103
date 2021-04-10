@@ -185,6 +185,10 @@ extern vu8 UART_Buffer_Rece[200];
 extern vu8 UART_Buffer_Send[200];
 extern vu8 UART_Buffer_Rece1[200];
 extern vu8 UART_Buffer_Send1[200];
+extern vu8 dynaflagA;
+extern vu8 dynaflagB;
+extern vu8 dynatrigflag;
+extern u8 dynaonflag;
 //============================================================================= 
 #define Receive_BUFFERSIZE   10
 #define V_LOW_MAX   140000   //电压低档最高电压

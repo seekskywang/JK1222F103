@@ -182,6 +182,9 @@ void worke_mode(void)
 		SET_I_TRAN=0;
 		Von_CONT=0;//清除开启门槛计数器
 		SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用
+		dynaflagA = 0;
+		dynaflagB = 0;
+		dynaonflag = 0;
 	}
 	else if(onoff_ch==1)
 	{
@@ -272,6 +275,77 @@ void worke_mode(void)
 		else if(MODE==6)//短路模式
 		{
 			GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+		}else if(MODE == 4){//动态模式
+			if(V_Gear_SW==1)//电压高档位
+			{
+				if(Voltage<VOFF_Voltage)//判断测量电压是否小于卸载电压
+				{
+					onoff_ch = 0;
+					GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+					SET_I_TRAN=0;
+					SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用
+					TIME_1MS_OVER=0;//打开爬升标志
+					TIME_1MS_flag=0;//清零时间标志
+					dynaflagA = 0;
+					dynaflagB = 0;
+				}
+				else 
+				{
+					GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+				}
+				if((Voltage>VON_Voltage)&&(Von_CONT==0))
+				{
+					GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+					Von_CONT=1;
+				}
+				else if((Voltage<VON_Voltage)&&(Von_CONT==0))
+				{
+					onoff_ch = 0;
+					GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+					SET_I_TRAN=0;
+					SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用
+					TIME_1MS_OVER=0;//打开爬升标志
+					TIME_1MS_flag=0;//清零时间标志
+					Von_CONT=0;//清除开启门槛计数器
+					dynaflagA = 0;
+					dynaflagB = 0;
+				}
+			}
+			else if(V_Gear_SW==0)//电压低档位VON VOFF都*10，因为设定参数只支持高档位设定
+			{
+				if(Voltage<(VOFF_Voltage*10))//判断测量电压是否小于卸载电压
+				{
+					onoff_ch = 0;
+					GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+					SET_I_TRAN=0;
+					SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用
+					TIME_1MS_OVER=0;//打开爬升标志
+					TIME_1MS_flag=0;//清零时间标志
+					dynaflagA = 0;
+					dynaflagB = 0;
+				}
+				else 
+				{
+					GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+				}
+				if((Voltage>(VON_Voltage*10))&&(Von_CONT==0))
+				{
+					GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+					Von_CONT=1;
+				}
+				else if((Voltage<(VON_Voltage*10))&&(Von_CONT==0))
+				{
+					onoff_ch = 0;
+					GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+					SET_I_TRAN=0;
+					SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用
+					TIME_1MS_OVER=0;//打开爬升标志
+					TIME_1MS_flag=0;//清零时间标志
+					Von_CONT=0;//清除开启门槛计数器
+					dynaflagA = 0;
+					dynaflagB = 0;
+				}
+			}
 		}
 	}
 	I_SW_COTNR();//电流档位切换

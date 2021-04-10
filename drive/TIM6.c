@@ -25,15 +25,15 @@ void TIM6_Config(void)
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4,ENABLE);
 	
   /* Time 定时基础设置*/
-  TIM_TimeBaseStructure.TIM_Prescaler = 2000;//时钟预分频
+  TIM_TimeBaseStructure.TIM_Prescaler = 3250-1;//时钟预分频
   TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  /* Time 定时设置为上升沿计算模式*/
-  TIM_TimeBaseStructure.TIM_Period = 0;
+  TIM_TimeBaseStructure.TIM_Period = 1;
   TIM_TimeBaseStructure.TIM_ClockDivision = 0;
-  TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
+//  TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
 
   TIM_TimeBaseInit(TIM4,&TIM_TimeBaseStructure);
 	TIM_ITConfig(TIM4,TIM_IT_Update,ENABLE);//开启定时器更新中断
-	TIM_SetAutoreload(TIM4, 0xFF);//设置PWM分辨率
+//	TIM_SetAutoreload(TIM4, 0xFF);//设置PWM分辨率
 	TIM6_NVIC_Config();
   /* TIM3 计算器使能*/
   TIM_Cmd(TIM4, ENABLE);

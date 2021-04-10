@@ -137,7 +137,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>猬w鬘?鬘?趏</Name>
+          <Name>猬??趏銽</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -498,6 +498,31 @@
           <count>35</count>
           <WinNumber>2</WinNumber>
           <ItemText>UART_Buffer_Rece1</ItemText>
+        </Ww>
+        <Ww>
+          <count>36</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>testcount,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>37</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>getrccclock,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>38</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>UART_Buffer_Rece[3]+var8,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>39</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>dynaflagB</ItemText>
+        </Ww>
+        <Ww>
+          <count>40</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>timecount,0x0A</ItemText>
         </Ww>
       </WatchWindow2>
       <Tracepoint>

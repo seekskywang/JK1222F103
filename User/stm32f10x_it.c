@@ -42,6 +42,11 @@ extern struct bitDefine
 	unsigned bit7: 1;
 } flagA,flagB,flagC,flagD,flagE,flagF;
 vu8 UART1_Buffer_Rece_flag;
+vu8 dynaflagA;
+vu8 dynaflagB;
+vu32 timecount;
+vu32 testcount;
+vu8 dynatrigflag;
 extern __IO int32_t OS_TimeMS;
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -383,13 +388,56 @@ void USART3_IRQHandler(void)
 void TIM4_IRQHandler(void)
 {	
 	TIM_ClearITPendingBit(TIM4,TIM_IT_Update);//清除中断标志位
+//	testcount++;
 	if(TIME_1MS_OVER==0)//开启爬升或者下降计时标志
 	{
 		TIME_1MS_flag=1;//1MS定时标志
+		
 	}
 	else 
 	{
 		TIME_1MS_flag=0;
+		
+	}
+	if(MODE==4 && onoff_ch == 1)
+	{
+		if(DYNA_MODE == 0)//连续模式
+		{
+			if(dynaflagA == 1)
+			{
+				if(timecount < DYNA_Ta)
+				{
+					timecount++;
+				}else{
+					dynaflagA = 0;
+					dynaflagB = 1;
+					timecount = 0;
+				}
+			}else if(dynaflagB == 1){
+				if(timecount < DYNA_Tb)
+				{
+					timecount++;
+				}else{
+					dynaflagA = 1;
+					dynaflagB = 0;
+					timecount = 0;
+				}
+			}
+		}else if(DYNA_MODE == 1){//脉动模式
+			if(dynaflagB == 1)
+			{
+				if(timecount < DYNA_Tb)
+				{
+					timecount++;
+				}else{
+					dynaflagA = 1;
+					dynaflagB = 0;
+					timecount = 0;
+				}
+			}
+		}
+	}else{
+		timecount = 0;
 	}
 }
 void DMA1_Channel1_IRQHandler(void)

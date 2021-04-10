@@ -37,6 +37,7 @@ struct bitDefine
     unsigned bit7: 1;
 } flagA, flagB,flagC,flagD,flagE,flagF,flagG;
 vu16 date_dac;
+RCC_ClocksTypeDef getrccclock;
 int main(void)
 {
 	RCC_Configuration();
@@ -56,6 +57,7 @@ int main(void)
 	ADDR = 1;
 	while(1)
 	{
+//		RCC_GetClocksFreq(&getrccclock);
 		IWDG_ReloadCounter(); //喂狗
 		if(UART_Buffer_Rece_flag==1)
 		{

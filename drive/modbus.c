@@ -25,6 +25,7 @@ extern struct bitDefine
 	unsigned bit7: 1;
 } flagA,flagB,flagC,flagD,flagE;
 u8 testflag;
+u8 dynaonflag;
 /*************************校准参数************************************/
 vu8 DAC_Flag;//DAC是否加载标志
 vu32 Modify_A_READ;
@@ -138,6 +139,22 @@ void UART_Action(void)
 //     地址 命令 写入起始地址高  写入起始地址低  写入字节数高 写入字节数低  CRC高  CRC低 
 		if (UART_Buffer_Rece[1] == 0X10)										  
 		{	
+			if(MODE == 4 && DYNA_MODE == 1 && onoff_ch == 1)
+			{
+				dynaflagA = 0;
+				dynaflagB = 1;
+			}
+			if(MODE == 4 && DYNA_MODE == 2 && onoff_ch == 1)
+			{
+				if(dynaflagA == 1)
+				{
+					dynaflagA = 0;
+					dynaflagB = 1;
+				}else if(dynaflagB == 1){
+					dynaflagB = 0;
+					dynaflagA = 1;
+				}
+			}
 			crc_result = ((UART_Buffer_Rece[(UART_Buffer_Rece[6]*4)+7]) << 8) + UART_Buffer_Rece[(UART_Buffer_Rece[6]*4)+8];
 			if (crc_result == Hardware_CRC(UART_Buffer_Rece,(UART_Buffer_Rece[6]*4)+7)) 	  //检查CRC
 			{												
@@ -168,6 +185,11 @@ void UART_Action(void)
 					UART2_Send();
 				}
 				Flag_Save_SW = 1;
+				if(MODE == 4 && onoff_ch == 1 && dynaonflag == 0)
+				{
+					dynaflagA = 1;
+					dynaonflag = 1;
+				}
 //				Wite_Runcont();
 				memset((char *)UART_Buffer_Rece,0,sizeof(UART_Buffer_Rece));
 			}
@@ -733,6 +755,7 @@ void UART1_Action(void)
 					UART1_Send();
 				}
 				Flag_Save_SW = 1;
+				
 //				Wite_Runcont();
 				memset((char *)UART_Buffer_Rece1,0,sizeof(UART_Buffer_Rece1));
 			}
@@ -1016,6 +1039,65 @@ void Transformation_ADC(void)
 				else var32 = var32 + SET_ReadA_Offset_LOW;
 				var32 = var32/SET_CorrectionA_LOW;
 				var32=var32>>1;
+			}else if(MODE==4)//动态模式
+			{
+				if(DYNA_MODE == 0 || DYNA_MODE == 1 || DYNA_MODE == 2)//连续模式或者脉动模式
+				{
+
+					if(dynaflagA == 1)
+					{
+						if(TIME_1MS_flag==1 && SET_I_TRAN < DYNA_Ia)
+						{
+							SET_I_TRAN=SET_I_TRAN+DYNA_IRise;
+							if(SET_I_TRAN>=DYNA_Ia)
+							{
+								SET_I_TRAN=DYNA_Ia;
+							}
+						}else if(TIME_1MS_flag==1 && SET_I_TRAN > DYNA_Ia){
+							SET_I_TRAN=SET_I_TRAN-DYNA_IDown;
+							if(SET_I_TRAN<=DYNA_Ia)
+							{
+								SET_I_TRAN=DYNA_Ia;
+							}
+						}
+						var32 = SET_I_TRAN;
+						var32=var32<<12;   
+						if ((Polar2 & 0x04) == 0)			   
+						{
+							if (var32 < SET_ReadA_Offset_LOW) var32 = 0;
+							else var32 = var32 - SET_ReadA_Offset_LOW;
+						}
+						else var32 = var32 + SET_ReadA_Offset_LOW;
+						var32 = var32/SET_CorrectionA_LOW;
+						var32=var32>>1;
+					}else if(dynaflagB == 1){
+						if(TIME_1MS_flag==1 && SET_I_TRAN < DYNA_Ib)
+						{
+							SET_I_TRAN=SET_I_TRAN+DYNA_IRise;
+							if(SET_I_TRAN>=DYNA_Ib)
+							{
+								SET_I_TRAN=DYNA_Ib;
+							}
+						}else if(TIME_1MS_flag==1 && SET_I_TRAN > DYNA_Ib){
+							SET_I_TRAN=SET_I_TRAN-DYNA_IDown;
+							if(SET_I_TRAN<=DYNA_Ib)
+							{
+								SET_I_TRAN=DYNA_Ib;
+							}
+						}
+						var32 = SET_I_TRAN;
+						var32=var32<<12;   
+						if ((Polar2 & 0x04) == 0)			   
+						{
+							if (var32 < SET_ReadA_Offset_LOW) var32 = 0;
+							else var32 = var32 - SET_ReadA_Offset_LOW;
+						}
+						else var32 = var32 + SET_ReadA_Offset_LOW;
+						var32 = var32/SET_CorrectionA_LOW;
+						var32=var32>>1;
+					}
+				}
+				
 			}
 			else if(MODE==5)//LED模式 实际加载为CR模式  LED模式电压档位默认切换为高档位
 			{
@@ -1141,6 +1223,65 @@ void Transformation_ADC(void)
 				else var32 = var32 + SET_ReadA_Offset_HIG;
 				var32 = var32/SET_CorrectionA_HIG;
 				var32=var32>>1;
+			}else if(MODE==4)//动态模式
+			{
+				if(DYNA_MODE == 0 || DYNA_MODE == 1 || DYNA_MODE == 2)//连续模式
+				{
+
+					if(dynaflagA == 1)
+					{
+						if(TIME_1MS_flag==1 && SET_I_TRAN < DYNA_Ia)
+						{
+							SET_I_TRAN=SET_I_TRAN+DYNA_IRise;
+							if(SET_I_TRAN>=DYNA_Ia)
+							{
+								SET_I_TRAN=DYNA_Ia;
+							}
+						}else if(TIME_1MS_flag==1 && SET_I_TRAN > DYNA_Ia){
+							SET_I_TRAN=SET_I_TRAN-DYNA_IDown;
+							if(SET_I_TRAN<=DYNA_Ia)
+							{
+								SET_I_TRAN=DYNA_Ia;
+							}
+						}
+						var32 = SET_I_TRAN;
+						var32=var32<<12;   
+						if ((Polar3 & 0x04) == 0)			   
+						{
+							if (var32 < SET_ReadA_Offset_HIG) var32 = 0;
+							else var32 = var32 - SET_ReadA_Offset_HIG;
+						}
+						else var32 = var32 + SET_ReadA_Offset_HIG;
+						var32 = var32/SET_CorrectionA_HIG;
+						var32=var32>>1;
+					}else if(dynaflagB == 1){
+						if(TIME_1MS_flag==1 && SET_I_TRAN < DYNA_Ib)
+						{
+							SET_I_TRAN=SET_I_TRAN+DYNA_IRise;
+							if(SET_I_TRAN>=DYNA_Ib)
+							{
+								SET_I_TRAN=DYNA_Ib;
+							}
+						}else if(TIME_1MS_flag==1 && SET_I_TRAN > DYNA_Ib){
+							SET_I_TRAN=SET_I_TRAN-DYNA_IDown;
+							if(SET_I_TRAN<=DYNA_Ib)
+							{
+								SET_I_TRAN=DYNA_Ib;
+							}
+						}
+						var32 = SET_I_TRAN;
+						var32=var32<<12;   
+						if ((Polar3 & 0x04) == 0)			   
+						{
+							if (var32 < SET_ReadA_Offset_HIG) var32 = 0;
+							else var32 = var32 - SET_ReadA_Offset_HIG;
+						}
+						else var32 = var32 + SET_ReadA_Offset_HIG;
+						var32 = var32/SET_CorrectionA_HIG;
+						var32=var32>>1;
+					}
+				}
+				
 			}
 			else if(MODE==5)//LED模式 实际加载为CR模式  LED模式电压档位默认切换为高档位
 			{
