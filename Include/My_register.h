@@ -41,6 +41,7 @@ extern struct bitDefine flagA,flagB,flagC,flagD,flagE,flagF,flagG;
 
 //=============================================================================
 
+
 //--------------------------
 extern vu8 DAC_Flag;
 extern vu8 Beep_Flag;
@@ -132,7 +133,53 @@ extern vu32 Run_Control[50];
 #define Class_15					Run_Control[48]   //15V
 #define Class_20					Run_Control[49]   //20V
 /***********以上寄存器可读可写*****************************************/
+typedef struct {
+	float TestVL;//测量电压低档k
+	float TestVM;//测量电压中档k
+	float TestVH;//测量电压高档k
+	
+	float SetVL;//设置电压低档k
+	float SetVM;//设置电压中档k
+	float SetVH;//设置电压高档k
+	
+	
+	float OffsetVL;//测量电压低档b
+	float OffsetVM;//测量电压中档b
+	float OffsetVH;//测量电压高档b
+	
+	float OffsetSetVL;//设置电流低档b
+	float OffsetSetVM;//设置电流中档b
+	float OffsetSetVH;//设置电流高档b
+	
+		
+/////////////////////////////////////		
+	float TestCL;//测量电流低档k
+	float TestCM;//测量电流中档k
+	float TestCH;//测量电流高档k
+	
+	float SetCL;//设置电压低档k
+	float SetCM;//设置电压中档k
+	float SetCH;//设置电压高档k
+	
+	float OffsetCL;//测量电流低档b
+	float OffsetCM;//测量电流中档b
+	float OffsetCH;//测量电流高档b
+	
+	float OffsetSetCL;//设置电流低档b
+	float OffsetSetCM;//设置电流中档b
+	float OffsetSetCH;//设置电流高档b
+	
+/////////////////////////////////////	
 
+}CAL;
+
+typedef union
+{
+    vu8 CalFlash[96];
+    CAL CalPara;
+}CalUni; 
+
+extern CAL CalPara;
 
 extern vu32 Correct_Parametet[12];//校准系数
 #define  REG_CorrectionV_LOW       Correct_Parametet[0]

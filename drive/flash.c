@@ -21,507 +21,510 @@ extern struct bitDefine
     unsigned bit6: 1;
     unsigned bit7: 1;
 } flagA, flagB,flagC,flagD;
-
+CalUni Calibrate;
 #define   MAX_Correct_Addr         0X66  //定义校准参数存储的最后一个地址
 vu32 REND_TSETING;
 //==================================================================//
 void Flash_Write_all (void)
 {
-	vu8 data_8bit;
-/***********************测量数据存储****************************/
-  data_8bit = REG_ReadV_Offset_LOW >> 24;
-	EEPROM_WriteByte(0x01, data_8bit);
-	data_8bit = REG_ReadV_Offset_LOW >> 16;
-	EEPROM_WriteByte(0x02, data_8bit);
-	data_8bit = REG_ReadV_Offset_LOW >> 8;
-	EEPROM_WriteByte(0x03, data_8bit);
-	EEPROM_WriteByte(0x04, REG_ReadV_Offset_LOW);
+	WriteBytes(Calibrate.CalFlash,0,sizeof(CalPara));
 	
-	data_8bit = REG_ReadV_Offset_HIG >> 24;
-	EEPROM_WriteByte(0x05, data_8bit);
-	data_8bit = REG_ReadV_Offset_HIG >> 16;
-	EEPROM_WriteByte(0x06, data_8bit);
-	data_8bit = REG_ReadV_Offset_HIG >> 8;
-	EEPROM_WriteByte(0x07, data_8bit);
-	EEPROM_WriteByte(0x08, REG_ReadV_Offset_HIG);
-	
-	data_8bit = REG_ReadA_Offset_LOW >> 24;
-	EEPROM_WriteByte(0x09, data_8bit);
-	data_8bit = REG_ReadA_Offset_LOW >> 16;
-	EEPROM_WriteByte(0x0A, data_8bit);
-	data_8bit = REG_ReadA_Offset_LOW >> 8;
-	EEPROM_WriteByte(0x0B, data_8bit);
-	EEPROM_WriteByte(0x0C, REG_ReadA_Offset_LOW);
-	IWDG_ReloadCounter(); //喂狗
-	data_8bit = REG_ReadA_Offset_HIG >> 24;
-	EEPROM_WriteByte(0x0D, data_8bit);
-	data_8bit = REG_ReadA_Offset_HIG >> 16;
-	EEPROM_WriteByte(0x0E, data_8bit);
-	data_8bit = REG_ReadA_Offset_HIG >> 8;
-	EEPROM_WriteByte(0x0F, data_8bit);
-	EEPROM_WriteByte(0x10, REG_ReadA_Offset_HIG);
-	
-	data_8bit=REG_CorrectionV_LOW>>24;
-	EEPROM_WriteByte(0x11, data_8bit);
-	data_8bit=REG_CorrectionV_LOW>>16;
-	EEPROM_WriteByte(0x12, data_8bit);
-	data_8bit=REG_CorrectionV_LOW>>8;
-	EEPROM_WriteByte(0x13, data_8bit);
-	EEPROM_WriteByte(0x14, REG_CorrectionV_LOW);
-	
-	data_8bit=REG_CorrectionV_HIG>>24;
-	EEPROM_WriteByte(0x15, data_8bit);
-	data_8bit=REG_CorrectionV_HIG>>16;
-	EEPROM_WriteByte(0x16, data_8bit);
-	data_8bit=REG_CorrectionV_HIG>>8;
-	EEPROM_WriteByte(0x17, data_8bit);
-	EEPROM_WriteByte(0x18, REG_CorrectionV_HIG);
-	
-	data_8bit=REG_CorrectionA_LOW>>24;
-	EEPROM_WriteByte(0x19, data_8bit);
-	data_8bit=REG_CorrectionA_LOW>>16;
-	EEPROM_WriteByte(0x1A, data_8bit);
-	data_8bit=REG_CorrectionA_LOW>>8;
-	EEPROM_WriteByte(0x1B, data_8bit);
-	EEPROM_WriteByte(0x1C, REG_CorrectionA_LOW);
-	
-	data_8bit=REG_CorrectionA_HIG>>24;
-	EEPROM_WriteByte(0x1D, data_8bit);
-	data_8bit=REG_CorrectionA_HIG>>16;
-	EEPROM_WriteByte(0x1E, data_8bit);
-	data_8bit=REG_CorrectionA_HIG>>8;
-	EEPROM_WriteByte(0x1F, data_8bit);
-	EEPROM_WriteByte(0x20, REG_CorrectionA_HIG);
-	
-	EEPROM_WriteByte(0x21,Polar0);
-	IWDG_ReloadCounter(); //喂狗
-/***********************设置数据存储****************************/
-	data_8bit = SET_ReadV_Offset_LOW >> 24;
-	EEPROM_WriteByte(0x22, data_8bit);
-	data_8bit = SET_ReadV_Offset_LOW >> 16;
-	EEPROM_WriteByte(0x23, data_8bit);
-	data_8bit = SET_ReadV_Offset_LOW >> 8;
-	EEPROM_WriteByte(0x24, data_8bit);
-	EEPROM_WriteByte(0x25, SET_ReadV_Offset_LOW);
-	
-	data_8bit = SET_ReadV_Offset_HIG >> 24;
-	EEPROM_WriteByte(0x26, data_8bit);
-	data_8bit = SET_ReadV_Offset_HIG >> 16;
-	EEPROM_WriteByte(0x27, data_8bit);
-	data_8bit = SET_ReadV_Offset_HIG >> 8;
-	EEPROM_WriteByte(0x28, data_8bit);
-	EEPROM_WriteByte(0x29, SET_ReadV_Offset_HIG);
-	
-	data_8bit = SET_ReadA_Offset_LOW >> 24;
-	EEPROM_WriteByte(0x2A, data_8bit);
-	data_8bit = SET_ReadA_Offset_LOW >> 16;
-	EEPROM_WriteByte(0x2B, data_8bit);
-	data_8bit = SET_ReadA_Offset_LOW >> 8;
-	EEPROM_WriteByte(0x2C, data_8bit);
-	EEPROM_WriteByte(0x2D, SET_ReadA_Offset_LOW);
-	IWDG_ReloadCounter(); //喂狗
-	data_8bit = SET_ReadA_Offset_HIG >> 24;
-	EEPROM_WriteByte(0x2E, data_8bit);
-	data_8bit = SET_ReadA_Offset_HIG >> 16;
-	EEPROM_WriteByte(0x2F, data_8bit);
-	data_8bit = SET_ReadA_Offset_HIG >> 8;
-	EEPROM_WriteByte(0x30, data_8bit);
-	EEPROM_WriteByte(0x31, SET_ReadA_Offset_HIG);
-	
-	data_8bit=SET_CorrectionV_LOW>>24;
-	EEPROM_WriteByte(0x32, data_8bit);
-	data_8bit=SET_CorrectionV_LOW>>16;
-	EEPROM_WriteByte(0x33, data_8bit);
-	data_8bit=SET_CorrectionV_LOW>>8;
-	EEPROM_WriteByte(0x34, data_8bit);
-	EEPROM_WriteByte(0x35, SET_CorrectionV_LOW);
-	
-	data_8bit=SET_CorrectionV_HIG>>24;
-	EEPROM_WriteByte(0x36, data_8bit);
-	data_8bit=SET_CorrectionV_HIG>>16;
-	EEPROM_WriteByte(0x37, data_8bit);
-	data_8bit=SET_CorrectionV_HIG>>8;
-	EEPROM_WriteByte(0x38, data_8bit);
-	EEPROM_WriteByte(0x39, SET_CorrectionV_HIG);
-	IWDG_ReloadCounter(); //喂狗
-	data_8bit=SET_CorrectionA_LOW>>24;
-	EEPROM_WriteByte(0x3A, data_8bit);
-	data_8bit=SET_CorrectionA_LOW>>16;
-	EEPROM_WriteByte(0x3B, data_8bit);
-	data_8bit=SET_CorrectionA_LOW>>8;
-	EEPROM_WriteByte(0x3C, data_8bit);
-	EEPROM_WriteByte(0x3D, SET_CorrectionA_LOW);
-	
-	data_8bit=SET_CorrectionA_HIG>>24;
-	EEPROM_WriteByte(0x3E, data_8bit);
-	data_8bit=SET_CorrectionA_HIG>>16;
-	EEPROM_WriteByte(0x3F, data_8bit);
-	data_8bit=SET_CorrectionA_HIG>>8;
-	EEPROM_WriteByte(0x40, data_8bit);
-	EEPROM_WriteByte(0x41, SET_CorrectionA_HIG);
-	
-	EEPROM_WriteByte(0x42,Polar1);
-	IWDG_ReloadCounter(); //喂狗
-/***********************************************************/
-	EEPROM_WriteByte(0x43,Polar2);
-	EEPROM_WriteByte(0x44,Polar3);
-	
-	
-	/***************高段参数存储**********************/
-	data_8bit = REG_ReadV_Offset_MID_HIG >> 24;
-	EEPROM_WriteByte(0x45, data_8bit);
-	data_8bit = REG_ReadV_Offset_MID_HIG >> 16;
-	EEPROM_WriteByte(0x46, data_8bit);
-	data_8bit = REG_ReadV_Offset_MID_HIG >> 8;
-	EEPROM_WriteByte(0x47, data_8bit);
-	EEPROM_WriteByte(0x48, REG_ReadV_Offset_MID_HIG);
-	
-	data_8bit = REG_ReadA_Offset_MID_HIG >> 24;
-	EEPROM_WriteByte(0x49, data_8bit);
-	data_8bit = REG_ReadA_Offset_MID_HIG >> 16;
-	EEPROM_WriteByte(0x4A, data_8bit);
-	data_8bit = REG_ReadA_Offset_MID_HIG >> 8;
-	EEPROM_WriteByte(0x4B, data_8bit);
-	EEPROM_WriteByte(0x4C, REG_ReadA_Offset_MID_HIG);
-	
-	data_8bit=REG_CorrectionV_MID_HIG>>24;
-	EEPROM_WriteByte(0x4D, data_8bit);
-	data_8bit=REG_CorrectionV_MID_HIG>>16;
-	EEPROM_WriteByte(0x4E, data_8bit);
-	data_8bit=REG_CorrectionV_MID_HIG>>8;
-	EEPROM_WriteByte(0x4F, data_8bit);
-	EEPROM_WriteByte(0x50, REG_CorrectionV_MID_HIG);
-	
-	data_8bit=REG_CorrectionA_MID_HIG>>24;
-	EEPROM_WriteByte(0x51, data_8bit);
-	data_8bit=REG_CorrectionA_MID_HIG>>16;
-	EEPROM_WriteByte(0x52, data_8bit);
-	data_8bit=REG_CorrectionA_MID_HIG>>8;
-	EEPROM_WriteByte(0x53, data_8bit);
-	EEPROM_WriteByte(0x54, REG_CorrectionA_MID_HIG);
-	IWDG_ReloadCounter(); //喂狗
-	/************高段设置参数存储********************/
-	data_8bit = SET_ReadV_Offset_MID_HIG >> 24;
-	EEPROM_WriteByte(0x55, data_8bit);
-	data_8bit = SET_ReadV_Offset_MID_HIG >> 16;
-	EEPROM_WriteByte(0x56, data_8bit);
-	data_8bit = SET_ReadV_Offset_MID_HIG >> 8;
-	EEPROM_WriteByte(0x57, data_8bit);
-	EEPROM_WriteByte(0x58, SET_ReadV_Offset_MID_HIG);
-	
-	data_8bit = SET_ReadA_Offset_MID_HIG >> 24;
-	EEPROM_WriteByte(0x59, data_8bit);
-	data_8bit = SET_ReadA_Offset_MID_HIG >> 16;
-	EEPROM_WriteByte(0x5A, data_8bit);
-	data_8bit = SET_ReadA_Offset_MID_HIG >> 8;
-	EEPROM_WriteByte(0x5B, data_8bit);
-	EEPROM_WriteByte(0x5C, SET_ReadA_Offset_MID_HIG);
-	IWDG_ReloadCounter(); //喂狗
-	data_8bit=SET_CorrectionV_MID_HIG>>24;
-	EEPROM_WriteByte(0x5D, data_8bit);
-	data_8bit=SET_CorrectionV_MID_HIG>>16;
-	EEPROM_WriteByte(0x5E, data_8bit);
-	data_8bit=SET_CorrectionV_MID_HIG>>8;
-	EEPROM_WriteByte(0x5F, data_8bit);
-	EEPROM_WriteByte(0x60, SET_CorrectionV_MID_HIG);
-	
-	data_8bit=SET_CorrectionA_MID_HIG>>24;
-	EEPROM_WriteByte(0x61, data_8bit);
-	data_8bit=SET_CorrectionA_MID_HIG>>16;
-	EEPROM_WriteByte(0x62, data_8bit);
-	data_8bit=SET_CorrectionA_MID_HIG>>8;
-	EEPROM_WriteByte(0x63, data_8bit);
-	EEPROM_WriteByte(0x64, SET_CorrectionA_MID_HIG);
-	
-	EEPROM_WriteByte(0x65,Polar4);
-	EEPROM_WriteByte(0x66,Polar5);
-	IWDG_ReloadCounter(); //喂狗
-	/************设置参数存储*******************/
-	data_8bit = MODE >> 24;
-	EEPROM_WriteByte(0x67, data_8bit);
-	data_8bit = MODE >> 16;
-	EEPROM_WriteByte(0x68, data_8bit);
-	data_8bit = MODE >> 8;
-	EEPROM_WriteByte(0x69, data_8bit);
-	EEPROM_WriteByte(0x6A, MODE);
-	
-	data_8bit = I_Gear_SW >> 24;
-	EEPROM_WriteByte(0x6B, data_8bit);
-	data_8bit = I_Gear_SW >> 16;
-	EEPROM_WriteByte(0x6C, data_8bit);
-	data_8bit = I_Gear_SW >> 8;
-	EEPROM_WriteByte(0x6D, data_8bit);
-	EEPROM_WriteByte(0x6E, I_Gear_SW);
-	
-	data_8bit = V_Gear_SW >> 24;
-	EEPROM_WriteByte(0x6F, data_8bit);
-	data_8bit = V_Gear_SW >> 16;
-	EEPROM_WriteByte(0x70, data_8bit);
-	data_8bit = V_Gear_SW >> 8;
-	EEPROM_WriteByte(0x71, data_8bit);
-	EEPROM_WriteByte(0x72, V_Gear_SW);
-	
-	data_8bit = ADDR >> 24;
-	EEPROM_WriteByte(0x73, data_8bit);
-	data_8bit = ADDR >> 16;
-	EEPROM_WriteByte(0x74, data_8bit);
-	data_8bit = ADDR >> 8;
-	EEPROM_WriteByte(0x75, data_8bit);
-	EEPROM_WriteByte(0x76, ADDR);
-	
-	data_8bit = ADDR >> 24;
-	EEPROM_WriteByte(0x73, data_8bit);
-	data_8bit = ADDR >> 16;
-	EEPROM_WriteByte(0x74, data_8bit);
-	data_8bit = ADDR >> 8;
-	EEPROM_WriteByte(0x75, data_8bit);
-	EEPROM_WriteByte(0x76, ADDR);
-	
-	data_8bit = Sence_SW >> 24;
-	EEPROM_WriteByte(0x77, data_8bit);
-	data_8bit = Sence_SW >> 16;
-	EEPROM_WriteByte(0x78, data_8bit);
-	data_8bit = Sence_SW >> 8;
-	EEPROM_WriteByte(0x79, data_8bit);
-	EEPROM_WriteByte(0x7A, Sence_SW);
+//	vu8 data_8bit;
+///***********************测量数据存储****************************/
+//  data_8bit = REG_ReadV_Offset_LOW >> 24;
+//	EEPROM_WriteByte(0x01, data_8bit);
+//	data_8bit = REG_ReadV_Offset_LOW >> 16;
+//	EEPROM_WriteByte(0x02, data_8bit);
+//	data_8bit = REG_ReadV_Offset_LOW >> 8;
+//	EEPROM_WriteByte(0x03, data_8bit);
+//	EEPROM_WriteByte(0x04, REG_ReadV_Offset_LOW);
+//	
+//	data_8bit = REG_ReadV_Offset_HIG >> 24;
+//	EEPROM_WriteByte(0x05, data_8bit);
+//	data_8bit = REG_ReadV_Offset_HIG >> 16;
+//	EEPROM_WriteByte(0x06, data_8bit);
+//	data_8bit = REG_ReadV_Offset_HIG >> 8;
+//	EEPROM_WriteByte(0x07, data_8bit);
+//	EEPROM_WriteByte(0x08, REG_ReadV_Offset_HIG);
+//	
+//	data_8bit = REG_ReadA_Offset_LOW >> 24;
+//	EEPROM_WriteByte(0x09, data_8bit);
+//	data_8bit = REG_ReadA_Offset_LOW >> 16;
+//	EEPROM_WriteByte(0x0A, data_8bit);
+//	data_8bit = REG_ReadA_Offset_LOW >> 8;
+//	EEPROM_WriteByte(0x0B, data_8bit);
+//	EEPROM_WriteByte(0x0C, REG_ReadA_Offset_LOW);
+//	IWDG_ReloadCounter(); //喂狗
+//	data_8bit = REG_ReadA_Offset_HIG >> 24;
+//	EEPROM_WriteByte(0x0D, data_8bit);
+//	data_8bit = REG_ReadA_Offset_HIG >> 16;
+//	EEPROM_WriteByte(0x0E, data_8bit);
+//	data_8bit = REG_ReadA_Offset_HIG >> 8;
+//	EEPROM_WriteByte(0x0F, data_8bit);
+//	EEPROM_WriteByte(0x10, REG_ReadA_Offset_HIG);
+//	
+//	data_8bit=REG_CorrectionV_LOW>>24;
+//	EEPROM_WriteByte(0x11, data_8bit);
+//	data_8bit=REG_CorrectionV_LOW>>16;
+//	EEPROM_WriteByte(0x12, data_8bit);
+//	data_8bit=REG_CorrectionV_LOW>>8;
+//	EEPROM_WriteByte(0x13, data_8bit);
+//	EEPROM_WriteByte(0x14, REG_CorrectionV_LOW);
+//	
+//	data_8bit=REG_CorrectionV_HIG>>24;
+//	EEPROM_WriteByte(0x15, data_8bit);
+//	data_8bit=REG_CorrectionV_HIG>>16;
+//	EEPROM_WriteByte(0x16, data_8bit);
+//	data_8bit=REG_CorrectionV_HIG>>8;
+//	EEPROM_WriteByte(0x17, data_8bit);
+//	EEPROM_WriteByte(0x18, REG_CorrectionV_HIG);
+//	
+//	data_8bit=REG_CorrectionA_LOW>>24;
+//	EEPROM_WriteByte(0x19, data_8bit);
+//	data_8bit=REG_CorrectionA_LOW>>16;
+//	EEPROM_WriteByte(0x1A, data_8bit);
+//	data_8bit=REG_CorrectionA_LOW>>8;
+//	EEPROM_WriteByte(0x1B, data_8bit);
+//	EEPROM_WriteByte(0x1C, REG_CorrectionA_LOW);
+//	
+//	data_8bit=REG_CorrectionA_HIG>>24;
+//	EEPROM_WriteByte(0x1D, data_8bit);
+//	data_8bit=REG_CorrectionA_HIG>>16;
+//	EEPROM_WriteByte(0x1E, data_8bit);
+//	data_8bit=REG_CorrectionA_HIG>>8;
+//	EEPROM_WriteByte(0x1F, data_8bit);
+//	EEPROM_WriteByte(0x20, REG_CorrectionA_HIG);
+//	
+//	EEPROM_WriteByte(0x21,Polar0);
+//	IWDG_ReloadCounter(); //喂狗
+///***********************设置数据存储****************************/
+//	data_8bit = SET_ReadV_Offset_LOW >> 24;
+//	EEPROM_WriteByte(0x22, data_8bit);
+//	data_8bit = SET_ReadV_Offset_LOW >> 16;
+//	EEPROM_WriteByte(0x23, data_8bit);
+//	data_8bit = SET_ReadV_Offset_LOW >> 8;
+//	EEPROM_WriteByte(0x24, data_8bit);
+//	EEPROM_WriteByte(0x25, SET_ReadV_Offset_LOW);
+//	
+//	data_8bit = SET_ReadV_Offset_HIG >> 24;
+//	EEPROM_WriteByte(0x26, data_8bit);
+//	data_8bit = SET_ReadV_Offset_HIG >> 16;
+//	EEPROM_WriteByte(0x27, data_8bit);
+//	data_8bit = SET_ReadV_Offset_HIG >> 8;
+//	EEPROM_WriteByte(0x28, data_8bit);
+//	EEPROM_WriteByte(0x29, SET_ReadV_Offset_HIG);
+//	
+//	data_8bit = SET_ReadA_Offset_LOW >> 24;
+//	EEPROM_WriteByte(0x2A, data_8bit);
+//	data_8bit = SET_ReadA_Offset_LOW >> 16;
+//	EEPROM_WriteByte(0x2B, data_8bit);
+//	data_8bit = SET_ReadA_Offset_LOW >> 8;
+//	EEPROM_WriteByte(0x2C, data_8bit);
+//	EEPROM_WriteByte(0x2D, SET_ReadA_Offset_LOW);
+//	IWDG_ReloadCounter(); //喂狗
+//	data_8bit = SET_ReadA_Offset_HIG >> 24;
+//	EEPROM_WriteByte(0x2E, data_8bit);
+//	data_8bit = SET_ReadA_Offset_HIG >> 16;
+//	EEPROM_WriteByte(0x2F, data_8bit);
+//	data_8bit = SET_ReadA_Offset_HIG >> 8;
+//	EEPROM_WriteByte(0x30, data_8bit);
+//	EEPROM_WriteByte(0x31, SET_ReadA_Offset_HIG);
+//	
+//	data_8bit=SET_CorrectionV_LOW>>24;
+//	EEPROM_WriteByte(0x32, data_8bit);
+//	data_8bit=SET_CorrectionV_LOW>>16;
+//	EEPROM_WriteByte(0x33, data_8bit);
+//	data_8bit=SET_CorrectionV_LOW>>8;
+//	EEPROM_WriteByte(0x34, data_8bit);
+//	EEPROM_WriteByte(0x35, SET_CorrectionV_LOW);
+//	
+//	data_8bit=SET_CorrectionV_HIG>>24;
+//	EEPROM_WriteByte(0x36, data_8bit);
+//	data_8bit=SET_CorrectionV_HIG>>16;
+//	EEPROM_WriteByte(0x37, data_8bit);
+//	data_8bit=SET_CorrectionV_HIG>>8;
+//	EEPROM_WriteByte(0x38, data_8bit);
+//	EEPROM_WriteByte(0x39, SET_CorrectionV_HIG);
+//	IWDG_ReloadCounter(); //喂狗
+//	data_8bit=SET_CorrectionA_LOW>>24;
+//	EEPROM_WriteByte(0x3A, data_8bit);
+//	data_8bit=SET_CorrectionA_LOW>>16;
+//	EEPROM_WriteByte(0x3B, data_8bit);
+//	data_8bit=SET_CorrectionA_LOW>>8;
+//	EEPROM_WriteByte(0x3C, data_8bit);
+//	EEPROM_WriteByte(0x3D, SET_CorrectionA_LOW);
+//	
+//	data_8bit=SET_CorrectionA_HIG>>24;
+//	EEPROM_WriteByte(0x3E, data_8bit);
+//	data_8bit=SET_CorrectionA_HIG>>16;
+//	EEPROM_WriteByte(0x3F, data_8bit);
+//	data_8bit=SET_CorrectionA_HIG>>8;
+//	EEPROM_WriteByte(0x40, data_8bit);
+//	EEPROM_WriteByte(0x41, SET_CorrectionA_HIG);
+//	
+//	EEPROM_WriteByte(0x42,Polar1);
+//	IWDG_ReloadCounter(); //喂狗
+///***********************************************************/
+//	EEPROM_WriteByte(0x43,Polar2);
+//	EEPROM_WriteByte(0x44,Polar3);
+//	
+//	
+//	/***************高段参数存储**********************/
+//	data_8bit = REG_ReadV_Offset_MID_HIG >> 24;
+//	EEPROM_WriteByte(0x45, data_8bit);
+//	data_8bit = REG_ReadV_Offset_MID_HIG >> 16;
+//	EEPROM_WriteByte(0x46, data_8bit);
+//	data_8bit = REG_ReadV_Offset_MID_HIG >> 8;
+//	EEPROM_WriteByte(0x47, data_8bit);
+//	EEPROM_WriteByte(0x48, REG_ReadV_Offset_MID_HIG);
+//	
+//	data_8bit = REG_ReadA_Offset_MID_HIG >> 24;
+//	EEPROM_WriteByte(0x49, data_8bit);
+//	data_8bit = REG_ReadA_Offset_MID_HIG >> 16;
+//	EEPROM_WriteByte(0x4A, data_8bit);
+//	data_8bit = REG_ReadA_Offset_MID_HIG >> 8;
+//	EEPROM_WriteByte(0x4B, data_8bit);
+//	EEPROM_WriteByte(0x4C, REG_ReadA_Offset_MID_HIG);
+//	
+//	data_8bit=REG_CorrectionV_MID_HIG>>24;
+//	EEPROM_WriteByte(0x4D, data_8bit);
+//	data_8bit=REG_CorrectionV_MID_HIG>>16;
+//	EEPROM_WriteByte(0x4E, data_8bit);
+//	data_8bit=REG_CorrectionV_MID_HIG>>8;
+//	EEPROM_WriteByte(0x4F, data_8bit);
+//	EEPROM_WriteByte(0x50, REG_CorrectionV_MID_HIG);
+//	
+//	data_8bit=REG_CorrectionA_MID_HIG>>24;
+//	EEPROM_WriteByte(0x51, data_8bit);
+//	data_8bit=REG_CorrectionA_MID_HIG>>16;
+//	EEPROM_WriteByte(0x52, data_8bit);
+//	data_8bit=REG_CorrectionA_MID_HIG>>8;
+//	EEPROM_WriteByte(0x53, data_8bit);
+//	EEPROM_WriteByte(0x54, REG_CorrectionA_MID_HIG);
+//	IWDG_ReloadCounter(); //喂狗
+//	/************高段设置参数存储********************/
+//	data_8bit = SET_ReadV_Offset_MID_HIG >> 24;
+//	EEPROM_WriteByte(0x55, data_8bit);
+//	data_8bit = SET_ReadV_Offset_MID_HIG >> 16;
+//	EEPROM_WriteByte(0x56, data_8bit);
+//	data_8bit = SET_ReadV_Offset_MID_HIG >> 8;
+//	EEPROM_WriteByte(0x57, data_8bit);
+//	EEPROM_WriteByte(0x58, SET_ReadV_Offset_MID_HIG);
+//	
+//	data_8bit = SET_ReadA_Offset_MID_HIG >> 24;
+//	EEPROM_WriteByte(0x59, data_8bit);
+//	data_8bit = SET_ReadA_Offset_MID_HIG >> 16;
+//	EEPROM_WriteByte(0x5A, data_8bit);
+//	data_8bit = SET_ReadA_Offset_MID_HIG >> 8;
+//	EEPROM_WriteByte(0x5B, data_8bit);
+//	EEPROM_WriteByte(0x5C, SET_ReadA_Offset_MID_HIG);
+//	IWDG_ReloadCounter(); //喂狗
+//	data_8bit=SET_CorrectionV_MID_HIG>>24;
+//	EEPROM_WriteByte(0x5D, data_8bit);
+//	data_8bit=SET_CorrectionV_MID_HIG>>16;
+//	EEPROM_WriteByte(0x5E, data_8bit);
+//	data_8bit=SET_CorrectionV_MID_HIG>>8;
+//	EEPROM_WriteByte(0x5F, data_8bit);
+//	EEPROM_WriteByte(0x60, SET_CorrectionV_MID_HIG);
+//	
+//	data_8bit=SET_CorrectionA_MID_HIG>>24;
+//	EEPROM_WriteByte(0x61, data_8bit);
+//	data_8bit=SET_CorrectionA_MID_HIG>>16;
+//	EEPROM_WriteByte(0x62, data_8bit);
+//	data_8bit=SET_CorrectionA_MID_HIG>>8;
+//	EEPROM_WriteByte(0x63, data_8bit);
+//	EEPROM_WriteByte(0x64, SET_CorrectionA_MID_HIG);
+//	
+//	EEPROM_WriteByte(0x65,Polar4);
+//	EEPROM_WriteByte(0x66,Polar5);
+//	IWDG_ReloadCounter(); //喂狗
+//	/************设置参数存储*******************/
+//	data_8bit = MODE >> 24;
+//	EEPROM_WriteByte(0x67, data_8bit);
+//	data_8bit = MODE >> 16;
+//	EEPROM_WriteByte(0x68, data_8bit);
+//	data_8bit = MODE >> 8;
+//	EEPROM_WriteByte(0x69, data_8bit);
+//	EEPROM_WriteByte(0x6A, MODE);
+//	
+//	data_8bit = I_Gear_SW >> 24;
+//	EEPROM_WriteByte(0x6B, data_8bit);
+//	data_8bit = I_Gear_SW >> 16;
+//	EEPROM_WriteByte(0x6C, data_8bit);
+//	data_8bit = I_Gear_SW >> 8;
+//	EEPROM_WriteByte(0x6D, data_8bit);
+//	EEPROM_WriteByte(0x6E, I_Gear_SW);
+//	
+//	data_8bit = V_Gear_SW >> 24;
+//	EEPROM_WriteByte(0x6F, data_8bit);
+//	data_8bit = V_Gear_SW >> 16;
+//	EEPROM_WriteByte(0x70, data_8bit);
+//	data_8bit = V_Gear_SW >> 8;
+//	EEPROM_WriteByte(0x71, data_8bit);
+//	EEPROM_WriteByte(0x72, V_Gear_SW);
+//	
+//	data_8bit = ADDR >> 24;
+//	EEPROM_WriteByte(0x73, data_8bit);
+//	data_8bit = ADDR >> 16;
+//	EEPROM_WriteByte(0x74, data_8bit);
+//	data_8bit = ADDR >> 8;
+//	EEPROM_WriteByte(0x75, data_8bit);
+//	EEPROM_WriteByte(0x76, ADDR);
+//	
+//	data_8bit = ADDR >> 24;
+//	EEPROM_WriteByte(0x73, data_8bit);
+//	data_8bit = ADDR >> 16;
+//	EEPROM_WriteByte(0x74, data_8bit);
+//	data_8bit = ADDR >> 8;
+//	EEPROM_WriteByte(0x75, data_8bit);
+//	EEPROM_WriteByte(0x76, ADDR);
+//	
+//	data_8bit = Sence_SW >> 24;
+//	EEPROM_WriteByte(0x77, data_8bit);
+//	data_8bit = Sence_SW >> 16;
+//	EEPROM_WriteByte(0x78, data_8bit);
+//	data_8bit = Sence_SW >> 8;
+//	EEPROM_WriteByte(0x79, data_8bit);
+//	EEPROM_WriteByte(0x7A, Sence_SW);
 }
 //===========================================================================//
 void EEPROM_READ_Coeff(void)
 {
-/****************测量参数读取*********************/
-	REG_ReadV_Offset_LOW=EEPROM_READ_Byte(0x01);
-	REG_ReadV_Offset_LOW=EEPROM_READ_Byte(0x01);
-	REG_ReadV_Offset_LOW=REG_ReadV_Offset_LOW<<8;
-	REG_ReadV_Offset_LOW=REG_ReadV_Offset_LOW+EEPROM_READ_Byte(0x02);
-	REG_ReadV_Offset_LOW=REG_ReadV_Offset_LOW<<8;
-	REG_ReadV_Offset_LOW=REG_ReadV_Offset_LOW+EEPROM_READ_Byte(0x03);
-	REG_ReadV_Offset_LOW=REG_ReadV_Offset_LOW<<8;
-	REG_ReadV_Offset_LOW=REG_ReadV_Offset_LOW+EEPROM_READ_Byte(0x04);
-	
-	REG_ReadV_Offset_HIG=EEPROM_READ_Byte(0x05);
-	REG_ReadV_Offset_HIG=REG_ReadV_Offset_HIG<<8;
-	REG_ReadV_Offset_HIG=REG_ReadV_Offset_HIG+EEPROM_READ_Byte(0x06);
-	REG_ReadV_Offset_HIG=REG_ReadV_Offset_HIG<<8;
-	REG_ReadV_Offset_HIG=REG_ReadV_Offset_HIG+EEPROM_READ_Byte(0x07);
-	REG_ReadV_Offset_HIG=REG_ReadV_Offset_HIG<<8;
-	REG_ReadV_Offset_HIG=REG_ReadV_Offset_HIG+EEPROM_READ_Byte(0x08);
-	
-	REG_ReadA_Offset_LOW=EEPROM_READ_Byte(0x09);
-	REG_ReadA_Offset_LOW=REG_ReadA_Offset_LOW<<8;
-	REG_ReadA_Offset_LOW=REG_ReadA_Offset_LOW+EEPROM_READ_Byte(0x0A);
-	REG_ReadA_Offset_LOW=REG_ReadA_Offset_LOW<<8;
-	REG_ReadA_Offset_LOW=REG_ReadA_Offset_LOW+EEPROM_READ_Byte(0x0B);
-	REG_ReadA_Offset_LOW=REG_ReadA_Offset_LOW<<8;
-	REG_ReadA_Offset_LOW=REG_ReadA_Offset_LOW+EEPROM_READ_Byte(0x0C);
-	
-	REG_ReadA_Offset_HIG=EEPROM_READ_Byte(0x0D);
-	REG_ReadA_Offset_HIG=REG_ReadA_Offset_HIG<<8;
-	REG_ReadA_Offset_HIG=REG_ReadA_Offset_HIG+EEPROM_READ_Byte(0x0E);
-	REG_ReadA_Offset_HIG=REG_ReadA_Offset_HIG<<8;
-	REG_ReadA_Offset_HIG=REG_ReadA_Offset_HIG+EEPROM_READ_Byte(0x0F);
-	REG_ReadA_Offset_HIG=REG_ReadA_Offset_HIG<<8;
-	REG_ReadA_Offset_HIG=REG_ReadA_Offset_HIG+EEPROM_READ_Byte(0x10);
-	
-	REG_CorrectionV_LOW=EEPROM_READ_Byte(0x11);
-	REG_CorrectionV_LOW=REG_CorrectionV_LOW<<8;
-	REG_CorrectionV_LOW=REG_CorrectionV_LOW+EEPROM_READ_Byte(0x12);
-	REG_CorrectionV_LOW=REG_CorrectionV_LOW<<8;
-	REG_CorrectionV_LOW=REG_CorrectionV_LOW+EEPROM_READ_Byte(0x13);
-	REG_CorrectionV_LOW=REG_CorrectionV_LOW<<8;
-	REG_CorrectionV_LOW=REG_CorrectionV_LOW+EEPROM_READ_Byte(0x14);
-	
-	REG_CorrectionV_HIG=EEPROM_READ_Byte(0x15);
-	REG_CorrectionV_HIG=REG_CorrectionV_HIG<<8;
-	REG_CorrectionV_HIG=REG_CorrectionV_HIG+EEPROM_READ_Byte(0x16);
-	REG_CorrectionV_HIG=REG_CorrectionV_HIG<<8;
-	REG_CorrectionV_HIG=REG_CorrectionV_HIG+EEPROM_READ_Byte(0x17);
-	REG_CorrectionV_HIG=REG_CorrectionV_HIG<<8;
-	REG_CorrectionV_HIG=REG_CorrectionV_HIG+EEPROM_READ_Byte(0x18);
-	
-	REG_CorrectionA_LOW=EEPROM_READ_Byte(0x19);
-	REG_CorrectionA_LOW=REG_CorrectionA_LOW<<8;
-	REG_CorrectionA_LOW=REG_CorrectionA_LOW+EEPROM_READ_Byte(0x1A);
-	REG_CorrectionA_LOW=REG_CorrectionA_LOW<<8;
-	REG_CorrectionA_LOW=REG_CorrectionA_LOW+EEPROM_READ_Byte(0x1B);
-	REG_CorrectionA_LOW=REG_CorrectionA_LOW<<8;
-	REG_CorrectionA_LOW=REG_CorrectionA_LOW+EEPROM_READ_Byte(0x1C);
-	
-	REG_CorrectionA_HIG=EEPROM_READ_Byte(0x1D);
-	REG_CorrectionA_HIG=REG_CorrectionA_HIG<<8;
-	REG_CorrectionA_HIG=REG_CorrectionA_HIG+EEPROM_READ_Byte(0x1E);
-	REG_CorrectionA_HIG=REG_CorrectionA_HIG<<8;
-	REG_CorrectionA_HIG=REG_CorrectionA_HIG+EEPROM_READ_Byte(0x1F);
-	REG_CorrectionA_HIG=REG_CorrectionA_HIG<<8;
-	REG_CorrectionA_HIG=REG_CorrectionA_HIG+EEPROM_READ_Byte(0x20);
-	
-	Polar0=EEPROM_READ_Byte(0x21);
-/*******************设置参数读取****************************/
-	SET_ReadV_Offset_LOW=EEPROM_READ_Byte(0x22);
-	SET_ReadV_Offset_LOW=SET_ReadV_Offset_LOW<<8;
-	SET_ReadV_Offset_LOW=SET_ReadV_Offset_LOW+EEPROM_READ_Byte(0x23);
-	SET_ReadV_Offset_LOW=SET_ReadV_Offset_LOW<<8;
-	SET_ReadV_Offset_LOW=SET_ReadV_Offset_LOW+EEPROM_READ_Byte(0x24);
-	SET_ReadV_Offset_LOW=SET_ReadV_Offset_LOW<<8;
-	SET_ReadV_Offset_LOW=SET_ReadV_Offset_LOW+EEPROM_READ_Byte(0x25);
-	
-	SET_ReadV_Offset_HIG=EEPROM_READ_Byte(0x26);
-	SET_ReadV_Offset_HIG=SET_ReadV_Offset_HIG<<8;
-	SET_ReadV_Offset_HIG=SET_ReadV_Offset_HIG+EEPROM_READ_Byte(0x27);
-	SET_ReadV_Offset_HIG=SET_ReadV_Offset_HIG<<8;
-	SET_ReadV_Offset_HIG=SET_ReadV_Offset_HIG+EEPROM_READ_Byte(0x28);
-	SET_ReadV_Offset_HIG=SET_ReadV_Offset_HIG<<8;
-	SET_ReadV_Offset_HIG=SET_ReadV_Offset_HIG+EEPROM_READ_Byte(0x29);
-	
-	SET_ReadA_Offset_LOW=EEPROM_READ_Byte(0x2A);
-	SET_ReadA_Offset_LOW=SET_ReadA_Offset_LOW<<8;
-	SET_ReadA_Offset_LOW=SET_ReadA_Offset_LOW+EEPROM_READ_Byte(0x2B);
-	SET_ReadA_Offset_LOW=SET_ReadA_Offset_LOW<<8;
-	SET_ReadA_Offset_LOW=SET_ReadA_Offset_LOW+EEPROM_READ_Byte(0x2C);
-	SET_ReadA_Offset_LOW=SET_ReadA_Offset_LOW<<8;
-	SET_ReadA_Offset_LOW=SET_ReadA_Offset_LOW+EEPROM_READ_Byte(0x2D);
-	
-	SET_ReadA_Offset_HIG=EEPROM_READ_Byte(0x2E);
-	SET_ReadA_Offset_HIG=SET_ReadA_Offset_HIG<<8;
-	SET_ReadA_Offset_HIG=SET_ReadA_Offset_HIG+EEPROM_READ_Byte(0x2F);
-	SET_ReadA_Offset_HIG=SET_ReadA_Offset_HIG<<8;
-	SET_ReadA_Offset_HIG=SET_ReadA_Offset_HIG+EEPROM_READ_Byte(0x30);
-	SET_ReadA_Offset_HIG=SET_ReadA_Offset_HIG<<8;
-	SET_ReadA_Offset_HIG=SET_ReadA_Offset_HIG+EEPROM_READ_Byte(0x31);
-	
-	SET_CorrectionV_LOW=EEPROM_READ_Byte(0x32);
-	SET_CorrectionV_LOW=SET_CorrectionV_LOW<<8;
-	SET_CorrectionV_LOW=SET_CorrectionV_LOW+EEPROM_READ_Byte(0x33);
-	SET_CorrectionV_LOW=SET_CorrectionV_LOW<<8;
-	SET_CorrectionV_LOW=SET_CorrectionV_LOW+EEPROM_READ_Byte(0x34);
-	SET_CorrectionV_LOW=SET_CorrectionV_LOW<<8;
-	SET_CorrectionV_LOW=SET_CorrectionV_LOW+EEPROM_READ_Byte(0x35);
-	
-	SET_CorrectionV_HIG=EEPROM_READ_Byte(0x36);
-	SET_CorrectionV_HIG=SET_CorrectionV_HIG<<8;
-	SET_CorrectionV_HIG=SET_CorrectionV_HIG+EEPROM_READ_Byte(0x37);
-	SET_CorrectionV_HIG=SET_CorrectionV_HIG<<8;
-	SET_CorrectionV_HIG=SET_CorrectionV_HIG+EEPROM_READ_Byte(0x38);
-	SET_CorrectionV_HIG=SET_CorrectionV_HIG<<8;
-	SET_CorrectionV_HIG=SET_CorrectionV_HIG+EEPROM_READ_Byte(0x39);
-	
-	SET_CorrectionA_LOW=EEPROM_READ_Byte(0x3A);
-	SET_CorrectionA_LOW=SET_CorrectionA_LOW<<8;
-	SET_CorrectionA_LOW=SET_CorrectionA_LOW+EEPROM_READ_Byte(0x3B);
-	SET_CorrectionA_LOW=SET_CorrectionA_LOW<<8;
-	SET_CorrectionA_LOW=SET_CorrectionA_LOW+EEPROM_READ_Byte(0x3C);
-	SET_CorrectionA_LOW=SET_CorrectionA_LOW<<8;
-	SET_CorrectionA_LOW=SET_CorrectionA_LOW+EEPROM_READ_Byte(0x3D);
-	
-	
-	SET_CorrectionA_HIG=EEPROM_READ_Byte(0x3E);
-	SET_CorrectionA_HIG=SET_CorrectionA_HIG<<8;
-	SET_CorrectionA_HIG=SET_CorrectionA_HIG+EEPROM_READ_Byte(0x3F);
-	SET_CorrectionA_HIG=SET_CorrectionA_HIG<<8;
-	SET_CorrectionA_HIG=SET_CorrectionA_HIG+EEPROM_READ_Byte(0x40);
-	SET_CorrectionA_HIG=SET_CorrectionA_HIG<<8;
-	SET_CorrectionA_HIG=SET_CorrectionA_HIG+EEPROM_READ_Byte(0x41);
-	
-	Polar1=EEPROM_READ_Byte(0x42);
-	Polar2=EEPROM_READ_Byte(0x43);
-	Polar3=EEPROM_READ_Byte(0x44);
-	/**************高段测量参数读取**************************/
-	REG_ReadV_Offset_MID_HIG=EEPROM_READ_Byte(0x45);
-	REG_ReadV_Offset_MID_HIG=REG_ReadV_Offset_MID_HIG<<8;
-	REG_ReadV_Offset_MID_HIG=REG_ReadV_Offset_MID_HIG+EEPROM_READ_Byte(0x46);
-	REG_ReadV_Offset_MID_HIG=REG_ReadV_Offset_MID_HIG<<8;
-	REG_ReadV_Offset_MID_HIG=REG_ReadV_Offset_MID_HIG+EEPROM_READ_Byte(0x47);
-	REG_ReadV_Offset_MID_HIG=REG_ReadV_Offset_MID_HIG<<8;
-	REG_ReadV_Offset_MID_HIG=REG_ReadV_Offset_MID_HIG+EEPROM_READ_Byte(0x48);
-	
-	REG_ReadA_Offset_MID_HIG=EEPROM_READ_Byte(0x49);
-	REG_ReadA_Offset_MID_HIG=REG_ReadA_Offset_MID_HIG<<8;
-	REG_ReadA_Offset_MID_HIG=REG_ReadA_Offset_MID_HIG+EEPROM_READ_Byte(0x4A);
-	REG_ReadA_Offset_MID_HIG=REG_ReadA_Offset_MID_HIG<<8;
-	REG_ReadA_Offset_MID_HIG=REG_ReadA_Offset_MID_HIG+EEPROM_READ_Byte(0x4B);
-	REG_ReadA_Offset_MID_HIG=REG_ReadA_Offset_MID_HIG<<8;
-	REG_ReadA_Offset_MID_HIG=REG_ReadA_Offset_MID_HIG+EEPROM_READ_Byte(0x4C);
-	
-	REG_CorrectionV_MID_HIG=EEPROM_READ_Byte(0x4D);
-	REG_CorrectionV_MID_HIG=REG_CorrectionV_MID_HIG<<8;
-	REG_CorrectionV_MID_HIG=REG_CorrectionV_MID_HIG+EEPROM_READ_Byte(0x4E);
-	REG_CorrectionV_MID_HIG=REG_CorrectionV_MID_HIG<<8;
-	REG_CorrectionV_MID_HIG=REG_CorrectionV_MID_HIG+EEPROM_READ_Byte(0x4F);
-	REG_CorrectionV_MID_HIG=REG_CorrectionV_MID_HIG<<8;
-	REG_CorrectionV_MID_HIG=REG_CorrectionV_MID_HIG+EEPROM_READ_Byte(0x50);
-	
-	REG_CorrectionA_MID_HIG=EEPROM_READ_Byte(0x51);
-	REG_CorrectionA_MID_HIG=REG_CorrectionA_MID_HIG<<8;
-	REG_CorrectionA_MID_HIG=REG_CorrectionA_MID_HIG+EEPROM_READ_Byte(0x52);
-	REG_CorrectionA_MID_HIG=REG_CorrectionA_MID_HIG<<8;
-	REG_CorrectionA_MID_HIG=REG_CorrectionA_MID_HIG+EEPROM_READ_Byte(0x53);
-	REG_CorrectionA_MID_HIG=REG_CorrectionA_MID_HIG<<8;
-	REG_CorrectionA_MID_HIG=REG_CorrectionA_MID_HIG+EEPROM_READ_Byte(0x54);
-	
-	/****************高段设置参数读取***************************/
-	SET_ReadV_Offset_MID_HIG=EEPROM_READ_Byte(0x55);
-	SET_ReadV_Offset_MID_HIG=SET_ReadV_Offset_MID_HIG<<8;
-	SET_ReadV_Offset_MID_HIG=SET_ReadV_Offset_MID_HIG+EEPROM_READ_Byte(0x56);
-	SET_ReadV_Offset_MID_HIG=SET_ReadV_Offset_MID_HIG<<8;
-	SET_ReadV_Offset_MID_HIG=SET_ReadV_Offset_MID_HIG+EEPROM_READ_Byte(0x57);
-	SET_ReadV_Offset_MID_HIG=SET_ReadV_Offset_MID_HIG<<8;
-	SET_ReadV_Offset_MID_HIG=SET_ReadV_Offset_MID_HIG+EEPROM_READ_Byte(0x58);
-	
-	SET_ReadA_Offset_MID_HIG=EEPROM_READ_Byte(0x59);
-	SET_ReadA_Offset_MID_HIG=SET_ReadA_Offset_MID_HIG<<8;
-	SET_ReadA_Offset_MID_HIG=SET_ReadA_Offset_MID_HIG+EEPROM_READ_Byte(0x5A);
-	SET_ReadA_Offset_MID_HIG=SET_ReadA_Offset_MID_HIG<<8;
-	SET_ReadA_Offset_MID_HIG=SET_ReadA_Offset_MID_HIG+EEPROM_READ_Byte(0x5B);
-	SET_ReadA_Offset_MID_HIG=SET_ReadA_Offset_MID_HIG<<8;
-	SET_ReadA_Offset_MID_HIG=SET_ReadA_Offset_MID_HIG+EEPROM_READ_Byte(0x5C);
-	
-	SET_CorrectionV_MID_HIG=EEPROM_READ_Byte(0x5D);
-	SET_CorrectionV_MID_HIG=SET_CorrectionV_MID_HIG<<8;
-	SET_CorrectionV_MID_HIG=SET_CorrectionV_MID_HIG+EEPROM_READ_Byte(0x5E);
-	SET_CorrectionV_MID_HIG=SET_CorrectionV_MID_HIG<<8;
-	SET_CorrectionV_MID_HIG=SET_CorrectionV_MID_HIG+EEPROM_READ_Byte(0x5F);
-	SET_CorrectionV_MID_HIG=SET_CorrectionV_MID_HIG<<8;
-	SET_CorrectionV_MID_HIG=SET_CorrectionV_MID_HIG+EEPROM_READ_Byte(0x60);
-	
-	SET_CorrectionA_MID_HIG=EEPROM_READ_Byte(0x61);
-	SET_CorrectionA_MID_HIG=SET_CorrectionA_MID_HIG<<8;
-	SET_CorrectionA_MID_HIG=SET_CorrectionA_MID_HIG+EEPROM_READ_Byte(0x62);
-	SET_CorrectionA_MID_HIG=SET_CorrectionA_MID_HIG<<8;
-	SET_CorrectionA_MID_HIG=SET_CorrectionA_MID_HIG+EEPROM_READ_Byte(0x63);
-	SET_CorrectionA_MID_HIG=SET_CorrectionA_MID_HIG<<8;
-	SET_CorrectionA_MID_HIG=SET_CorrectionA_MID_HIG+EEPROM_READ_Byte(0x64);
-	
-	Polar4=EEPROM_READ_Byte(0x65);
-	Polar5=EEPROM_READ_Byte(0x66);
-	
-	Read_Runcont();//读运行参数
-	if(Baud_rate==9600)
-	{
-		Baud_rate=9600;
-	}
-	else if(Baud_rate==19200)
-	{
-		Baud_rate=19200;
-	}
-	else if(Baud_rate==56000)
-	{
-		Baud_rate=56000;
-	}
-	else if(Baud_rate==57600)
-	{
-		Baud_rate=57600;
-	}
-	else if(Baud_rate==115200)
-	{
-		Baud_rate=115200;
-	}
-	else if(Baud_rate==128000)
-	{
-		Baud_rate=128000;
-	}
-	else 
-	{
-		Baud_rate=9600;
-	}
+	ReadBytes(Calibrate.CalFlash,0,sizeof(CalPara));
+///****************测量参数读取*********************/
+//	REG_ReadV_Offset_LOW=EEPROM_READ_Byte(0x01);
+//	REG_ReadV_Offset_LOW=EEPROM_READ_Byte(0x01);
+//	REG_ReadV_Offset_LOW=REG_ReadV_Offset_LOW<<8;
+//	REG_ReadV_Offset_LOW=REG_ReadV_Offset_LOW+EEPROM_READ_Byte(0x02);
+//	REG_ReadV_Offset_LOW=REG_ReadV_Offset_LOW<<8;
+//	REG_ReadV_Offset_LOW=REG_ReadV_Offset_LOW+EEPROM_READ_Byte(0x03);
+//	REG_ReadV_Offset_LOW=REG_ReadV_Offset_LOW<<8;
+//	REG_ReadV_Offset_LOW=REG_ReadV_Offset_LOW+EEPROM_READ_Byte(0x04);
+//	
+//	REG_ReadV_Offset_HIG=EEPROM_READ_Byte(0x05);
+//	REG_ReadV_Offset_HIG=REG_ReadV_Offset_HIG<<8;
+//	REG_ReadV_Offset_HIG=REG_ReadV_Offset_HIG+EEPROM_READ_Byte(0x06);
+//	REG_ReadV_Offset_HIG=REG_ReadV_Offset_HIG<<8;
+//	REG_ReadV_Offset_HIG=REG_ReadV_Offset_HIG+EEPROM_READ_Byte(0x07);
+//	REG_ReadV_Offset_HIG=REG_ReadV_Offset_HIG<<8;
+//	REG_ReadV_Offset_HIG=REG_ReadV_Offset_HIG+EEPROM_READ_Byte(0x08);
+//	
+//	REG_ReadA_Offset_LOW=EEPROM_READ_Byte(0x09);
+//	REG_ReadA_Offset_LOW=REG_ReadA_Offset_LOW<<8;
+//	REG_ReadA_Offset_LOW=REG_ReadA_Offset_LOW+EEPROM_READ_Byte(0x0A);
+//	REG_ReadA_Offset_LOW=REG_ReadA_Offset_LOW<<8;
+//	REG_ReadA_Offset_LOW=REG_ReadA_Offset_LOW+EEPROM_READ_Byte(0x0B);
+//	REG_ReadA_Offset_LOW=REG_ReadA_Offset_LOW<<8;
+//	REG_ReadA_Offset_LOW=REG_ReadA_Offset_LOW+EEPROM_READ_Byte(0x0C);
+//	
+//	REG_ReadA_Offset_HIG=EEPROM_READ_Byte(0x0D);
+//	REG_ReadA_Offset_HIG=REG_ReadA_Offset_HIG<<8;
+//	REG_ReadA_Offset_HIG=REG_ReadA_Offset_HIG+EEPROM_READ_Byte(0x0E);
+//	REG_ReadA_Offset_HIG=REG_ReadA_Offset_HIG<<8;
+//	REG_ReadA_Offset_HIG=REG_ReadA_Offset_HIG+EEPROM_READ_Byte(0x0F);
+//	REG_ReadA_Offset_HIG=REG_ReadA_Offset_HIG<<8;
+//	REG_ReadA_Offset_HIG=REG_ReadA_Offset_HIG+EEPROM_READ_Byte(0x10);
+//	
+//	REG_CorrectionV_LOW=EEPROM_READ_Byte(0x11);
+//	REG_CorrectionV_LOW=REG_CorrectionV_LOW<<8;
+//	REG_CorrectionV_LOW=REG_CorrectionV_LOW+EEPROM_READ_Byte(0x12);
+//	REG_CorrectionV_LOW=REG_CorrectionV_LOW<<8;
+//	REG_CorrectionV_LOW=REG_CorrectionV_LOW+EEPROM_READ_Byte(0x13);
+//	REG_CorrectionV_LOW=REG_CorrectionV_LOW<<8;
+//	REG_CorrectionV_LOW=REG_CorrectionV_LOW+EEPROM_READ_Byte(0x14);
+//	
+//	REG_CorrectionV_HIG=EEPROM_READ_Byte(0x15);
+//	REG_CorrectionV_HIG=REG_CorrectionV_HIG<<8;
+//	REG_CorrectionV_HIG=REG_CorrectionV_HIG+EEPROM_READ_Byte(0x16);
+//	REG_CorrectionV_HIG=REG_CorrectionV_HIG<<8;
+//	REG_CorrectionV_HIG=REG_CorrectionV_HIG+EEPROM_READ_Byte(0x17);
+//	REG_CorrectionV_HIG=REG_CorrectionV_HIG<<8;
+//	REG_CorrectionV_HIG=REG_CorrectionV_HIG+EEPROM_READ_Byte(0x18);
+//	
+//	REG_CorrectionA_LOW=EEPROM_READ_Byte(0x19);
+//	REG_CorrectionA_LOW=REG_CorrectionA_LOW<<8;
+//	REG_CorrectionA_LOW=REG_CorrectionA_LOW+EEPROM_READ_Byte(0x1A);
+//	REG_CorrectionA_LOW=REG_CorrectionA_LOW<<8;
+//	REG_CorrectionA_LOW=REG_CorrectionA_LOW+EEPROM_READ_Byte(0x1B);
+//	REG_CorrectionA_LOW=REG_CorrectionA_LOW<<8;
+//	REG_CorrectionA_LOW=REG_CorrectionA_LOW+EEPROM_READ_Byte(0x1C);
+//	
+//	REG_CorrectionA_HIG=EEPROM_READ_Byte(0x1D);
+//	REG_CorrectionA_HIG=REG_CorrectionA_HIG<<8;
+//	REG_CorrectionA_HIG=REG_CorrectionA_HIG+EEPROM_READ_Byte(0x1E);
+//	REG_CorrectionA_HIG=REG_CorrectionA_HIG<<8;
+//	REG_CorrectionA_HIG=REG_CorrectionA_HIG+EEPROM_READ_Byte(0x1F);
+//	REG_CorrectionA_HIG=REG_CorrectionA_HIG<<8;
+//	REG_CorrectionA_HIG=REG_CorrectionA_HIG+EEPROM_READ_Byte(0x20);
+//	
+//	Polar0=EEPROM_READ_Byte(0x21);
+///*******************设置参数读取****************************/
+//	SET_ReadV_Offset_LOW=EEPROM_READ_Byte(0x22);
+//	SET_ReadV_Offset_LOW=SET_ReadV_Offset_LOW<<8;
+//	SET_ReadV_Offset_LOW=SET_ReadV_Offset_LOW+EEPROM_READ_Byte(0x23);
+//	SET_ReadV_Offset_LOW=SET_ReadV_Offset_LOW<<8;
+//	SET_ReadV_Offset_LOW=SET_ReadV_Offset_LOW+EEPROM_READ_Byte(0x24);
+//	SET_ReadV_Offset_LOW=SET_ReadV_Offset_LOW<<8;
+//	SET_ReadV_Offset_LOW=SET_ReadV_Offset_LOW+EEPROM_READ_Byte(0x25);
+//	
+//	SET_ReadV_Offset_HIG=EEPROM_READ_Byte(0x26);
+//	SET_ReadV_Offset_HIG=SET_ReadV_Offset_HIG<<8;
+//	SET_ReadV_Offset_HIG=SET_ReadV_Offset_HIG+EEPROM_READ_Byte(0x27);
+//	SET_ReadV_Offset_HIG=SET_ReadV_Offset_HIG<<8;
+//	SET_ReadV_Offset_HIG=SET_ReadV_Offset_HIG+EEPROM_READ_Byte(0x28);
+//	SET_ReadV_Offset_HIG=SET_ReadV_Offset_HIG<<8;
+//	SET_ReadV_Offset_HIG=SET_ReadV_Offset_HIG+EEPROM_READ_Byte(0x29);
+//	
+//	SET_ReadA_Offset_LOW=EEPROM_READ_Byte(0x2A);
+//	SET_ReadA_Offset_LOW=SET_ReadA_Offset_LOW<<8;
+//	SET_ReadA_Offset_LOW=SET_ReadA_Offset_LOW+EEPROM_READ_Byte(0x2B);
+//	SET_ReadA_Offset_LOW=SET_ReadA_Offset_LOW<<8;
+//	SET_ReadA_Offset_LOW=SET_ReadA_Offset_LOW+EEPROM_READ_Byte(0x2C);
+//	SET_ReadA_Offset_LOW=SET_ReadA_Offset_LOW<<8;
+//	SET_ReadA_Offset_LOW=SET_ReadA_Offset_LOW+EEPROM_READ_Byte(0x2D);
+//	
+//	SET_ReadA_Offset_HIG=EEPROM_READ_Byte(0x2E);
+//	SET_ReadA_Offset_HIG=SET_ReadA_Offset_HIG<<8;
+//	SET_ReadA_Offset_HIG=SET_ReadA_Offset_HIG+EEPROM_READ_Byte(0x2F);
+//	SET_ReadA_Offset_HIG=SET_ReadA_Offset_HIG<<8;
+//	SET_ReadA_Offset_HIG=SET_ReadA_Offset_HIG+EEPROM_READ_Byte(0x30);
+//	SET_ReadA_Offset_HIG=SET_ReadA_Offset_HIG<<8;
+//	SET_ReadA_Offset_HIG=SET_ReadA_Offset_HIG+EEPROM_READ_Byte(0x31);
+//	
+//	SET_CorrectionV_LOW=EEPROM_READ_Byte(0x32);
+//	SET_CorrectionV_LOW=SET_CorrectionV_LOW<<8;
+//	SET_CorrectionV_LOW=SET_CorrectionV_LOW+EEPROM_READ_Byte(0x33);
+//	SET_CorrectionV_LOW=SET_CorrectionV_LOW<<8;
+//	SET_CorrectionV_LOW=SET_CorrectionV_LOW+EEPROM_READ_Byte(0x34);
+//	SET_CorrectionV_LOW=SET_CorrectionV_LOW<<8;
+//	SET_CorrectionV_LOW=SET_CorrectionV_LOW+EEPROM_READ_Byte(0x35);
+//	
+//	SET_CorrectionV_HIG=EEPROM_READ_Byte(0x36);
+//	SET_CorrectionV_HIG=SET_CorrectionV_HIG<<8;
+//	SET_CorrectionV_HIG=SET_CorrectionV_HIG+EEPROM_READ_Byte(0x37);
+//	SET_CorrectionV_HIG=SET_CorrectionV_HIG<<8;
+//	SET_CorrectionV_HIG=SET_CorrectionV_HIG+EEPROM_READ_Byte(0x38);
+//	SET_CorrectionV_HIG=SET_CorrectionV_HIG<<8;
+//	SET_CorrectionV_HIG=SET_CorrectionV_HIG+EEPROM_READ_Byte(0x39);
+//	
+//	SET_CorrectionA_LOW=EEPROM_READ_Byte(0x3A);
+//	SET_CorrectionA_LOW=SET_CorrectionA_LOW<<8;
+//	SET_CorrectionA_LOW=SET_CorrectionA_LOW+EEPROM_READ_Byte(0x3B);
+//	SET_CorrectionA_LOW=SET_CorrectionA_LOW<<8;
+//	SET_CorrectionA_LOW=SET_CorrectionA_LOW+EEPROM_READ_Byte(0x3C);
+//	SET_CorrectionA_LOW=SET_CorrectionA_LOW<<8;
+//	SET_CorrectionA_LOW=SET_CorrectionA_LOW+EEPROM_READ_Byte(0x3D);
+//	
+//	
+//	SET_CorrectionA_HIG=EEPROM_READ_Byte(0x3E);
+//	SET_CorrectionA_HIG=SET_CorrectionA_HIG<<8;
+//	SET_CorrectionA_HIG=SET_CorrectionA_HIG+EEPROM_READ_Byte(0x3F);
+//	SET_CorrectionA_HIG=SET_CorrectionA_HIG<<8;
+//	SET_CorrectionA_HIG=SET_CorrectionA_HIG+EEPROM_READ_Byte(0x40);
+//	SET_CorrectionA_HIG=SET_CorrectionA_HIG<<8;
+//	SET_CorrectionA_HIG=SET_CorrectionA_HIG+EEPROM_READ_Byte(0x41);
+//	
+//	Polar1=EEPROM_READ_Byte(0x42);
+//	Polar2=EEPROM_READ_Byte(0x43);
+//	Polar3=EEPROM_READ_Byte(0x44);
+//	/**************高段测量参数读取**************************/
+//	REG_ReadV_Offset_MID_HIG=EEPROM_READ_Byte(0x45);
+//	REG_ReadV_Offset_MID_HIG=REG_ReadV_Offset_MID_HIG<<8;
+//	REG_ReadV_Offset_MID_HIG=REG_ReadV_Offset_MID_HIG+EEPROM_READ_Byte(0x46);
+//	REG_ReadV_Offset_MID_HIG=REG_ReadV_Offset_MID_HIG<<8;
+//	REG_ReadV_Offset_MID_HIG=REG_ReadV_Offset_MID_HIG+EEPROM_READ_Byte(0x47);
+//	REG_ReadV_Offset_MID_HIG=REG_ReadV_Offset_MID_HIG<<8;
+//	REG_ReadV_Offset_MID_HIG=REG_ReadV_Offset_MID_HIG+EEPROM_READ_Byte(0x48);
+//	
+//	REG_ReadA_Offset_MID_HIG=EEPROM_READ_Byte(0x49);
+//	REG_ReadA_Offset_MID_HIG=REG_ReadA_Offset_MID_HIG<<8;
+//	REG_ReadA_Offset_MID_HIG=REG_ReadA_Offset_MID_HIG+EEPROM_READ_Byte(0x4A);
+//	REG_ReadA_Offset_MID_HIG=REG_ReadA_Offset_MID_HIG<<8;
+//	REG_ReadA_Offset_MID_HIG=REG_ReadA_Offset_MID_HIG+EEPROM_READ_Byte(0x4B);
+//	REG_ReadA_Offset_MID_HIG=REG_ReadA_Offset_MID_HIG<<8;
+//	REG_ReadA_Offset_MID_HIG=REG_ReadA_Offset_MID_HIG+EEPROM_READ_Byte(0x4C);
+//	
+//	REG_CorrectionV_MID_HIG=EEPROM_READ_Byte(0x4D);
+//	REG_CorrectionV_MID_HIG=REG_CorrectionV_MID_HIG<<8;
+//	REG_CorrectionV_MID_HIG=REG_CorrectionV_MID_HIG+EEPROM_READ_Byte(0x4E);
+//	REG_CorrectionV_MID_HIG=REG_CorrectionV_MID_HIG<<8;
+//	REG_CorrectionV_MID_HIG=REG_CorrectionV_MID_HIG+EEPROM_READ_Byte(0x4F);
+//	REG_CorrectionV_MID_HIG=REG_CorrectionV_MID_HIG<<8;
+//	REG_CorrectionV_MID_HIG=REG_CorrectionV_MID_HIG+EEPROM_READ_Byte(0x50);
+//	
+//	REG_CorrectionA_MID_HIG=EEPROM_READ_Byte(0x51);
+//	REG_CorrectionA_MID_HIG=REG_CorrectionA_MID_HIG<<8;
+//	REG_CorrectionA_MID_HIG=REG_CorrectionA_MID_HIG+EEPROM_READ_Byte(0x52);
+//	REG_CorrectionA_MID_HIG=REG_CorrectionA_MID_HIG<<8;
+//	REG_CorrectionA_MID_HIG=REG_CorrectionA_MID_HIG+EEPROM_READ_Byte(0x53);
+//	REG_CorrectionA_MID_HIG=REG_CorrectionA_MID_HIG<<8;
+//	REG_CorrectionA_MID_HIG=REG_CorrectionA_MID_HIG+EEPROM_READ_Byte(0x54);
+//	
+//	/****************高段设置参数读取***************************/
+//	SET_ReadV_Offset_MID_HIG=EEPROM_READ_Byte(0x55);
+//	SET_ReadV_Offset_MID_HIG=SET_ReadV_Offset_MID_HIG<<8;
+//	SET_ReadV_Offset_MID_HIG=SET_ReadV_Offset_MID_HIG+EEPROM_READ_Byte(0x56);
+//	SET_ReadV_Offset_MID_HIG=SET_ReadV_Offset_MID_HIG<<8;
+//	SET_ReadV_Offset_MID_HIG=SET_ReadV_Offset_MID_HIG+EEPROM_READ_Byte(0x57);
+//	SET_ReadV_Offset_MID_HIG=SET_ReadV_Offset_MID_HIG<<8;
+//	SET_ReadV_Offset_MID_HIG=SET_ReadV_Offset_MID_HIG+EEPROM_READ_Byte(0x58);
+//	
+//	SET_ReadA_Offset_MID_HIG=EEPROM_READ_Byte(0x59);
+//	SET_ReadA_Offset_MID_HIG=SET_ReadA_Offset_MID_HIG<<8;
+//	SET_ReadA_Offset_MID_HIG=SET_ReadA_Offset_MID_HIG+EEPROM_READ_Byte(0x5A);
+//	SET_ReadA_Offset_MID_HIG=SET_ReadA_Offset_MID_HIG<<8;
+//	SET_ReadA_Offset_MID_HIG=SET_ReadA_Offset_MID_HIG+EEPROM_READ_Byte(0x5B);
+//	SET_ReadA_Offset_MID_HIG=SET_ReadA_Offset_MID_HIG<<8;
+//	SET_ReadA_Offset_MID_HIG=SET_ReadA_Offset_MID_HIG+EEPROM_READ_Byte(0x5C);
+//	
+//	SET_CorrectionV_MID_HIG=EEPROM_READ_Byte(0x5D);
+//	SET_CorrectionV_MID_HIG=SET_CorrectionV_MID_HIG<<8;
+//	SET_CorrectionV_MID_HIG=SET_CorrectionV_MID_HIG+EEPROM_READ_Byte(0x5E);
+//	SET_CorrectionV_MID_HIG=SET_CorrectionV_MID_HIG<<8;
+//	SET_CorrectionV_MID_HIG=SET_CorrectionV_MID_HIG+EEPROM_READ_Byte(0x5F);
+//	SET_CorrectionV_MID_HIG=SET_CorrectionV_MID_HIG<<8;
+//	SET_CorrectionV_MID_HIG=SET_CorrectionV_MID_HIG+EEPROM_READ_Byte(0x60);
+//	
+//	SET_CorrectionA_MID_HIG=EEPROM_READ_Byte(0x61);
+//	SET_CorrectionA_MID_HIG=SET_CorrectionA_MID_HIG<<8;
+//	SET_CorrectionA_MID_HIG=SET_CorrectionA_MID_HIG+EEPROM_READ_Byte(0x62);
+//	SET_CorrectionA_MID_HIG=SET_CorrectionA_MID_HIG<<8;
+//	SET_CorrectionA_MID_HIG=SET_CorrectionA_MID_HIG+EEPROM_READ_Byte(0x63);
+//	SET_CorrectionA_MID_HIG=SET_CorrectionA_MID_HIG<<8;
+//	SET_CorrectionA_MID_HIG=SET_CorrectionA_MID_HIG+EEPROM_READ_Byte(0x64);
+//	
+//	Polar4=EEPROM_READ_Byte(0x65);
+//	Polar5=EEPROM_READ_Byte(0x66);
+//	
+//	Read_Runcont();//读运行参数
+//	if(Baud_rate==9600)
+//	{
+//		Baud_rate=9600;
+//	}
+//	else if(Baud_rate==19200)
+//	{
+//		Baud_rate=19200;
+//	}
+//	else if(Baud_rate==56000)
+//	{
+//		Baud_rate=56000;
+//	}
+//	else if(Baud_rate==57600)
+//	{
+//		Baud_rate=57600;
+//	}
+//	else if(Baud_rate==115200)
+//	{
+//		Baud_rate=115200;
+//	}
+//	else if(Baud_rate==128000)
+//	{
+//		Baud_rate=128000;
+//	}
+//	else 
+//	{
+//		Baud_rate=9600;
+//	}
 }
 /************************************************************************/
 void Wite_Runcont(void)//将运行参数写入EEPROM
