@@ -1038,11 +1038,21 @@ void Transformation_ADC(void)
 		if(TIME_1MS_flag==1)//CV模式电压下降率调节
 		{
 			TIME_1MS_flag=0;
-			SET_V_TRAN=SET_V_TRAN-CV_Down_Time;
-			if(SET_V_TRAN<=SET_Voltage)
+			if(V_Gear_SW==0)//低档位
 			{
-				SET_V_TRAN=SET_Voltage;
-				TIME_1MS_OVER=1;//结束爬升标志
+				SET_V_TRAN=SET_V_TRAN-CV_Down_Time;
+				if(SET_V_TRAN<=SET_Voltage)
+				{
+					SET_V_TRAN=SET_Voltage;
+					TIME_1MS_OVER=1;//结束爬升标志
+				}
+			}else if(V_Gear_SW==1){//高档位
+				SET_V_TRAN=SET_V_TRAN-CV_Down_Time/10;
+				if(SET_V_TRAN<=SET_Voltage/10)
+				{
+					SET_V_TRAN=SET_Voltage/10;
+					TIME_1MS_OVER=1;//结束爬升标志
+				}
 			}
 		} 
 		if(V_Gear_SW==0)//低档位
@@ -1276,10 +1286,10 @@ void Transformation_ADC(void)
 			{
 				if(TIME_1MS_flag==1)
 				{
-					SET_I_TRAN=SET_I_TRAN+I_Rise_Time;
-					if(SET_I_TRAN>=SET_Current)
+					SET_I_TRAN=SET_I_TRAN+I_Rise_Time/10;
+					if(SET_I_TRAN>=SET_Current/10)
 					{
-						SET_I_TRAN=SET_Current;
+						SET_I_TRAN=SET_Current/10;
 					}
 				}
 				var32 = SET_I_TRAN;
@@ -1368,18 +1378,18 @@ void Transformation_ADC(void)
 
 					if(dynaflagA == 1)
 					{
-						if(TIME_1MS_flag==1 && SET_I_TRAN < DYNA_Ia)
+						if(TIME_1MS_flag==1 && SET_I_TRAN < DYNA_Ia/10)
 						{
-							SET_I_TRAN=SET_I_TRAN+DYNA_IRise;
-							if(SET_I_TRAN>=DYNA_Ia)
+							SET_I_TRAN=SET_I_TRAN+DYNA_IRise/10;
+							if(SET_I_TRAN>=DYNA_Ia/10)
 							{
-								SET_I_TRAN=DYNA_Ia;
+								SET_I_TRAN=DYNA_Ia/10;
 							}
-						}else if(TIME_1MS_flag==1 && SET_I_TRAN > DYNA_Ia){
-							SET_I_TRAN=SET_I_TRAN-DYNA_IDown;
-							if(SET_I_TRAN<=DYNA_Ia)
+						}else if(TIME_1MS_flag==1 && SET_I_TRAN > DYNA_Ia/10){
+							SET_I_TRAN=SET_I_TRAN-DYNA_IDown/10;
+							if(SET_I_TRAN<=DYNA_Ia/10)
 							{
-								SET_I_TRAN=DYNA_Ia;
+								SET_I_TRAN=DYNA_Ia/10;
 							}
 						}
 						var32 = SET_I_TRAN;
@@ -1394,18 +1404,18 @@ void Transformation_ADC(void)
 //						var32 = var32/SET_CorrectionA_HIG;
 //						var32=var32>>1;
 					}else if(dynaflagB == 1){
-						if(TIME_1MS_flag==1 && SET_I_TRAN < DYNA_Ib)
+						if(TIME_1MS_flag==1 && SET_I_TRAN < DYNA_Ib/10)
 						{
-							SET_I_TRAN=SET_I_TRAN+DYNA_IRise;
-							if(SET_I_TRAN>=DYNA_Ib)
+							SET_I_TRAN=SET_I_TRAN+DYNA_IRise/10;
+							if(SET_I_TRAN>=DYNA_Ib/10)
 							{
-								SET_I_TRAN=DYNA_Ib;
+								SET_I_TRAN=DYNA_Ib/10;
 							}
-						}else if(TIME_1MS_flag==1 && SET_I_TRAN > DYNA_Ib){
-							SET_I_TRAN=SET_I_TRAN-DYNA_IDown;
-							if(SET_I_TRAN<=DYNA_Ib)
+						}else if(TIME_1MS_flag==1 && SET_I_TRAN > DYNA_Ib/10){
+							SET_I_TRAN=SET_I_TRAN-DYNA_IDown/10;
+							if(SET_I_TRAN<=DYNA_Ib/10)
 							{
-								SET_I_TRAN=DYNA_Ib;
+								SET_I_TRAN=DYNA_Ib/10;
 							}
 						}
 						var32 = SET_I_TRAN;
