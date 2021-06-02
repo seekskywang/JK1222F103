@@ -3,7 +3,7 @@
 ..\output\at24c01.o: ..\Include\my_register.h
 ..\output\at24c01.o: ..\Libraries\CMSIS\inc\STM32F10x.h
 ..\output\at24c01.o: ..\Libraries\CMSIS\inc\core_cm3.h
-..\output\at24c01.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\at24c01.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\at24c01.o: ..\Libraries\CMSIS\inc\system_stm32f10x.h
 ..\output\at24c01.o: ..\User\stm32f10x_conf.h
 ..\output\at24c01.o: ..\Libraries\FWlib\inc\stm32f10x_adc.h

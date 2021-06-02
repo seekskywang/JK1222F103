@@ -3,7 +3,7 @@
 ..\output\ad7689.o: ..\Include\my_register.h
 ..\output\ad7689.o: ..\Libraries\CMSIS\inc\STM32F10x.h
 ..\output\ad7689.o: ..\Libraries\CMSIS\inc\core_cm3.h
-..\output\ad7689.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\ad7689.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\ad7689.o: ..\Libraries\CMSIS\inc\system_stm32f10x.h
 ..\output\ad7689.o: ..\User\stm32f10x_conf.h
 ..\output\ad7689.o: ..\Libraries\FWlib\inc\stm32f10x_adc.h

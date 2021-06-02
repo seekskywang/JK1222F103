@@ -28,7 +28,7 @@ vu16 PR_T1,PR_T2,PR_T3,PR_T4;
 /**************************************************************************************/
 void Temp_Comapre(void)	  //温度来控制风扇
 {
-  if((NTC_value<800)||(NTC1_value<800)) //过温度保护 断负载
+  if((NTC_value<800)||(NTC1_value<500)) //过温度保护 断负载
 	{
 		onoff_ch=0;
 		GPIO_SetBits(GPIOA,GPIO_Pin_5);//OFF

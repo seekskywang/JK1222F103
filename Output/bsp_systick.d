@@ -3,7 +3,7 @@
 ..\output\bsp_systick.o: ..\Include\my_register.h
 ..\output\bsp_systick.o: ..\Libraries\CMSIS\inc\STM32F10x.h
 ..\output\bsp_systick.o: ..\Libraries\CMSIS\inc\core_cm3.h
-..\output\bsp_systick.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\bsp_systick.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\bsp_systick.o: ..\Libraries\CMSIS\inc\system_stm32f10x.h
 ..\output\bsp_systick.o: ..\User\stm32f10x_conf.h
 ..\output\bsp_systick.o: ..\Libraries\FWlib\inc\stm32f10x_adc.h

@@ -1,7 +1,7 @@
 ..\output\me_scpi.o: ..\drive\me_scpi.c
 ..\output\me_scpi.o: ..\Libraries\CMSIS\inc\stm32f10x.h
 ..\output\me_scpi.o: ..\Libraries\CMSIS\inc\core_cm3.h
-..\output\me_scpi.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\me_scpi.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\me_scpi.o: ..\Libraries\CMSIS\inc\system_stm32f10x.h
 ..\output\me_scpi.o: ..\User\stm32f10x_conf.h
 ..\output\me_scpi.o: ..\Libraries\FWlib\inc\stm32f10x_adc.h
@@ -33,8 +33,8 @@
 ..\output\me_scpi.o: ..\Include\my_register.h
 ..\output\me_scpi.o: ..\Include\my_register.h
 ..\output\me_scpi.o: ..\Include\usart.h
-..\output\me_scpi.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-..\output\me_scpi.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-..\output\me_scpi.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\output\me_scpi.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\output\me_scpi.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\output\me_scpi.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\output\me_scpi.o: ..\Include\sys_io_cfg.h
 ..\output\me_scpi.o: ..\Include\my_register.h

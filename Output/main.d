@@ -2,7 +2,7 @@
 ..\output\main.o: ..\Include\my_register.h
 ..\output\main.o: ..\Libraries\CMSIS\inc\STM32F10x.h
 ..\output\main.o: ..\Libraries\CMSIS\inc\core_cm3.h
-..\output\main.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\main.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\main.o: ..\Libraries\CMSIS\inc\system_stm32f10x.h
 ..\output\main.o: ..\User\stm32f10x_conf.h
 ..\output\main.o: ..\Libraries\FWlib\inc\stm32f10x_adc.h
