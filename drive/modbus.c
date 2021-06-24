@@ -888,7 +888,7 @@ void Transformation_ADC(void)
 		}
 		else var32 = var32 + REG_ReadV_Offset_LOW;
 		var32 = var32 >> 12;
-		if (var32 < 4) var32 = 0;				  //10mV以下清零
+		if (var32 < 1000) var32 = 0;				  //10mV以下清零
 		Voltage = var32;
 		var32 = 0;
 		if(I_Gear_SW==0)//电流低档
@@ -921,7 +921,7 @@ void Transformation_ADC(void)
 		}
 		else var32 = var32 + REG_ReadV_Offset_HIG;
 		var32 = var32 >> 12;
-		if (var32 < 4) var32 = 0;				  //10mV以下清零
+		if (var32 < 3000) var32 = 0;				  //10mV以下清零
 		Voltage = var32;
 		var32=0;
 		if(Voltage>20000)
@@ -941,7 +941,7 @@ void Transformation_ADC(void)
 			}
 			else var32 = var32 + REG_ReadV_Offset_MID_HIG;
 			var32 = var32 >> 12;
-			if (var32 < 4) var32 = 0;				  //10mV以下清零
+			if (var32 < 3000) var32 = 0;				  //10mV以下清零
 			Voltage = var32;
 			var32 = 0;
 		}
