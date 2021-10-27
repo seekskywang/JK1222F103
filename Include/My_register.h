@@ -181,7 +181,7 @@ typedef union
 
 extern CAL CalPara;
 
-extern vu32 Correct_Parametet[12];//校准系数
+extern vu32 Correct_Parametet[20];//校准系数
 #define  REG_CorrectionV_LOW       Correct_Parametet[0]
 #define  REG_CorrectionV_HIG       Correct_Parametet[1]
 #define  REG_CorrectionV_MID_HIG   Correct_Parametet[2]
@@ -199,9 +199,17 @@ extern vu32 Correct_Parametet[12];//校准系数
 #define  SET_CorrectionA_HIG       Correct_Parametet[10]
 #define  SET_CorrectionA_MID_HIG   Correct_Parametet[11]
 
+#define  REG_CorrectionA_LOW2       Correct_Parametet[12]
+#define  REG_CorrectionA_LOW3       Correct_Parametet[13]
+#define  REG_CorrectionA_HIG1       Correct_Parametet[14]
+#define  REG_CorrectionA_HIG2   	Correct_Parametet[15]
 
+#define  SET_CorrectionA_LOW2       Correct_Parametet[16]
+#define  SET_CorrectionA_LOW3       Correct_Parametet[17]
+#define  SET_CorrectionA_HIG1       Correct_Parametet[18]
+#define  SET_CorrectionA_HIG2   	Correct_Parametet[19]
 
-extern vu8 coefficient[8];//校准系数
+extern vu8 coefficient[10];//校准系数
 #define  Polar0            coefficient[0]
 #define  Polar1            coefficient[1]
 #define  Polar2						 coefficient[2]
@@ -210,8 +218,10 @@ extern vu8 coefficient[8];//校准系数
 #define  Polar5            coefficient[5]
 #define  Polar6						 coefficient[6]
 #define  Polar7						 coefficient[7]
+#define  Polar8						 coefficient[8]
+#define  Polar9						 coefficient[9]
 
-extern vu32 Correct_Strong[12];//校准系数
+extern vu32 Correct_Strong[20];//校准系数
 #define  REG_ReadV_Offset_LOW       Correct_Strong[0]
 #define  REG_ReadV_Offset_HIG       Correct_Strong[1]
 #define  REG_ReadV_Offset_MID_HIG   Correct_Strong[2]
@@ -227,6 +237,16 @@ extern vu32 Correct_Strong[12];//校准系数
 #define  SET_ReadA_Offset_LOW       Correct_Strong[9]
 #define  SET_ReadA_Offset_HIG       Correct_Strong[10]
 #define  SET_ReadA_Offset_MID_HIG   Correct_Strong[11]
+
+#define  REG_ReadA_Offset_LOW2       Correct_Strong[12]
+#define  REG_ReadA_Offset_LOW3       Correct_Strong[13]
+#define  REG_ReadA_Offset_HIG1       Correct_Strong[14]
+#define  REG_ReadA_Offset_HIG2   	Correct_Strong[15]
+
+#define  SET_ReadA_Offset_LOW2       Correct_Strong[16]
+#define  SET_ReadA_Offset_LOW3       Correct_Strong[17]
+#define  SET_ReadA_Offset_HIG1       Correct_Strong[18]
+#define  SET_ReadA_Offset_HIG2   	Correct_Strong[19]
 //---------------------------
 extern vu8 UART_Buffer_Rece[200];
 extern vu8 UART_Buffer_Send[200];
@@ -237,10 +257,20 @@ extern vu8 dynaflagB;
 extern vu8 dynatrigflag;
 extern u8 dynaonflag;
 //============================================================================= 
+
+#define ILOW1   30000   //电流低档位跳档值1
+#define ILOW2   50000   //电流低档位跳档值2
+#define ILOW3   100000   //电流低档位跳档值3
+
+#define IHIGH1   100000   //电流低档位跳档值1
+#define IHIGH2   200000   //电流低档位跳档值2
+#define IHIGH3   300000   //电流低档位跳档值3
+#define IHIGH4   400000   //电流低档位跳档值4
+//============================================================================= 
 #define Receive_BUFFERSIZE   10
-#define V_LOW_MAX   140000   //电压低档最高电压
+#define V_LOW_MAX   300000   //电压低档最高电压
 #define V_HIG_MAX   120000   //电压高档最高电压
-#define I_LOW_MAX   300000   //电流低档位最高限制电流
+#define I_LOW_MAX   110000   //电流低档位最高限制电流
 #define POWER_MAX   1200000   //电流低档位最高限制功率
 //=============================================================================
 #endif

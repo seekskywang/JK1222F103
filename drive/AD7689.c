@@ -144,16 +144,16 @@ void AD7689_Scan_CH(void)
 	}
 	I_cont++;
 	V_cont++;
-	if(I_cont>9)
+	if(I_cont>49)
 	{
 		I_cont=0;
 		sum1=0;
-		for(f=0;f<10;f++)
+		for(f=0;f<50;f++)
 		{
 			sum1 +=Ad7689_Fit_Imon[f];
 		}
 		
-		END_Fit_Imon[var_chI]=sum1/10;
+		END_Fit_Imon[var_chI]=sum1/100;
 		var_chI++;
 	}
 	if(var_chI>2)

@@ -59,12 +59,15 @@ void I_SW_COTNR(void)
 		GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
 //		GPIO_SetBits(GPIOB,GPIO_Pin_1);//电流测量为低档位
 	}
-	if(I_Gear_SW==0)
+	if(DAC_Flag == 0)
 	{
-		if(Current>I_LOW_MAX)//当测量电流大于低档最高电流时自动切换成高档位且锁定，需手动切换才能变成低档位
+		if(I_Gear_SW==0)
 		{
-			GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
-			I_Gear_SW=1;//自动切换为高档位
+			if(Current>I_LOW_MAX)//当测量电流大于低档最高电流时自动切换成高档位且锁定，需手动切换才能变成低档位
+			{
+				GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
+				I_Gear_SW=1;//自动切换为高档位
+			}
 		}
 	}
 }
@@ -83,12 +86,15 @@ void V_SW_COTNR(void)
 	{
 		GPIO_ResetBits(GPIOA,GPIO_Pin_11);//电压档位为高档 0-150V
 	}
-	if(V_Gear_SW==0)
+	if(DAC_Flag == 0)
 	{
-		if(Voltage>V_LOW_MAX)//当测量电压高于低档最大限制电压是档位自动跳转到高档
+		if(V_Gear_SW==0)
 		{
-			V_Gear_SW=1;
-			GPIO_ResetBits(GPIOA,GPIO_Pin_11);//电压档位为高档
+			if(Voltage>V_LOW_MAX)//当测量电压高于低档最大限制电压是档位自动跳转到高档
+			{
+				V_Gear_SW=1;
+				GPIO_ResetBits(GPIOA,GPIO_Pin_11);//电压档位为高档
+			}
 		}
 	}
 }

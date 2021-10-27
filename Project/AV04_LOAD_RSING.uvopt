@@ -137,6 +137,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
+          <Name>猬yw涔Q涔Q趏uP</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -229,7 +230,7 @@
         <Ww>
           <count>10</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Correct_Parametet,0x10</ItemText>
+          <ItemText>Correct_Parametet,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>11</count>
@@ -239,7 +240,7 @@
         <Ww>
           <count>12</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Correct_Strong</ItemText>
+          <ItemText>Correct_Strong,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>13</count>
@@ -264,7 +265,7 @@
         <Ww>
           <count>17</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Correct_Parametet</ItemText>
+          <ItemText>Correct_Parametet,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>18</count>
@@ -315,6 +316,16 @@
           <count>27</count>
           <WinNumber>1</WinNumber>
           <ItemText>var32</ItemText>
+        </Ww>
+        <Ww>
+          <count>28</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Run_Control[20],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>29</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Transition_Date[1],0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -532,6 +543,26 @@
           <count>42</count>
           <WinNumber>2</WinNumber>
           <ItemText>NTC1_value,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>43</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>NTC1_value,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>44</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>NTC_value,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>45</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[20]</ItemText>
+        </Ww>
+        <Ww>
+          <count>46</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Transition_Date[1]</ItemText>
         </Ww>
       </WatchWindow2>
       <Tracepoint>

@@ -26,19 +26,37 @@ vu16 PWM_VALU;
 vu16 VP_T,IP_T;
 vu16 PR_T1,PR_T2,PR_T3,PR_T4;
 /**************************************************************************************/
+//void Temp_Comapre(void)	  //温度来控制风扇
+//{
+//  if((NTC_value<800)||(NTC1_value<500)) //过温度保护 断负载
+//	{
+//		onoff_ch=0;
+//		GPIO_SetBits(GPIOA,GPIO_Pin_5);//OFF
+//		protect_Flage=5;//过温度保护
+//	}		
+//	if((NTC_value<=2250)||(NTC1_value<=2250))//开风扇
+//	{
+//		IO_FAN_ON;
+//	}
+//	else if((NTC_value>=2300)&&(NTC1_value>=2300))//关风扇
+//	{
+//		IO_FAN_OFF;
+//	}
+//}
+
 void Temp_Comapre(void)	  //温度来控制风扇
 {
-  if((NTC_value<800)||(NTC1_value<500)) //过温度保护 断负载
+  if((NTC_value<800)||(NTC1_value<300)) //过温度保护 断负载
 	{
 		onoff_ch=0;
 		GPIO_SetBits(GPIOA,GPIO_Pin_5);//OFF
 		protect_Flage=5;//过温度保护
 	}		
-	if((NTC_value<=2250)||(NTC1_value<=2250))//开风扇
+	if((NTC_value<=1900)/*||(NTC1_value<=2250)*/)//开风扇
 	{
 		IO_FAN_ON;
 	}
-	else if((NTC_value>=2300)&&(NTC1_value>=2300))//关风扇
+	else if((NTC_value>=2050)/*&&(NTC1_value>=500)*/)//关风扇
 	{
 		IO_FAN_OFF;
 	}
