@@ -27,6 +27,7 @@
 #include "my_register.h"
 #include "AD7689.h"
 #include "modbus.h"
+#include "usart.h"
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
   */
@@ -180,7 +181,7 @@ void USART1_IRQHandler(void)
 			Operation_MODE = 1;
 			if(UART_Buffer_Rece1[1]== 0x06)
 			{
-				if(UART_Buffer_Size>8)//设置参数
+				if(UART_Buffer_Size>6)//设置参数
 				{
 					UART_Buffer_Size=0;	  	   		   
 					UART1_Buffer_Rece_flag=1;
@@ -194,7 +195,8 @@ void USART1_IRQHandler(void)
 					return ;
 				}
 			}else if(UART_Buffer_Rece1[1]== 0x10){
-				if(UART_Buffer_Size==132+28)//参数设置
+				if(UART_Buffer_Size > 7 && 
+				   UART_Buffer_Size == UART_Buffer_Rece1[6]+9-1)//参数设置
 				{
 					UART_Buffer_Size=0;	  	   		   
 					UART1_Buffer_Rece_flag=1;
@@ -295,6 +297,7 @@ void USART2_IRQHandler(void)
 					{
 						UART_Buffer_Rece_flag=0;
 						UART_Action();//处理数据
+						Baud_SET();//设置串口波特率
 					}
 					return ;
 				}
@@ -309,6 +312,7 @@ void USART2_IRQHandler(void)
 					{
 						UART_Buffer_Rece_flag=0;
 						UART_Action();//处理数据
+						Baud_SET();//设置串口波特率
 					}
 					return ;
 				}

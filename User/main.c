@@ -63,7 +63,7 @@ int main(void)
 		{
 			UART_Buffer_Rece_flag=0;
 			UART_Action();//接收一帧数据
-//			Baud_SET();//设置串口波特率
+			Baud_SET();//设置串口波特率
 //			MAXPAR_limit();//运行参数最大值限制
 		}
 		if(UART1_Buffer_Rece_flag==1)

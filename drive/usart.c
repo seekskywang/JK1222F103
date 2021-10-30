@@ -34,6 +34,7 @@ vu8 UART_Buffer_Send1[200];
 vu8 UART_Buffer_Size;
 vu8 Transmit_BUFFERsize;
 vu8 t_USART;
+vu32 Baud=9600;
 /*****************************************************************/
 static void USART1_NVIC_Config(void)//串口接收中断配置
 {
@@ -85,7 +86,7 @@ void USART_Configuration(void)//串口初始化函数
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 	
 	/* USART1 mode config */
-	USART_InitStructure.USART_BaudRate = 115200;//波特率
+	USART_InitStructure.USART_BaudRate = Baud;//波特率
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
 	USART_InitStructure.USART_StopBits = USART_StopBits_1;
 	USART_InitStructure.USART_Parity = USART_Parity_No ;
@@ -207,74 +208,82 @@ void UART2_Send(void)
 **********************************************************************************************************/
 void Baud_SET(void)//设置串口波特率
 {
-	if(UART_Buffer_Rece[1] == 0X06)
-	{
-		if(UART_Buffer_Rece[3] == 17)//判断写寄存器地址是否为波特率
-		{
-			if(Baud_rate==9600)
+//	if(UART_Buffer_Rece[1] == 0X06)
+//	{
+//		if(UART_Buffer_Rece[3] == 17)//判断写寄存器地址是否为波特率
+//		{
+			if(Baud_rate==0)
 			{
-				Baud_rate=9600;
-			}
-			else if(Baud_rate==19200)
+				Baud=4800;
+			}else if(Baud_rate==1)
 			{
-				Baud_rate=19200;
+				Baud=9600;
 			}
-			else if(Baud_rate==56000)
+			else if(Baud_rate==2)
 			{
-				Baud_rate=56000;
+				Baud=14400;
 			}
-			else if(Baud_rate==57600)
+			else if(Baud_rate==3)
 			{
-				Baud_rate=57600;
+				Baud=19200;
 			}
-			else if(Baud_rate==115200)
+			else if(Baud_rate==4)
 			{
-				Baud_rate=115200;
+				Baud=115200;
 			}
-			else if(Baud_rate==128000)
-			{
-				Baud_rate=128000;
-			}
+//			else if(Baud_rate==115200)
+//			{
+//				Baud_rate=115200;
+//			}
+//			else if(Baud_rate==128000)
+//			{
+//				Baud_rate=128000;
+//			}
 			else 
 			{
-				Baud_rate=9600;
+				Baud=9600;
 			}
-		}
-	}
-	if(UART_Buffer_Rece[1] == 0X10)
-	{
-		if(UART_Buffer_Rece[3] < 17)//判断写寄存器地址是否为波特率
-		{
-			if(Baud_rate==9600)
-			{
-				Baud_rate=9600;
-			}
-			else if(Baud_rate==19200)
-			{
-				Baud_rate=19200;
-			}
-			else if(Baud_rate==56000)
-			{
-				Baud_rate=56000;
-			}
-			else if(Baud_rate==57600)
-			{
-				Baud_rate=57600;
-			}
-			else if(Baud_rate==115200)
-			{
-				Baud_rate=115200;
-			}
-			else if(Baud_rate==128000)
-			{
-				Baud_rate=128000;
-			}
-			else 
-			{
-				Baud_rate=9600;
-			}
-		}
-	}
+			USART_Configuration();
+//		}
+//	}
+//	if(UART_Buffer_Rece[1] == 0X10)
+//	{
+//		if(UART_Buffer_Rece[3] < 17)//判断写寄存器地址是否为波特率
+//		{
+//			if(Baud_rate==0)
+//			{
+//				Baud=4800;
+//			}else if(Baud_rate==1)
+//			{
+//				Baud=9600;
+//			}
+//			else if(Baud_rate==2)
+//			{
+//				Baud=14400;
+//			}
+//			else if(Baud_rate==3)
+//			{
+//				Baud=19200;
+//			}
+//			else if(Baud_rate==4)
+//			{
+//				Baud=115200;
+//			}
+////			else if(Baud_rate==115200)
+////			{
+////				Baud_rate=115200;
+////			}
+////			else if(Baud_rate==128000)
+////			{
+////				Baud_rate=128000;
+////			}
+//			else 
+//			{
+//				Baud=9600;
+//			}
+//			USART_Configuration();
+//		}
+//	}
 }
 
 /*******************************************************************************

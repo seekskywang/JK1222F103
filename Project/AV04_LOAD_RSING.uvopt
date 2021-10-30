@@ -137,7 +137,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>猬yw涔Q涔Q趏uP</Name>
+          <Name>猬Tw目?目?趏?</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -205,7 +205,7 @@
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>Run_Control,0x0A</ItemText>
+          <ItemText>Run_Control,0x10</ItemText>
         </Ww>
         <Ww>
           <count>6</count>
@@ -326,6 +326,26 @@
           <count>29</count>
           <WinNumber>1</WinNumber>
           <ItemText>Transition_Date[1],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>30</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>UART_Buffer_Rece1</ItemText>
+        </Ww>
+        <Ww>
+          <count>31</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Baud,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>32</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>UART_Buffer_Send1</ItemText>
+        </Ww>
+        <Ww>
+          <count>33</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>UART_Buffer_Send1</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -563,6 +583,21 @@
           <count>46</count>
           <WinNumber>2</WinNumber>
           <ItemText>Transition_Date[1]</ItemText>
+        </Ww>
+        <Ww>
+          <count>47</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>UART_Buffer_Rece1</ItemText>
+        </Ww>
+        <Ww>
+          <count>48</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Baud</ItemText>
+        </Ww>
+        <Ww>
+          <count>49</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>i,0x10</ItemText>
         </Ww>
       </WatchWindow2>
       <Tracepoint>

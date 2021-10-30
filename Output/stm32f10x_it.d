@@ -39,3 +39,4 @@
 ..\output\stm32f10x_it.o: ..\Include\my_register.h
 ..\output\stm32f10x_it.o: ..\Include\modbus.h
 ..\output\stm32f10x_it.o: ..\Include\my_register.h
+..\output\stm32f10x_it.o: ..\Include\usart.h
