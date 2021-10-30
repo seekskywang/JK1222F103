@@ -15,6 +15,7 @@ vu8 EEPROM_READ_Byte(vu8 addr_eep);
 void Flash_Write_all (void);
 void EEPROM_READ_Coeff(void);
 void Wite_Runcont(void);//将运行参数写入EEPROM
+void Write_ADDR(void);
 void Read_Runcont(void);//读取运行参数
 void READ_TSET(void);//
 /******************************************************************/

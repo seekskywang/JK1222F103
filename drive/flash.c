@@ -416,13 +416,7 @@ void Flash_Write_all (void)
 //	EEPROM_WriteByte(0x75, data_8bit);
 //	EEPROM_WriteByte(0x76, ADDR);
 	
-	data_8bit = ADDR >> 24;
-	EEPROM_WriteByte(0x73, data_8bit);
-	data_8bit = ADDR >> 16;
-	EEPROM_WriteByte(0x74, data_8bit);
-	data_8bit = ADDR >> 8;
-	EEPROM_WriteByte(0x75, data_8bit);
-	EEPROM_WriteByte(0x76, ADDR);
+	
 	
 //	data_8bit = Sence_SW >> 24;
 //	EEPROM_WriteByte(0x77, data_8bit);
@@ -642,12 +636,12 @@ void EEPROM_READ_Coeff(void)
 	Polar5=EEPROM_READ_Byte(0x66);
 	
 	ADDR=EEPROM_READ_Byte(0x73);
-	ADDR=SET_CorrectionA_MID_HIG<<8;
-	ADDR=SET_CorrectionA_MID_HIG+EEPROM_READ_Byte(0x74);
-	ADDR=SET_CorrectionA_MID_HIG<<8;
-	ADDR=SET_CorrectionA_MID_HIG+EEPROM_READ_Byte(0x75);
-	ADDR=SET_CorrectionA_MID_HIG<<8;
-	ADDR=SET_CorrectionA_MID_HIG+EEPROM_READ_Byte(0x76);
+	ADDR=ADDR<<8;
+	ADDR=ADDR+EEPROM_READ_Byte(0x74);
+	ADDR=ADDR<<8;
+	ADDR=ADDR+EEPROM_READ_Byte(0x75);
+	ADDR=ADDR<<8;
+	ADDR=ADDR+EEPROM_READ_Byte(0x76);
 	
 	
 	REG_CorrectionA_LOW2=EEPROM_READ_Byte(0x67);
@@ -811,6 +805,18 @@ void EEPROM_READ_Coeff(void)
 //	{
 //		Baud_rate=9600;
 //	}
+}
+void Write_ADDR(void)//将本机地址写入EEPROM
+{
+	vu8 data_8bit;
+	
+	data_8bit = ADDR >> 24;
+	EEPROM_WriteByte(0x73, data_8bit);
+	data_8bit = ADDR >> 16;
+	EEPROM_WriteByte(0x74, data_8bit);
+	data_8bit = ADDR >> 8;
+	EEPROM_WriteByte(0x75, data_8bit);
+	EEPROM_WriteByte(0x76, ADDR);
 }
 /************************************************************************/
 void Wite_Runcont(void)//将运行参数写入EEPROM

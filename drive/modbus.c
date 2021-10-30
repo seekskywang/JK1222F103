@@ -1040,7 +1040,7 @@ void UART1_Action(void)
 {//RUT格式：
 	//ADDR  命令码  读寄存器的起始地址高   读寄存器的起始地址低  读数据字个数高字节   读数据个数低字节  CRC高 CRC低
 	//返回格式：ADDR 命令码 返回数据字节数  数据高  数据低 ..... CRC高  CRC低
-	if ((UART_Buffer_Rece1[0] == 0x01/*ADDR*/)||(UART_Buffer_Rece1[0] == 0))
+	if ((UART_Buffer_Rece1[0] == ADDR)||(UART_Buffer_Rece1[0] == 0))
 	{
 		if (UART_Buffer_Rece1[1] == (0x03))	//命令3 读数据   
 		{																		 
@@ -1053,7 +1053,7 @@ void UART1_Action(void)
 				{
 					if ((UART_Buffer_Rece1[3] + UART_Buffer_Rece1[5]) < 0xFF)		//如果最后一个读取的寄存器地址在可读范围内
 					{							
-						UART_Buffer_Send1[0] = 0x01/*ADDR*/;
+						UART_Buffer_Send1[0] = ADDR;
 						UART_Buffer_Send1[1] = 0x03;
 						UART_Buffer_Send1[2] = UART_Buffer_Rece1[5]*2;
 						for (i=0;i<UART_Buffer_Send1[2];i++)
@@ -1087,7 +1087,7 @@ void UART1_Action(void)
 		}
 	} 
 //===============================写寄存器=================================
-	if ((UART_Buffer_Rece1[0] == 0x01/*ADDR*/) || (UART_Buffer_Rece1[0] == 0))	 
+	if ((UART_Buffer_Rece1[0] == ADDR) || (UART_Buffer_Rece1[0] == 0))	 
 	{
 		vu8 var8; 
 		vu8 a=0;
@@ -1153,9 +1153,9 @@ void UART1_Action(void)
 				{
 					testflag ++;
 				}
-				if (UART_Buffer_Rece1[0] == 0x01/*ADDR*/)					  //广播模式不返回数据
+				if (UART_Buffer_Rece1[0] == ADDR)					  //广播模式不返回数据
 				{
-					UART_Buffer_Send1[0] = 0x01/*ADDR*/;
+					UART_Buffer_Send1[0] = ADDR;
 					UART_Buffer_Send1[1] = 16;
 					UART_Buffer_Send1[2] = UART_Buffer_Rece1[2];
 					UART_Buffer_Send1[3] = UART_Buffer_Rece1[3];

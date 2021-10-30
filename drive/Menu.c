@@ -51,13 +51,13 @@ void I_SW_COTNR(void)
 {
 	if(I_Gear_SW==1)
 	{
-		GPIO_SetBits(GPIOB,GPIO_Pin_1);//电流测量为低档位
-//		GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
+//		GPIO_SetBits(GPIOB,GPIO_Pin_1);//电流测量为低档位
+		GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
 	}
 	else
 	{
-		GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
-//		GPIO_SetBits(GPIOB,GPIO_Pin_1);//电流测量为低档位
+//		GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
+		GPIO_SetBits(GPIOB,GPIO_Pin_1);//电流测量为低档位
 	}
 	if(DAC_Flag == 0)
 	{

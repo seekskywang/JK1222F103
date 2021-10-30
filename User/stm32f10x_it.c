@@ -28,6 +28,7 @@
 #include "AD7689.h"
 #include "modbus.h"
 #include "usart.h"
+#include "flash.h"
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
   */
@@ -176,7 +177,7 @@ void USART1_IRQHandler(void)
 		USART_ClearITPendingBit( USART1, USART_IT_RXNE );
 		UART_Buffer_Rece1[UART_Buffer_Size]=USART_ReceiveData(USART1);
 
-		if( UART_Buffer_Rece1[0]== 0x01)
+		if( UART_Buffer_Rece1[0]== ADDR)
 		{
 			Operation_MODE = 1;
 			if(UART_Buffer_Rece1[1]== 0x06)
@@ -191,6 +192,7 @@ void USART1_IRQHandler(void)
 					{
 						UART1_Buffer_Rece_flag=0;
 						UART1_Action();//处理数据
+						Write_ADDR();
 					}
 					return ;
 				}
@@ -206,6 +208,7 @@ void USART1_IRQHandler(void)
 					{
 						UART1_Buffer_Rece_flag=0;
 						UART1_Action();//处理数据
+						Write_ADDR();
 					}
 					return ;
 				}
@@ -298,6 +301,7 @@ void USART2_IRQHandler(void)
 						UART_Buffer_Rece_flag=0;
 						UART_Action();//处理数据
 						Baud_SET();//设置串口波特率
+						Write_ADDR();
 					}
 					return ;
 				}
@@ -313,6 +317,7 @@ void USART2_IRQHandler(void)
 						UART_Buffer_Rece_flag=0;
 						UART_Action();//处理数据
 						Baud_SET();//设置串口波特率
+						Write_ADDR();
 					}
 					return ;
 				}
