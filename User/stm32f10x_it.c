@@ -161,7 +161,7 @@ void SysTick_Handler(void)
 	{
 		t_USART++;
 	}
-	if(t_USART>20)//大约2.6ms
+	if(t_USART>250)//大约2.6ms
 	{
 		t_USART=0;
 		flag_Tim_USART=0;
@@ -182,7 +182,7 @@ void USART1_IRQHandler(void)
 			Operation_MODE = 1;
 			if(UART_Buffer_Rece1[1]== 0x06)
 			{
-				if(UART_Buffer_Size>6)//设置参数
+				if(UART_Buffer_Size>8)//设置参数
 				{
 					UART_Buffer_Size=0;	  	   		   
 					UART1_Buffer_Rece_flag=1;
@@ -198,7 +198,7 @@ void USART1_IRQHandler(void)
 				}
 			}else if(UART_Buffer_Rece1[1]== 0x10){
 				if(UART_Buffer_Size > 7 && 
-				   UART_Buffer_Size == UART_Buffer_Rece1[6]+9-1)//参数设置
+				   UART_Buffer_Size == UART_Buffer_Rece1[5]+9-1)//参数设置
 				{
 					UART_Buffer_Size=0;	  	   		   
 					UART1_Buffer_Rece_flag=1;
