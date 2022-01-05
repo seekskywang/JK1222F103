@@ -80,7 +80,12 @@ int main(void)
 		if(DAC_Flag == 0x00)
 		{		
 			Transformation_ADC(); 
-		    All_protect();//各种保护			
+			if(SWDelay == 0)
+			{
+				All_protect();//各种保护	
+			}else if(SWDelay > 0){
+				SWDelay--;
+			}
 		}
 		if(Flag_ADC_Full==1) //NTC
 		{

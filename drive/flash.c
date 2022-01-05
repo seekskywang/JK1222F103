@@ -377,11 +377,117 @@ void Flash_Write_all (void)
 	data_8bit=SET_ReadA_Offset_HIG2>>8;
 	EEPROM_WriteByte(0xA9, data_8bit);
 	EEPROM_WriteByte(0xAA, SET_ReadA_Offset_HIG2);
+	IWDG_ReloadCounter(); //Î¹¹·
+	
+	data_8bit = REG_CorrectionV_MID_HIG1 >> 24;
+	EEPROM_WriteByte(0xAF, data_8bit);
+	data_8bit = REG_CorrectionV_MID_HIG1 >> 16;
+	EEPROM_WriteByte(0xB0, data_8bit);
+	data_8bit = REG_CorrectionV_MID_HIG1 >> 8;
+	EEPROM_WriteByte(0xB1, data_8bit);
+	EEPROM_WriteByte(0xB2, REG_CorrectionV_MID_HIG1);
+	
+	data_8bit = SET_CorrectionV_MID_HIG1 >> 24;
+	EEPROM_WriteByte(0xB3, data_8bit);
+	data_8bit = SET_CorrectionV_MID_HIG1 >> 16;
+	EEPROM_WriteByte(0xB4, data_8bit);
+	data_8bit = SET_CorrectionV_MID_HIG1 >> 8;
+	EEPROM_WriteByte(0xB5, data_8bit);
+	EEPROM_WriteByte(0xB6, SET_CorrectionV_MID_HIG1);
+	IWDG_ReloadCounter(); //Î¹¹·
+	
+	data_8bit = REG_CorrectionV_MID_HIG2 >> 24;
+	EEPROM_WriteByte(0xB7, data_8bit);
+	data_8bit = REG_CorrectionV_MID_HIG2 >> 16;
+	EEPROM_WriteByte(0xB8, data_8bit);
+	data_8bit = REG_CorrectionV_MID_HIG2 >> 8;
+	EEPROM_WriteByte(0xB9, data_8bit);
+	EEPROM_WriteByte(0xBA, REG_CorrectionV_MID_HIG2);
+	
+	data_8bit = SET_CorrectionV_MID_HIG2 >> 24;
+	EEPROM_WriteByte(0xBB, data_8bit);
+	data_8bit = SET_CorrectionV_MID_HIG2 >> 16;
+	EEPROM_WriteByte(0xBC, data_8bit);
+	data_8bit = SET_CorrectionV_MID_HIG2 >> 8;
+	EEPROM_WriteByte(0xBD, data_8bit);
+	EEPROM_WriteByte(0xBE, SET_CorrectionV_MID_HIG2);
+	IWDG_ReloadCounter(); //Î¹¹·
+	
+	data_8bit = REG_CorrectionV_MID_HIG3 >> 24;
+	EEPROM_WriteByte(0xBF, data_8bit);
+	data_8bit = REG_CorrectionV_MID_HIG3 >> 16;
+	EEPROM_WriteByte(0xC0, data_8bit);
+	data_8bit = REG_CorrectionV_MID_HIG3 >> 8;
+	EEPROM_WriteByte(0xC1, data_8bit);
+	EEPROM_WriteByte(0xC2, REG_CorrectionV_MID_HIG3);
+	
+	data_8bit = SET_CorrectionV_MID_HIG3 >> 24;
+	EEPROM_WriteByte(0xC3, data_8bit);
+	data_8bit = SET_CorrectionV_MID_HIG3 >> 16;
+	EEPROM_WriteByte(0xC4, data_8bit);
+	data_8bit = SET_CorrectionV_MID_HIG3 >> 8;
+	EEPROM_WriteByte(0xC5, data_8bit);
+	EEPROM_WriteByte(0xC6, SET_CorrectionV_MID_HIG3);
+	IWDG_ReloadCounter(); //Î¹¹·
+	
+	data_8bit = REG_ReadV_Offset_MID_HIG1 >> 24;
+	EEPROM_WriteByte(0xC7, data_8bit);
+	data_8bit = REG_ReadV_Offset_MID_HIG1 >> 16;
+	EEPROM_WriteByte(0xC8, data_8bit);
+	data_8bit = REG_ReadV_Offset_MID_HIG1 >> 8;
+	EEPROM_WriteByte(0xC9, data_8bit);
+	EEPROM_WriteByte(0xCA, REG_ReadV_Offset_MID_HIG1);
+	
+	data_8bit = SET_ReadV_Offset_MID_HIG1 >> 24;
+	EEPROM_WriteByte(0xCB, data_8bit);
+	data_8bit = SET_ReadV_Offset_MID_HIG1 >> 16;
+	EEPROM_WriteByte(0xCC, data_8bit);
+	data_8bit = SET_ReadV_Offset_MID_HIG1 >> 8;
+	EEPROM_WriteByte(0xCD, data_8bit);
+	EEPROM_WriteByte(0xCE, SET_ReadV_Offset_MID_HIG1);
+	IWDG_ReloadCounter(); //Î¹¹·
+	
+	data_8bit = REG_ReadV_Offset_MID_HIG2 >> 24;
+	EEPROM_WriteByte(0xCF, data_8bit);
+	data_8bit = REG_ReadV_Offset_MID_HIG2 >> 16;
+	EEPROM_WriteByte(0xD0, data_8bit);
+	data_8bit = REG_ReadV_Offset_MID_HIG2 >> 8;
+	EEPROM_WriteByte(0xD1, data_8bit);
+	EEPROM_WriteByte(0xD2, REG_ReadV_Offset_MID_HIG2);
+	
+	data_8bit = SET_ReadV_Offset_MID_HIG2 >> 24;
+	EEPROM_WriteByte(0xD3, data_8bit);
+	data_8bit = SET_ReadV_Offset_MID_HIG2 >> 16;
+	EEPROM_WriteByte(0xD4, data_8bit);
+	data_8bit = SET_ReadV_Offset_MID_HIG2 >> 8;
+	EEPROM_WriteByte(0xD5, data_8bit);
+	EEPROM_WriteByte(0xD6, SET_ReadV_Offset_MID_HIG2);
+	IWDG_ReloadCounter(); //Î¹¹·
+	
+	data_8bit = REG_ReadV_Offset_MID_HIG3 >> 24;
+	EEPROM_WriteByte(0xD7, data_8bit);
+	data_8bit = REG_ReadV_Offset_MID_HIG3 >> 16;
+	EEPROM_WriteByte(0xD8, data_8bit);
+	data_8bit = REG_ReadV_Offset_MID_HIG3 >> 8;
+	EEPROM_WriteByte(0xD9, data_8bit);
+	EEPROM_WriteByte(0xDA, REG_ReadV_Offset_MID_HIG3);
+	
+	data_8bit = SET_ReadV_Offset_MID_HIG3 >> 24;
+	EEPROM_WriteByte(0xDB, data_8bit);
+	data_8bit = SET_ReadV_Offset_MID_HIG3 >> 16;
+	EEPROM_WriteByte(0xDC, data_8bit);
+	data_8bit = SET_ReadV_Offset_MID_HIG3 >> 8;
+	EEPROM_WriteByte(0xDD, data_8bit);
+	EEPROM_WriteByte(0xDE, SET_ReadV_Offset_MID_HIG3);
+	IWDG_ReloadCounter(); //Î¹¹·
 	
 	EEPROM_WriteByte(0xAB,Polar6);
 	EEPROM_WriteByte(0xAC,Polar7);
 	EEPROM_WriteByte(0xAD,Polar8);
 	EEPROM_WriteByte(0xAE,Polar9);
+	EEPROM_WriteByte(0xDF,Polar10);
+	EEPROM_WriteByte(0xE0,Polar11);
+	EEPROM_WriteByte(0xE1,Polar12);
 	IWDG_ReloadCounter(); //Î¹¹·
 	/************ÉèÖÃ²ÎÊý´æ´¢*******************/
 //	data_8bit = MODE >> 24;
@@ -772,10 +878,109 @@ void EEPROM_READ_Coeff(void)
 	SET_ReadA_Offset_HIG2=SET_ReadA_Offset_HIG2<<8;
 	SET_ReadA_Offset_HIG2=SET_ReadA_Offset_HIG2+EEPROM_READ_Byte(0xAA);
 	
+	REG_CorrectionV_MID_HIG1=EEPROM_READ_Byte(0xAF);
+	REG_CorrectionV_MID_HIG1=REG_CorrectionV_MID_HIG1<<8;
+	REG_CorrectionV_MID_HIG1=REG_CorrectionV_MID_HIG1+EEPROM_READ_Byte(0xB0);
+	REG_CorrectionV_MID_HIG1=REG_CorrectionV_MID_HIG1<<8;
+	REG_CorrectionV_MID_HIG1=REG_CorrectionV_MID_HIG1+EEPROM_READ_Byte(0xB1);
+	REG_CorrectionV_MID_HIG1=REG_CorrectionV_MID_HIG1<<8;
+	REG_CorrectionV_MID_HIG1=REG_CorrectionV_MID_HIG1+EEPROM_READ_Byte(0xB2);
+	
+	SET_CorrectionV_MID_HIG1=EEPROM_READ_Byte(0xB3);
+	SET_CorrectionV_MID_HIG1=SET_CorrectionV_MID_HIG1<<8;
+	SET_CorrectionV_MID_HIG1=SET_CorrectionV_MID_HIG1+EEPROM_READ_Byte(0xB4);
+	SET_CorrectionV_MID_HIG1=SET_CorrectionV_MID_HIG1<<8;
+	SET_CorrectionV_MID_HIG1=SET_CorrectionV_MID_HIG1+EEPROM_READ_Byte(0xB5);
+	SET_CorrectionV_MID_HIG1=SET_CorrectionV_MID_HIG1<<8;
+	SET_CorrectionV_MID_HIG1=SET_CorrectionV_MID_HIG1+EEPROM_READ_Byte(0xB6);
+	
+	REG_CorrectionV_MID_HIG2=EEPROM_READ_Byte(0xB7);
+	REG_CorrectionV_MID_HIG2=REG_CorrectionV_MID_HIG2<<8;
+	REG_CorrectionV_MID_HIG2=REG_CorrectionV_MID_HIG2+EEPROM_READ_Byte(0xB8);
+	REG_CorrectionV_MID_HIG2=REG_CorrectionV_MID_HIG2<<8;
+	REG_CorrectionV_MID_HIG2=REG_CorrectionV_MID_HIG2+EEPROM_READ_Byte(0xB9);
+	REG_CorrectionV_MID_HIG2=REG_CorrectionV_MID_HIG2<<8;
+	REG_CorrectionV_MID_HIG2=REG_CorrectionV_MID_HIG2+EEPROM_READ_Byte(0xBA);
+	
+	SET_CorrectionV_MID_HIG2=EEPROM_READ_Byte(0xBB);
+	SET_CorrectionV_MID_HIG2=SET_CorrectionV_MID_HIG2<<8;
+	SET_CorrectionV_MID_HIG2=SET_CorrectionV_MID_HIG2+EEPROM_READ_Byte(0xBC);
+	SET_CorrectionV_MID_HIG2=SET_CorrectionV_MID_HIG2<<8;
+	SET_CorrectionV_MID_HIG2=SET_CorrectionV_MID_HIG2+EEPROM_READ_Byte(0xBD);
+	SET_CorrectionV_MID_HIG2=SET_CorrectionV_MID_HIG2<<8;
+	SET_CorrectionV_MID_HIG2=SET_CorrectionV_MID_HIG2+EEPROM_READ_Byte(0xBE);
+	
+	REG_CorrectionV_MID_HIG3=EEPROM_READ_Byte(0xBF);
+	REG_CorrectionV_MID_HIG3=REG_CorrectionV_MID_HIG3<<8;
+	REG_CorrectionV_MID_HIG3=REG_CorrectionV_MID_HIG3+EEPROM_READ_Byte(0xC0);
+	REG_CorrectionV_MID_HIG3=REG_CorrectionV_MID_HIG3<<8;
+	REG_CorrectionV_MID_HIG3=REG_CorrectionV_MID_HIG3+EEPROM_READ_Byte(0xC1);
+	REG_CorrectionV_MID_HIG3=REG_CorrectionV_MID_HIG3<<8;
+	REG_CorrectionV_MID_HIG3=REG_CorrectionV_MID_HIG3+EEPROM_READ_Byte(0xC2);
+	
+	SET_CorrectionV_MID_HIG3=EEPROM_READ_Byte(0xC3);
+	SET_CorrectionV_MID_HIG3=SET_CorrectionV_MID_HIG3<<8;
+	SET_CorrectionV_MID_HIG3=SET_CorrectionV_MID_HIG3+EEPROM_READ_Byte(0xC4);
+	SET_CorrectionV_MID_HIG3=SET_CorrectionV_MID_HIG3<<8;
+	SET_CorrectionV_MID_HIG3=SET_CorrectionV_MID_HIG3+EEPROM_READ_Byte(0xC5);
+	SET_CorrectionV_MID_HIG3=SET_CorrectionV_MID_HIG3<<8;
+	SET_CorrectionV_MID_HIG3=SET_CorrectionV_MID_HIG3+EEPROM_READ_Byte(0xC6);
+	
+	REG_ReadV_Offset_MID_HIG1=EEPROM_READ_Byte(0xC7);
+	REG_ReadV_Offset_MID_HIG1=REG_ReadV_Offset_MID_HIG1<<8;
+	REG_ReadV_Offset_MID_HIG1=REG_ReadV_Offset_MID_HIG1+EEPROM_READ_Byte(0xC8);
+	REG_ReadV_Offset_MID_HIG1=REG_ReadV_Offset_MID_HIG1<<8;
+	REG_ReadV_Offset_MID_HIG1=REG_ReadV_Offset_MID_HIG1+EEPROM_READ_Byte(0xC9);
+	REG_ReadV_Offset_MID_HIG1=REG_ReadV_Offset_MID_HIG1<<8;
+	REG_ReadV_Offset_MID_HIG1=REG_ReadV_Offset_MID_HIG1+EEPROM_READ_Byte(0xCA);
+	
+	SET_ReadV_Offset_MID_HIG1=EEPROM_READ_Byte(0xCB);
+	SET_ReadV_Offset_MID_HIG1=SET_ReadV_Offset_MID_HIG1<<8;
+	SET_ReadV_Offset_MID_HIG1=SET_ReadV_Offset_MID_HIG1+EEPROM_READ_Byte(0xCC);
+	SET_ReadV_Offset_MID_HIG1=SET_ReadV_Offset_MID_HIG1<<8;
+	SET_ReadV_Offset_MID_HIG1=SET_ReadV_Offset_MID_HIG1+EEPROM_READ_Byte(0xCD);
+	SET_ReadV_Offset_MID_HIG1=SET_ReadV_Offset_MID_HIG1<<8;
+	SET_ReadV_Offset_MID_HIG1=SET_ReadV_Offset_MID_HIG1+EEPROM_READ_Byte(0xCE);
+	
+	REG_ReadV_Offset_MID_HIG2=EEPROM_READ_Byte(0xCF);
+	REG_ReadV_Offset_MID_HIG2=REG_ReadV_Offset_MID_HIG2<<8;
+	REG_ReadV_Offset_MID_HIG2=REG_ReadV_Offset_MID_HIG2+EEPROM_READ_Byte(0xD0);
+	REG_ReadV_Offset_MID_HIG2=REG_ReadV_Offset_MID_HIG2<<8;
+	REG_ReadV_Offset_MID_HIG2=REG_ReadV_Offset_MID_HIG2+EEPROM_READ_Byte(0xD1);
+	REG_ReadV_Offset_MID_HIG2=REG_ReadV_Offset_MID_HIG2<<8;
+	REG_ReadV_Offset_MID_HIG2=REG_ReadV_Offset_MID_HIG2+EEPROM_READ_Byte(0xD2);
+	
+	SET_ReadV_Offset_MID_HIG2=EEPROM_READ_Byte(0xD3);
+	SET_ReadV_Offset_MID_HIG2=SET_ReadV_Offset_MID_HIG2<<8;
+	SET_ReadV_Offset_MID_HIG2=SET_ReadV_Offset_MID_HIG2+EEPROM_READ_Byte(0xD4);
+	SET_ReadV_Offset_MID_HIG2=SET_ReadV_Offset_MID_HIG2<<8;
+	SET_ReadV_Offset_MID_HIG2=SET_ReadV_Offset_MID_HIG2+EEPROM_READ_Byte(0xD5);
+	SET_ReadV_Offset_MID_HIG2=SET_ReadV_Offset_MID_HIG2<<8;
+	SET_ReadV_Offset_MID_HIG2=SET_ReadV_Offset_MID_HIG2+EEPROM_READ_Byte(0xD6);
+	
+	REG_ReadV_Offset_MID_HIG3=EEPROM_READ_Byte(0xD7);
+	REG_ReadV_Offset_MID_HIG3=REG_ReadV_Offset_MID_HIG3<<8;
+	REG_ReadV_Offset_MID_HIG3=REG_ReadV_Offset_MID_HIG3+EEPROM_READ_Byte(0xD8);
+	REG_ReadV_Offset_MID_HIG3=REG_ReadV_Offset_MID_HIG3<<8;
+	REG_ReadV_Offset_MID_HIG3=REG_ReadV_Offset_MID_HIG3+EEPROM_READ_Byte(0xD9);
+	REG_ReadV_Offset_MID_HIG3=REG_ReadV_Offset_MID_HIG3<<8;
+	REG_ReadV_Offset_MID_HIG3=REG_ReadV_Offset_MID_HIG3+EEPROM_READ_Byte(0xDA);
+	
+	SET_ReadV_Offset_MID_HIG3=EEPROM_READ_Byte(0xDB);
+	SET_ReadV_Offset_MID_HIG3=SET_ReadV_Offset_MID_HIG3<<8;
+	SET_ReadV_Offset_MID_HIG3=SET_ReadV_Offset_MID_HIG3+EEPROM_READ_Byte(0xDC);
+	SET_ReadV_Offset_MID_HIG3=SET_ReadV_Offset_MID_HIG3<<8;
+	SET_ReadV_Offset_MID_HIG3=SET_ReadV_Offset_MID_HIG3+EEPROM_READ_Byte(0xDD);
+	SET_ReadV_Offset_MID_HIG3=SET_ReadV_Offset_MID_HIG3<<8;
+	SET_ReadV_Offset_MID_HIG3=SET_ReadV_Offset_MID_HIG3+EEPROM_READ_Byte(0xDE);
+	
 	Polar6=EEPROM_READ_Byte(0xAB);
 	Polar7=EEPROM_READ_Byte(0xAC);
 	Polar8=EEPROM_READ_Byte(0xAD);
 	Polar9=EEPROM_READ_Byte(0xAE);
+	Polar10=EEPROM_READ_Byte(0xDF);
+	Polar11=EEPROM_READ_Byte(0xE0);
+	Polar12=EEPROM_READ_Byte(0xE1);
 //	Read_Runcont();//¶ÁÔËÐÐ²ÎÊý
 //	if(Baud_rate==9600)
 //	{

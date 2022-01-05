@@ -25,7 +25,7 @@ extern struct bitDefine
 } flagA,flagB,flagC,flagD,flagE;
 vu8 Von_CONT;//拉载开启门槛单次计数器
 vu8 oldmode;
-
+vu16 SWDelay;
 /***************************************
 函数名:Sence_SW_CONT
 函数输入:
@@ -35,11 +35,13 @@ void Sence_SW_CONT(void)
 {
 	if(Sence_SW==1)
 	{
-		GPIO_SetBits(GPIOA,GPIO_Pin_6);//开启远端测量
+//		GPIO_SetBits(GPIOA,GPIO_Pin_6);//开启远端测量
+		GPIO_ResetBits(GPIOA,GPIO_Pin_6);//开启远端测量
 	}
 	else 
 	{
-		GPIO_ResetBits(GPIOA,GPIO_Pin_6);//关闭远端测量
+//		GPIO_ResetBits(GPIOA,GPIO_Pin_6);//关闭远端测量
+		GPIO_SetBits(GPIOA,GPIO_Pin_6);//关闭远端测量
 	}
 }
 /***************************************
@@ -67,6 +69,30 @@ void I_SW_COTNR(void)
 			{
 				GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
 				I_Gear_SW=1;//自动切换为高档位
+				SWDelay = SWDELAY;
+			}
+			if(MODE == 0)//CC
+			{
+				if(SET_Current>I_LOW_MAX)//当测量电流大于低档最高电流时自动切换成高档位且锁定，需手动切换才能变成低档位
+				{
+					GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
+					I_Gear_SW=1;//自动切换为高档位
+					SWDelay = SWDELAY;
+				}
+			}else if(MODE == 2){//CR
+				if(SET_R_Current>I_LOW_MAX)//当测量电流大于低档最高电流时自动切换成高档位且锁定，需手动切换才能变成低档位
+				{
+					GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
+					I_Gear_SW=1;//自动切换为高档位
+					SWDelay = SWDELAY;
+				}
+			}else if(MODE == 3){//CP
+				if(SET_P_Current>I_LOW_MAX)//当测量电流大于低档最高电流时自动切换成高档位且锁定，需手动切换才能变成低档位
+				{
+					GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
+					I_Gear_SW=1;//自动切换为高档位
+					SWDelay = SWDELAY;
+				}
 			}
 		}
 	}
@@ -112,6 +138,7 @@ void worke_mode(void)
 		{
 			TIME_1MS_OVER=0;//打开爬升标志
 			TIME_1MS_flag=0;//清零时间标志
+			SWDelay = SWDELAY;
 		}
 		GPIO_ResetBits(GPIOB,GPIO_Pin_0);//CC模式
 	}
@@ -121,6 +148,7 @@ void worke_mode(void)
 		{
 			TIME_1MS_OVER=0;//打开爬升标志
 			TIME_1MS_flag=0;//清零时间标志
+			SWDelay = SWDELAY;
 		}
 		GPIO_SetBits(GPIOB,GPIO_Pin_0);//CV模式
 	}
@@ -130,12 +158,13 @@ void worke_mode(void)
 		{
 			TIME_1MS_OVER=0;//打开爬升标志
 			TIME_1MS_flag=0;//清零时间标志
+			SWDelay = SWDELAY;
 		}
 		GPIO_ResetBits(GPIOB,GPIO_Pin_0);//CR模式
-		if(SET_Resist==0)
-		{
-			SET_Resist=1;
-		}
+//		if(SET_Resist==0)
+//		{
+//			SET_Resist=1;
+//		}
 	}
 	else if(MODE==3)
 	{
@@ -143,6 +172,7 @@ void worke_mode(void)
 		{
 			TIME_1MS_OVER=0;//打开爬升标志
 			TIME_1MS_flag=0;//清零时间标志
+			SWDelay = SWDELAY;
 		}
 		GPIO_ResetBits(GPIOB,GPIO_Pin_0);//CP模式
 	}
@@ -167,6 +197,7 @@ void worke_mode(void)
 		{
 			TIME_1MS_OVER=0;//打开爬升标志
 			TIME_1MS_flag=0;//清零时间标志
+			SWDelay = SWDELAY;
 		}
 		GPIO_ResetBits(GPIOB,GPIO_Pin_0);//CC模式拉载
 		if(I_Gear_SW==0)

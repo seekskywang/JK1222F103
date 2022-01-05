@@ -143,18 +143,19 @@ void All_protect(void)
 		}
 	}
 	
-// /**************反接保护************************/
-//	if(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_7)==0)//反接保护
-//	{
-//		onoff_ch=0;
-//		GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭拉载
-//		protect_Flage=2;//反接保护
-//		GPIO_SetBits(GPIOB,GPIO_Pin_8);//打开蜂鸣器
-//	}
-//	else 
-//	{
-//		GPIO_ResetBits(GPIOB,GPIO_Pin_8);//关闭蜂鸣器
-//	}
+ /**************反接保护************************/
+	if(GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_7)==0)//反接保护
+	{
+		onoff_ch=0;
+		GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭拉载
+		protect_Flage=2;//反接保护
+		GPIO_SetBits(GPIOB,GPIO_Pin_8);//打开蜂鸣器
+	}
+	else 
+	{
+		protect_Flage=0;//反接保护
+		GPIO_ResetBits(GPIOB,GPIO_Pin_8);//关闭蜂鸣器
+	}
 	/************过压保护************************/
 	if((Voltage>MAX_V)&&(V_Gear_SW==1))//过压保护
 	{

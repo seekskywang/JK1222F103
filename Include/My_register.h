@@ -181,10 +181,13 @@ typedef union
 
 extern CAL CalPara;
 
-extern vu32 Correct_Parametet[20];//校准系数
+extern vu32 Correct_Parametet[26];//校准系数
 #define  REG_CorrectionV_LOW       Correct_Parametet[0]
 #define  REG_CorrectionV_HIG       Correct_Parametet[1]
 #define  REG_CorrectionV_MID_HIG   Correct_Parametet[2]
+#define  REG_CorrectionV_MID_HIG1   Correct_Parametet[20]
+#define  REG_CorrectionV_MID_HIG2   Correct_Parametet[21]
+#define  REG_CorrectionV_MID_HIG3   Correct_Parametet[22]
 
 #define  REG_CorrectionA_LOW       Correct_Parametet[3]
 #define  REG_CorrectionA_HIG       Correct_Parametet[4]
@@ -194,6 +197,9 @@ extern vu32 Correct_Parametet[20];//校准系数
 #define  SET_CorrectionV_LOW       Correct_Parametet[6]
 #define  SET_CorrectionV_HIG       Correct_Parametet[7]
 #define  SET_CorrectionV_MID_HIG   Correct_Parametet[8]
+#define  SET_CorrectionV_MID_HIG1   Correct_Parametet[23]
+#define  SET_CorrectionV_MID_HIG2   Correct_Parametet[24]
+#define  SET_CorrectionV_MID_HIG3   Correct_Parametet[25]
 
 #define  SET_CorrectionA_LOW       Correct_Parametet[9]
 #define  SET_CorrectionA_HIG       Correct_Parametet[10]
@@ -209,22 +215,28 @@ extern vu32 Correct_Parametet[20];//校准系数
 #define  SET_CorrectionA_HIG1       Correct_Parametet[18]
 #define  SET_CorrectionA_HIG2   	Correct_Parametet[19]
 
-extern vu8 coefficient[10];//校准系数
-#define  Polar0            coefficient[0]
-#define  Polar1            coefficient[1]
+extern vu8 coefficient[13];//校准系数
+#define  Polar0            			 coefficient[0]
+#define  Polar1           			 coefficient[1]
 #define  Polar2						 coefficient[2]
 #define  Polar3						 coefficient[3]
-#define  Polar4            coefficient[4]
-#define  Polar5            coefficient[5]
+#define  Polar4            			 coefficient[4]
+#define  Polar5            			 coefficient[5]
 #define  Polar6						 coefficient[6]
 #define  Polar7						 coefficient[7]
 #define  Polar8						 coefficient[8]
 #define  Polar9						 coefficient[9]
+#define  Polar10					 coefficient[10]
+#define  Polar11					 coefficient[11]
+#define  Polar12					 coefficient[12]
 
-extern vu32 Correct_Strong[20];//校准系数
+extern vu32 Correct_Strong[26];//校准系数
 #define  REG_ReadV_Offset_LOW       Correct_Strong[0]
 #define  REG_ReadV_Offset_HIG       Correct_Strong[1]
 #define  REG_ReadV_Offset_MID_HIG   Correct_Strong[2]
+#define  REG_ReadV_Offset_MID_HIG1  Correct_Strong[20]
+#define  REG_ReadV_Offset_MID_HIG2  Correct_Strong[21]
+#define  REG_ReadV_Offset_MID_HIG3  Correct_Strong[22]
 
 #define  REG_ReadA_Offset_LOW       Correct_Strong[3]
 #define  REG_ReadA_Offset_HIG       Correct_Strong[4]
@@ -233,6 +245,9 @@ extern vu32 Correct_Strong[20];//校准系数
 #define  SET_ReadV_Offset_LOW       Correct_Strong[6]
 #define  SET_ReadV_Offset_HIG       Correct_Strong[7]
 #define  SET_ReadV_Offset_MID_HIG   Correct_Strong[8]
+#define  SET_ReadV_Offset_MID_HIG1  Correct_Strong[23]
+#define  SET_ReadV_Offset_MID_HIG2  Correct_Strong[24]
+#define  SET_ReadV_Offset_MID_HIG3  Correct_Strong[25]
 
 #define  SET_ReadA_Offset_LOW       Correct_Strong[9]
 #define  SET_ReadA_Offset_HIG       Correct_Strong[10]
@@ -256,6 +271,7 @@ extern vu8 dynaflagA;
 extern vu8 dynaflagB;
 extern vu8 dynatrigflag;
 extern u8 dynaonflag;
+extern vu16 SWDelay;
 //============================================================================= 
 
 #define ILOW1   30000   //电流低档位跳档值1
@@ -266,11 +282,15 @@ extern u8 dynaonflag;
 #define IHIGH2   200000   //电流低档位跳档值2
 #define IHIGH3   300000   //电流低档位跳档值3
 #define IHIGH4   400000   //电流低档位跳档值4
+
+#define SWDELAY   1000 
 //============================================================================= 
 #define Receive_BUFFERSIZE   10
-#define V_LOW_MAX   300000   //电压低档最高电压
+#define V_LOW_MAX   120000   //电压低档最高电压
 #define V_HIG_MAX   120000   //电压高档最高电压
-#define I_LOW_MAX   110000   //电流低档位最高限制电流
+#define I_LOW_MAX   60000   //电流低档位最高限制电流
+//#define POWER_MAX   1200000   //电流低档位最高限制功率
+//#define POWER_MAX   800000   //电流低档位最高限制功率
 #define POWER_MAX   600000   //电流低档位最高限制功率
 //=============================================================================
 #endif

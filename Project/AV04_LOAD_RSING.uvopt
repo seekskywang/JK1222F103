@@ -136,10 +136,6 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
-          <Key>DLGUARM</Key>
-        </SetRegEntry>
-        <SetRegEntry>
-          <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
           <Name>-L70 -Z18 -C0 -M0 -T1</Name>
         </SetRegEntry>
@@ -346,6 +342,66 @@
           <WinNumber>1</WinNumber>
           <ItemText>UART_Buffer_Send1</ItemText>
         </Ww>
+        <Ww>
+          <count>34</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>var32c,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>35</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Modify_D_READ,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>36</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Modify_C_READ,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>37</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Run_Control[19],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>38</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Imon_value,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>39</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Modify_A_READ,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>40</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Modify_C_READ,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>41</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Modify_A_ACT,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>42</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Modify_B_READ,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>43</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Modify_D_READ,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>44</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Modify_B_ACT,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>45</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Run_Control[22],0x0A</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -386,7 +442,7 @@
         <Ww>
           <count>7</count>
           <WinNumber>2</WinNumber>
-          <ItemText>Correct_Strong</ItemText>
+          <ItemText>Correct_Strong,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>8</count>
@@ -597,6 +653,166 @@
           <count>49</count>
           <WinNumber>2</WinNumber>
           <ItemText>i,0x10</ItemText>
+        </Ww>
+        <Ww>
+          <count>50</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Transition_Date[0],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>51</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Modify_A_ACT,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>52</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[14],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>53</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>UART_Buffer_Rece</ItemText>
+        </Ww>
+        <Ww>
+          <count>54</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Transition_Date[3],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>55</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Transition_Date[2],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>56</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[15]</ItemText>
+        </Ww>
+        <Ww>
+          <count>57</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Transition_Date[2],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>58</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[0],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>59</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Transition_Date[2],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>60</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[20],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>61</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[21],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>62</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Transition_Date[2],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>63</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>SetRM,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>64</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Contr_DACVlue,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>65</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>var32,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>66</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[20],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>67</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Transition_Date[2],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>68</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Transition_Date[3],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>69</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[0],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>70</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[22],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>71</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>temp_power,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>72</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[26],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>73</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[3],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>74</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[3],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>75</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[0],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>76</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[1],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>77</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[13],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>78</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Transition_Date[2],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>79</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[3],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>80</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[0],0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>81</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>Run_Control[1],0x0A</ItemText>
         </Ww>
       </WatchWindow2>
       <Tracepoint>
@@ -1006,7 +1222,7 @@
       <GroupNumber>3</GroupNumber>
       <FileNumber>29</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\User\main.c</PathWithFileName>
