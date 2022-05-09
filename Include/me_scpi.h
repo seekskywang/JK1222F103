@@ -74,7 +74,7 @@ MAX VOLOT
 #define		MAX_SET_RES           50000.0   //50000.0R  最大电阻
 
 
-#define		MAX_CURRENT    				20000			//最大电流 ( 2A )不同档位电流小数点不同 ( 0- 2.0000, 0-20.000)
+#define		MAX_CURRENT    				40000			//最大电流 ( 2A )不同档位电流小数点不同 ( 0- 2.0000, 0-20.000)
 #define		MIN_CURRENT    				1000			//最小电流  用于判断档位区间
 
 

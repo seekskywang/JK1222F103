@@ -288,10 +288,10 @@ extern vu16 SWDelay;
 #define Receive_BUFFERSIZE   10
 //#define V_LOW_MAX   120000   //电压低档最高电压
 //#define V_HIG_MAX   120000   //电压高档最高电压
-#define V_LOW_MAX   500000   //电压低档最高电压
-#define V_HIG_MAX   500000   //电压高档最高电压
-#define I_LOW_MAX   60000   //电流低档位最高限制电流
-#define POWER_MAX   1200000   //电流低档位最高限制功率
+#define V_LOW_MAX   120000   //电压低档最高电压
+#define V_HIG_MAX   1200000   //电压高档最高电压
+#define I_LOW_MAX   40000   //电流低档位最高限制电流
+#define POWER_MAX   400000   //电流低档位最高限制功率
 //#define POWER_MAX   800000   //电流低档位最高限制功率
 //#define POWER_MAX   600000   //电流低档位最高限制功率
 //=============================================================================
