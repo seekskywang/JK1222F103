@@ -53,6 +53,7 @@ extern vu16 t_5S;
 extern vu8 t_USART;
 extern vu8 Setcontr_ADDR;//设置参数存入FLASH位置
 extern vu8 UART1_Buffer_Rece_flag;
+extern vu8 UART3_Buffer_Rece_flag;
 //--------------------------
 extern vu8 UART_Buffer_Size;//串口接收数据长度
 extern vu8 Transmit_BUFFERsize;

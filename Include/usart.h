@@ -15,6 +15,7 @@
 
 void USART_Configuration(void);//串口1初始化函数
 void USART2_Configuration(void);//串口2初始化函数
+void USART3_Configuration(void);//串口3初始化函数
 void UART1_Send(void);
 void UART2_Send(void);
 vu8 Usart1_Sendstring(char *s );
@@ -22,3 +23,4 @@ static void USART1_NVIC_Config(void);
 void Clear_Date(vu8 *sd , vu8 length);
 void Baud_SET(void);
 #endif
+	
