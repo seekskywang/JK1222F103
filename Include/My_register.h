@@ -127,7 +127,7 @@ extern vu32 Run_Control[50];
 #define DYNA_IDown					Run_Control[42]   //动态模式电流下降率
 #define DYNA_MODE					Run_Control[43]   //动态模式触发模式选择
 
-#define QC_MODE						Run_Control[44]   //快充模式选择开关
+#define COMM_MODE					Run_Control[44]   //通讯方式选择
 #define Class_5						Run_Control[45]   //5V
 #define Class_9						Run_Control[46]   //9V
 #define Class_12					Run_Control[47]   //12V

@@ -199,7 +199,16 @@ void UART2_Send(void)
   }
 	UART_SEND_flag=0;//发送完成一帧数据		
 }
-
+void UART3_Send(void)
+{
+	vu8 i=0;
+	for(i =0 ; i < Transmit_BUFFERsize; i++)
+  {
+			USART_SendData(USART3,UART_Buffer_Send1[i]);
+			while (USART_GetFlagStatus(USART3,USART_FLAG_TXE) == RESET);//等待发送完成
+  }
+	UART_SEND_flag=0;//发送完成一帧数据		
+}
 /**********************************************************************************************************
 *	函 数 名: Baud_SET
 *	功能说明: 串口波特率修改

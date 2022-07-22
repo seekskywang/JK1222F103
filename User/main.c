@@ -55,7 +55,7 @@ int main(void)
 	TIM6_Config();
 	IWDG_Inte();
 //	IO_FAN_OFF;
-	ADDR = 1;
+//	ADDR = 1;
 	while(1)
 	{
 //		RCC_GetClocksFreq(&getrccclock);

@@ -170,65 +170,82 @@ void SysTick_Handler(void)
 	}
 }
 
-void USART1_IRQHandler(void)
+void USART1_IRQHandler(void)//232
 {
 	flag_Tim_USART=1;
 	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
 	{
 		USART_ClearITPendingBit( USART1, USART_IT_RXNE );
 		UART_Buffer_Rece1[UART_Buffer_Size]=USART_ReceiveData(USART1);
-
-		if( UART_Buffer_Rece1[0]== ADDR)
+		if(COMM_MODE == 0)
 		{
-			Operation_MODE = 1;
-			if(UART_Buffer_Rece1[1]== 0x06)
+			if( UART_Buffer_Rece1[0]== ADDR)
 			{
-				if(UART_Buffer_Size>8)//设置参数
+				Operation_MODE = 1;
+				if(UART_Buffer_Rece1[1]== 0x06)
 				{
-					UART_Buffer_Size=0;	  	   		   
-					UART1_Buffer_Rece_flag=1;
-					flag_Tim_USART=0;
-					t_USART=0;
-					if(UART1_Buffer_Rece_flag==1)
+					if(UART_Buffer_Size>8)//设置参数
 					{
-						UART1_Buffer_Rece_flag=0;
-						UART1_Action();//处理数据
-						Write_ADDR();
+						UART_Buffer_Size=0;	  	   		   
+						UART1_Buffer_Rece_flag=1;
+						flag_Tim_USART=0;
+						t_USART=0;
+						if(UART1_Buffer_Rece_flag==1)
+						{
+							UART1_Buffer_Rece_flag=0;
+							UART1_Action();//处理数据
+							Write_ADDR();
+						}
+						return ;
 					}
-					return ;
-				}
-			}else if(UART_Buffer_Rece1[1]== 0x10){
-				if(UART_Buffer_Size > 7 && 
-				   UART_Buffer_Size == UART_Buffer_Rece1[5]+9-1)//参数设置
-				{
-					UART_Buffer_Size=0;	  	   		   
-					UART1_Buffer_Rece_flag=1;
-					flag_Tim_USART=0;
-					t_USART=0;
-					if(UART1_Buffer_Rece_flag==1)
+				}else if(UART_Buffer_Rece1[1]== 0x10){
+					if(UART_Buffer_Size > 7 && 
+						 UART_Buffer_Size == UART_Buffer_Rece1[5]+9-1)//参数设置
 					{
-						UART1_Buffer_Rece_flag=0;
-						UART1_Action();//处理数据
-						Write_ADDR();
+						UART_Buffer_Size=0;	  	   		   
+						UART1_Buffer_Rece_flag=1;
+						flag_Tim_USART=0;
+						t_USART=0;
+						if(UART1_Buffer_Rece_flag==1)
+						{
+							UART1_Buffer_Rece_flag=0;
+							UART1_Action();//处理数据
+							Write_ADDR();
+						}
+						return ;
 					}
-					return ;
-				}
-			}else if(UART_Buffer_Rece1[1]== 0x03){
-				if(UART_Buffer_Size==7)//读数据
-				{
-					UART_Buffer_Size=0;	  	   		   
-					UART1_Buffer_Rece_flag=1;
-					flag_Tim_USART=0;
-					t_USART=0;
-					if(UART1_Buffer_Rece_flag==1)
+				}else if(UART_Buffer_Rece1[1]== 0x03){
+					if(UART_Buffer_Size==7)//读数据
 					{
-						UART1_Buffer_Rece_flag=0;
-						UART1_Action();//处理数据
+						UART_Buffer_Size=0;	  	   		   
+						UART1_Buffer_Rece_flag=1;
+						flag_Tim_USART=0;
+						t_USART=0;
+						if(UART1_Buffer_Rece_flag==1)
+						{
+							UART1_Buffer_Rece_flag=0;
+							UART1_Action();//处理数据
+						}
+						return ;
 					}
-					return ;
+				}else if(UART_Buffer_Rece1[1]== 0xA5){
+					if(UART_Buffer_Size==8)//校准
+					{
+						UART_Buffer_Size=0;	  	   		   
+						UART1_Buffer_Rece_flag=1;
+						flag_Tim_USART=0;
+						t_USART=0;
+						if(UART1_Buffer_Rece_flag==1)
+						{
+							UART1_Buffer_Rece_flag=0;
+							UART1_Action();//处理数据
+						}
+						return ;
+					}
 				}
-			}else if(UART_Buffer_Rece1[1]== 0xA5){
-				if(UART_Buffer_Size==8)//校准
+			}else if( UART_Buffer_Rece1[0]== 0x00)//写入地址
+			{
+				if(UART_Buffer_Size>8)//地址
 				{
 					UART_Buffer_Size=0;	  	   		   
 					UART1_Buffer_Rece_flag=1;
@@ -242,35 +259,24 @@ void USART1_IRQHandler(void)
 					return ;
 				}
 			}
-		}else if( UART_Buffer_Rece1[0]== 0x00)//写入地址
-		{
-			if(UART_Buffer_Size>8)//地址
-			{
-				UART_Buffer_Size=0;	  	   		   
-				UART1_Buffer_Rece_flag=1;
-				flag_Tim_USART=0;
-				t_USART=0;
-				if(UART1_Buffer_Rece_flag==1)
-				{
-					UART1_Buffer_Rece_flag=0;
-					UART1_Action();//处理数据
-				}
-				return ;
-			}
-		}
-//		else if(UART_Buffer_Rece[UART_Buffer_Size] == 0x0A) //scpi指令用 判断尾指令是否为\n
-//		{
-//			flag_NOR_CODE=1;
-//			UART_Buffer_Size=0;
-//			flag_Tim_USART=0;				
-//			t_USART=0;	
-//			return ;
-//		}
-		
+	//		else if(UART_Buffer_Rece[UART_Buffer_Size] == 0x0A) //scpi指令用 判断尾指令是否为\n
+	//		{
+	//			flag_NOR_CODE=1;
+	//			UART_Buffer_Size=0;
+	//			flag_Tim_USART=0;				
+	//			t_USART=0;	
+	//			return ;
+	//		}
+			
 
-		UART_Buffer_Size++;
-		if(UART_Buffer_Size>200)
-		{
+			UART_Buffer_Size++;
+			if(UART_Buffer_Size>200)
+			{
+				UART_Buffer_Size=0;
+				UART1_Buffer_Rece_flag=0;
+				t_USART=0;	
+			}
+		}else{
 			UART_Buffer_Size=0;
 			UART1_Buffer_Rece_flag=0;
 			t_USART=0;	
@@ -387,64 +393,81 @@ void USART2_IRQHandler(void)
 		
 	}
 }
-void USART3_IRQHandler(void)
+void USART3_IRQHandler(void)//485
 {
 	if(USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)
 	{
 		USART_ClearITPendingBit( USART3, USART_IT_RXNE );
 		UART_Buffer_Rece1[UART_Buffer_Size]=USART_ReceiveData(USART3);
-
-		if( UART_Buffer_Rece1[0]== ADDR)
+		if(COMM_MODE == 1)
 		{
-			Operation_MODE = 1;
-			if(UART_Buffer_Rece1[1]== 0x06)
+			if( UART_Buffer_Rece1[0]== ADDR)
 			{
-				if(UART_Buffer_Size>8)//设置参数
+				Operation_MODE = 1;
+				if(UART_Buffer_Rece1[1]== 0x06)
 				{
-					UART_Buffer_Size=0;	  	   		   
-					UART1_Buffer_Rece_flag=1;
-					flag_Tim_USART=0;
-					t_USART=0;
-					if(UART1_Buffer_Rece_flag==1)
+					if(UART_Buffer_Size>8)//设置参数
 					{
-						UART1_Buffer_Rece_flag=0;
-						UART1_Action();//处理数据
-						Write_ADDR();
+						UART_Buffer_Size=0;	  	   		   
+						UART1_Buffer_Rece_flag=1;
+						flag_Tim_USART=0;
+						t_USART=0;
+						if(UART1_Buffer_Rece_flag==1)
+						{
+							UART1_Buffer_Rece_flag=0;
+							UART3_Action();//处理数据
+							Write_ADDR();
+						}
+						return ;
 					}
-					return ;
-				}
-			}else if(UART_Buffer_Rece1[1]== 0x10){
-				if(UART_Buffer_Size > 7 && 
-				   UART_Buffer_Size == UART_Buffer_Rece1[5]+9-1)//参数设置
-				{
-					UART_Buffer_Size=0;	  	   		   
-					UART1_Buffer_Rece_flag=1;
-					flag_Tim_USART=0;
-					t_USART=0;
-					if(UART1_Buffer_Rece_flag==1)
+				}else if(UART_Buffer_Rece1[1]== 0x10){
+					if(UART_Buffer_Size > 7 && 
+						 UART_Buffer_Size == UART_Buffer_Rece1[5]+9-1)//参数设置
 					{
-						UART1_Buffer_Rece_flag=0;
-						UART1_Action();//处理数据
-						Write_ADDR();
+						UART_Buffer_Size=0;	  	   		   
+						UART1_Buffer_Rece_flag=1;
+						flag_Tim_USART=0;
+						t_USART=0;
+						if(UART1_Buffer_Rece_flag==1)
+						{
+							UART1_Buffer_Rece_flag=0;
+							UART3_Action();//处理数据
+							Write_ADDR();
+						}
+						return ;
 					}
-					return ;
-				}
-			}else if(UART_Buffer_Rece1[1]== 0x03){
-				if(UART_Buffer_Size==7)//读数据
-				{
-					UART_Buffer_Size=0;	  	   		   
-					UART1_Buffer_Rece_flag=1;
-					flag_Tim_USART=0;
-					t_USART=0;
-					if(UART1_Buffer_Rece_flag==1)
+				}else if(UART_Buffer_Rece1[1]== 0x03){
+					if(UART_Buffer_Size==7)//读数据
 					{
-						UART1_Buffer_Rece_flag=0;
-						UART1_Action();//处理数据
+						UART_Buffer_Size=0;	  	   		   
+						UART1_Buffer_Rece_flag=1;
+						flag_Tim_USART=0;
+						t_USART=0;
+						if(UART1_Buffer_Rece_flag==1)
+						{
+							UART1_Buffer_Rece_flag=0;
+							UART3_Action();//处理数据
+						}
+						return ;
 					}
-					return ;
+				}else if(UART_Buffer_Rece1[1]== 0xA5){
+					if(UART_Buffer_Size==8)//校准
+					{
+						UART_Buffer_Size=0;	  	   		   
+						UART1_Buffer_Rece_flag=1;
+						flag_Tim_USART=0;
+						t_USART=0;
+						if(UART1_Buffer_Rece_flag==1)
+						{
+							UART1_Buffer_Rece_flag=0;
+							UART3_Action();//处理数据
+						}
+						return ;
+					}
 				}
-			}else if(UART_Buffer_Rece1[1]== 0xA5){
-				if(UART_Buffer_Size==8)//校准
+			}else if( UART_Buffer_Rece1[0]== 0x00)//写入地址
+			{
+				if(UART_Buffer_Size>8)//地址
 				{
 					UART_Buffer_Size=0;	  	   		   
 					UART1_Buffer_Rece_flag=1;
@@ -453,27 +476,11 @@ void USART3_IRQHandler(void)
 					if(UART1_Buffer_Rece_flag==1)
 					{
 						UART1_Buffer_Rece_flag=0;
-						UART1_Action();//处理数据
+						UART3_Action();//处理数据
 					}
 					return ;
 				}
 			}
-		}else if( UART_Buffer_Rece1[0]== 0x00)//写入地址
-		{
-			if(UART_Buffer_Size>8)//地址
-			{
-				UART_Buffer_Size=0;	  	   		   
-				UART1_Buffer_Rece_flag=1;
-				flag_Tim_USART=0;
-				t_USART=0;
-				if(UART1_Buffer_Rece_flag==1)
-				{
-					UART1_Buffer_Rece_flag=0;
-					UART1_Action();//处理数据
-				}
-				return ;
-			}
-		}
 //		else if(UART_Buffer_Rece[UART_Buffer_Size] == 0x0A) //scpi指令用 判断尾指令是否为\n
 //		{
 //			flag_NOR_CODE=1;
@@ -484,9 +491,14 @@ void USART3_IRQHandler(void)
 //		}
 		
 
-		UART_Buffer_Size++;
-		if(UART_Buffer_Size>200)
-		{
+			UART_Buffer_Size++;
+			if(UART_Buffer_Size>200)
+			{
+				UART_Buffer_Size=0;
+				UART1_Buffer_Rece_flag=0;
+				t_USART=0;	
+			}
+		}else{
 			UART_Buffer_Size=0;
 			UART1_Buffer_Rece_flag=0;
 			t_USART=0;	
