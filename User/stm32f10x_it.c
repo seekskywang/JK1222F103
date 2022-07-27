@@ -29,6 +29,7 @@
 #include "modbus.h"
 #include "usart.h"
 #include "flash.h"
+#include <string.h>
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
   */
@@ -258,6 +259,11 @@ void USART1_IRQHandler(void)//232
 					}
 					return ;
 				}
+			}else{
+				memset((char *)UART_Buffer_Rece1,0,sizeof(UART_Buffer_Rece1));
+				UART_Buffer_Size=0;
+				UART1_Buffer_Rece_flag=0;
+				t_USART=0;
 			}
 	//		else if(UART_Buffer_Rece[UART_Buffer_Size] == 0x0A) //scpi指令用 判断尾指令是否为\n
 	//		{
@@ -480,6 +486,11 @@ void USART3_IRQHandler(void)//485
 					}
 					return ;
 				}
+			}else{
+				memset((char *)UART_Buffer_Rece1,0,sizeof(UART_Buffer_Rece1));
+				UART_Buffer_Size=0;
+				UART1_Buffer_Rece_flag=0;
+				t_USART=0;
 			}
 //		else if(UART_Buffer_Rece[UART_Buffer_Size] == 0x0A) //scpi指令用 判断尾指令是否为\n
 //		{

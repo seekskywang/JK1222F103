@@ -42,3 +42,4 @@
 ..\output\stm32f10x_it.o: ..\Include\usart.h
 ..\output\stm32f10x_it.o: ..\Include\flash.h
 ..\output\stm32f10x_it.o: ..\Include\my_register.h
+..\output\stm32f10x_it.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

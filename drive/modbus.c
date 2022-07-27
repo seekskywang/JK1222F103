@@ -1598,6 +1598,8 @@ void UART1_Action(void)
 				}
 			}	
 		}
+	}else{
+		memset((char *)UART_Buffer_Rece1,0,sizeof(UART_Buffer_Rece1));
 	} 
 //===============================Ð´¼Ä´æÆ÷=================================
 	if ((UART_Buffer_Rece1[0] == ADDR) || (UART_Buffer_Rece1[0] == 0))	 
@@ -1697,6 +1699,8 @@ void UART1_Action(void)
 				memset((char *)UART_Buffer_Rece1,0,sizeof(UART_Buffer_Rece1));
 			}
 		}			 
+	}else{
+		memset((char *)UART_Buffer_Rece1,0,sizeof(UART_Buffer_Rece1));
 	}
 
 }
@@ -1750,6 +1754,8 @@ void UART3_Action(void)
 				}
 			}	
 		}
+	}else{
+		memset((char *)UART_Buffer_Rece1,0,sizeof(UART_Buffer_Rece1));
 	} 
 //===============================Ð´¼Ä´æÆ÷=================================
 	if ((UART_Buffer_Rece1[0] == ADDR) || (UART_Buffer_Rece1[0] == 0))	 
@@ -1849,6 +1855,8 @@ void UART3_Action(void)
 				memset((char *)UART_Buffer_Rece1,0,sizeof(UART_Buffer_Rece1));
 			}
 		}			 
+	}else{
+		memset((char *)UART_Buffer_Rece1,0,sizeof(UART_Buffer_Rece1));
 	}
 
 }
