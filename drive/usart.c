@@ -34,7 +34,7 @@ vu8 UART_Buffer_Send1[200];
 vu8 UART_Buffer_Size;
 vu8 Transmit_BUFFERsize;
 vu8 t_USART;
-vu32 Baud=9600;
+vu32 Baud=115200;
 /*****************************************************************/
 static void USART1_NVIC_Config(void)//串口接收中断配置
 {
@@ -329,7 +329,7 @@ struct __FILE
 
 FILE __stdout;       
 //定义_sys_exit()以避免使用半主机模式    
-_sys_exit(int x) 
+void _sys_exit(int x) 
 { 
 	x = x; 
 } 

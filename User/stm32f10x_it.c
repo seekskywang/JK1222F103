@@ -30,6 +30,8 @@
 #include "usart.h"
 #include "flash.h"
 #include <string.h>
+#include "scpi/scpi.h"
+#include "scpi-def.h"
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
   */
@@ -173,13 +175,15 @@ void SysTick_Handler(void)
 
 void USART1_IRQHandler(void)//232
 {
+	uint8_t Res,scpires;
 	flag_Tim_USART=1;
 	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
 	{
 		USART_ClearITPendingBit( USART1, USART_IT_RXNE );
-		UART_Buffer_Rece1[UART_Buffer_Size]=USART_ReceiveData(USART1);
+		
 		if(COMM_MODE == 0)
 		{
+			UART_Buffer_Rece1[UART_Buffer_Size]=USART_ReceiveData(USART1);
 			if( UART_Buffer_Rece1[0]== ADDR)
 			{
 				Operation_MODE = 1;
@@ -282,7 +286,15 @@ void USART1_IRQHandler(void)//232
 				UART1_Buffer_Rece_flag=0;
 				t_USART=0;	
 			}
+		}else if(COMM_MODE == 2){//SCPI模式
+			
+			Res=USART_ReceiveData(USART1);	
+			if(SCPI_Input(&scpi_context, &Res, 1))
+			{
+				Operation_MODE = 1;
+			}
 		}else{
+			UART_Buffer_Rece1[UART_Buffer_Size]=USART_ReceiveData(USART1);
 			UART_Buffer_Size=0;
 			UART1_Buffer_Rece_flag=0;
 			t_USART=0;	
@@ -520,7 +532,7 @@ void USART3_IRQHandler(void)//485
 void TIM4_IRQHandler(void)
 {	
 	TIM_ClearITPendingBit(TIM4,TIM_IT_Update);//清除中断标志位
-//	testcount++;
+	testcount++;
 	if(TIME_1MS_OVER==0)//开启爬升或者下降计时标志
 	{
 		TIME_1MS_flag=1;//1MS定时标志
