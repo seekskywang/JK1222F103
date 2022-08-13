@@ -71,29 +71,29 @@ void I_SW_COTNR(void)
 				I_Gear_SW=1;//自动切换为高档位
 				SWDelay = SWDELAY;
 			}
-			if(MODE == 0)//CC
-			{
-				if(SET_Current>I_LOW_MAX)//当测量电流大于低档最高电流时自动切换成高档位且锁定，需手动切换才能变成低档位
-				{
-					GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
-					I_Gear_SW=1;//自动切换为高档位
-					SWDelay = SWDELAY;
-				}
-			}else if(MODE == 2){//CR
-				if(SET_R_Current>I_LOW_MAX)//当测量电流大于低档最高电流时自动切换成高档位且锁定，需手动切换才能变成低档位
-				{
-					GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
-					I_Gear_SW=1;//自动切换为高档位
-					SWDelay = SWDELAY;
-				}
-			}else if(MODE == 3){//CP
-				if(SET_P_Current>I_LOW_MAX)//当测量电流大于低档最高电流时自动切换成高档位且锁定，需手动切换才能变成低档位
-				{
-					GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
-					I_Gear_SW=1;//自动切换为高档位
-					SWDelay = SWDELAY;
-				}
-			}
+//			if(MODE == 0)//CC
+//			{
+//				if(SET_Current>I_LOW_MAX)//当测量电流大于低档最高电流时自动切换成高档位且锁定，需手动切换才能变成低档位
+//				{
+//					GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
+//					I_Gear_SW=1;//自动切换为高档位
+//					SWDelay = SWDELAY;
+//				}
+//			}else if(MODE == 2){//CR
+//				if(SET_R_Current>I_LOW_MAX)//当测量电流大于低档最高电流时自动切换成高档位且锁定，需手动切换才能变成低档位
+//				{
+//					GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
+//					I_Gear_SW=1;//自动切换为高档位
+//					SWDelay = SWDELAY;
+//				}
+//			}else if(MODE == 3){//CP
+//				if(SET_P_Current>I_LOW_MAX)//当测量电流大于低档最高电流时自动切换成高档位且锁定，需手动切换才能变成低档位
+//				{
+//					GPIO_ResetBits(GPIOB,GPIO_Pin_1);//电流测量为高档位
+//					I_Gear_SW=1;//自动切换为高档位
+//					SWDelay = SWDELAY;
+//				}
+//			}
 		}
 	}
 }

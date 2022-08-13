@@ -1860,11 +1860,61 @@ void UART3_Action(void)
 	}
 
 }
+
+
+
+static float Bias_Para(u8 sw,u8 mode)
+{
+	float result;
+	switch(mode)
+	{
+		case 0:result=(float)SET_Current;break;
+		case 1:result=(float)SET_Voltage;break;
+		case 2:result=(float)SET_R_Current;break;
+		case 3:result=(float)SET_P_Current;break;	
+	}
+	if(sw)
+		result/=10;
+	return result;
+}
+
+
+//测量误差修正
+static void Bias_Correction(void)
+{
+	float para;
+	if(MODE==1)
+	{
+		para=Bias_Para(V_Gear_SW,MODE);
+		if((float)Voltage>para)
+		{
+			if(((float)Voltage-para)/para < 0.005)
+				Voltage=para;
+		}else{
+			if((para-(float)Voltage)/para < 0.005)
+				Voltage=para;
+		}
+	}else{
+		para=Bias_Para(I_Gear_SW,MODE);
+		if((float)Current>para)
+		{
+			if(((float)Current-para)/para < 0.005)
+				Current=para;
+		}else{
+			if((para-(float)Current)/para < 0.005)
+				Current=para;
+		}
+	}
+	
+	
+	
+}
 //===============================AD值转换成测量值============================================//
 void Transformation_ADC(void)  
 {
 	vu32 var32;
 	vu32 var32a;
+
 /*****************************测量电压转换*******************************************/
 	if(V_Gear_SW==0)//电压低档位
 	{
@@ -1885,6 +1935,9 @@ void Transformation_ADC(void)
 		var32 = var32 >> 12;
 //		if (var32 < 1000) var32 = 0;				  //10mV以下清零
 		Voltage = var32;
+		/*------如果误差小于0.5%直接显示设置值-----*/
+		Bias_Correction();
+		/*-----------------------------------------*/
 		var32 = 0;
 		if(I_Gear_SW==0)//电流低档
 		{
@@ -2007,9 +2060,12 @@ void Transformation_ADC(void)
 			else var32 = var32 + REG_ReadV_Offset_MID_HIG3;
 			var32 = var32 >> 12;
 //			if (var32 < 3000) var32 = 0;				  //10mV以下清零
-			Voltage = var32;
+			Voltage = var32;		
 			var32 = 0;
 		}
+		/*------如果误差小于0.5%直接显示设置值-----*/
+		Bias_Correction();
+		/*-----------------------------------------*/
 		if(I_Gear_SW==0)
 		{
 			Power_DATE=Voltage*(Current/10);//计算实时功率
@@ -2075,6 +2131,9 @@ void Transformation_ADC(void)
 			Current = var32;
 		}
 		var32 = 0;
+/*------如果误差小于0.5%直接显示设置值-----*/
+		Bias_Correction();
+/*-----------------------------------------*/
 		if((Current<=1)||(onoff_ch==0)||(Voltage==0))
 		{
 			Current = 0;
@@ -2158,6 +2217,9 @@ void Transformation_ADC(void)
 			var32 = var32 >> 12;
 			Current = var32;
 		}
+/*------如果误差小于0.5%直接显示设置值-----*/
+		Bias_Correction();
+/*-----------------------------------------*/
 		if(onoff_ch==0||(Voltage==0))
 		{
 			Current=0;

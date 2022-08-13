@@ -125,6 +125,7 @@ int main(void)
 	{
 //		RCC_GetClocksFreq(&getrccclock);
 		IWDG_ReloadCounter(); //喂狗
+		COMM_MODE=2;
 //		if(UART_Buffer_Rece_flag==1)
 //		{
 //			UART_Buffer_Rece_flag=0;
