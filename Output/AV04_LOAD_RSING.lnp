@@ -43,7 +43,6 @@
 "..\output\usart.o"
 "..\output\fan_pro.o"
 "..\output\menu.o"
-"..\output\me_scpi.o"
 "..\output\ad7689.o"
 "..\output\slave_usart.o"
 "..\output\scpi-def.o"
@@ -56,7 +55,7 @@
 "..\output\parser.o"
 "..\output\units.o"
 "..\output\utils.o"
---strict --scatter "..\Output\AV04_LOAD_RSING.sct"
+--library_type=microlib --strict --scatter "..\Output\AV04_LOAD_RSING.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "..\Listing\AV04_LOAD_RSING.map" -o ..\Output\AV04_LOAD_RSING.axf

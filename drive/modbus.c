@@ -1883,31 +1883,31 @@ static float Bias_Para(u8 sw,u8 mode)
 static void Bias_Correction(void)
 {
 	float para;
-	if(MODE==1)
+	if(onoff_ch == 1)
 	{
-		para=Bias_Para(V_Gear_SW,MODE);
-		if((float)Voltage>para)
+		if(MODE==1)
 		{
-			if(((float)Voltage-para)/para < 0.005)
-				Voltage=para;
+			para=Bias_Para(V_Gear_SW,MODE);
+			if((float)Voltage>para)
+			{
+				if(((float)Voltage-para)/para < 0.005)
+					Voltage=para;
+			}else{
+				if((para-(float)Voltage)/para < 0.005)
+					Voltage=para;
+			}
 		}else{
-			if((para-(float)Voltage)/para < 0.005)
-				Voltage=para;
-		}
-	}else{
-		para=Bias_Para(I_Gear_SW,MODE);
-		if((float)Current>para)
-		{
-			if(((float)Current-para)/para < 0.005)
-				Current=para;
-		}else{
-			if((para-(float)Current)/para < 0.005)
-				Current=para;
+			para=Bias_Para(I_Gear_SW,MODE);
+			if((float)Current>para)
+			{
+				if(((float)Current-para)/para < 0.005)
+					Current=para;
+			}else{
+				if((para-(float)Current)/para < 0.005)
+					Current=para;
+			}
 		}
 	}
-	
-	
-	
 }
 //===============================AD值转换成测量值============================================//
 void Transformation_ADC(void)  
