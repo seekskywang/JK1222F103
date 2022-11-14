@@ -73,7 +73,7 @@ extern vu32 Transition_Date[10];//过渡变量
 #define SET_R_LED					Transition_Date[5]   //LED模式换算设置加载电阻
 
 
-extern vu32 Run_Control[50];	
+extern vu32 Run_Control[55];	
 #define Voltage                     Run_Control[0]   //电压测量值
 #define Current                     Run_Control[1]   //电流测量值
 #define R_DATE                      Run_Control[2]   //电阻测量值
@@ -133,6 +133,8 @@ extern vu32 Run_Control[50];
 #define Class_12					Run_Control[47]   //12V
 #define Class_15					Run_Control[48]   //15V
 #define Class_20					Run_Control[49]   //20V
+#define BOOTLOAD					Run_Control[50]   //跳转进入BOOT程序标志
+#define BOOTMODE					Run_Control[52]   //开机启动模式：0-直接进入APP，1-进入BOOTLOADER
 /***********以上寄存器可读可写*****************************************/
 typedef struct {
 	float TestVL;//测量电压低档k
@@ -180,8 +182,10 @@ typedef union
     CAL CalPara;
 }CalUni; 
 
+typedef  void (*iapfun)(void);				//定义一个函数类型的参数.
+#define FLASH_BOOT_ADDR		0x08000000  	//BOOTLOAD地址(存放在FLASH)
 extern CAL CalPara;
-
+extern u8 bootflag;
 extern vu32 Correct_Parametet[26];//校准系数
 #define  REG_CorrectionV_LOW       Correct_Parametet[0]
 #define  REG_CorrectionV_HIG       Correct_Parametet[1]

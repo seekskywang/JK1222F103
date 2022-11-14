@@ -981,6 +981,7 @@ void EEPROM_READ_Coeff(void)
 	Polar10=EEPROM_READ_Byte(0xDF);
 	Polar11=EEPROM_READ_Byte(0xE0);
 	Polar12=EEPROM_READ_Byte(0xE1);
+	BOOTMODE= EEPROM_READ_Byte(0xEF);
 //	Read_Runcont();//读运行参数
 //	if(Baud_rate==9600)
 //	{
@@ -1023,6 +1024,17 @@ void Write_ADDR(void)//将本机地址写入EEPROM
 	EEPROM_WriteByte(0x75, data_8bit);
 	EEPROM_WriteByte(0x76, ADDR);
 }
+
+void Write_bootflag(void)//写入BOOT跳转标志
+{
+	EEPROM_WriteByte(0xEE, bootflag);
+}
+
+void Write_bootmode(void)//写入启动模式
+{
+	EEPROM_WriteByte(0xEF, BOOTMODE);
+}
+
 /************************************************************************/
 void Wite_Runcont(void)//将运行参数写入EEPROM
 {

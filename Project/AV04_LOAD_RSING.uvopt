@@ -147,7 +147,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>猬|w甲?甲???</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -446,6 +445,11 @@
           <count>53</count>
           <WinNumber>1</WinNumber>
           <ItemText>Vmon_value,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>54</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Correct_Strong,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -975,7 +979,7 @@
 
   <Group>
     <GroupName>Libraries</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1259,7 +1263,7 @@
 
   <Group>
     <GroupName>User</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1327,7 +1331,7 @@
 
   <Group>
     <GroupName>drive</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

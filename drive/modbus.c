@@ -51,7 +51,7 @@ vu32 Correct_Parametet[26];//校准参数
 vu32 Correct_Strong[26];//校准系数
 vu8 coefficient[13];
 /*************************变量定义***********************************/
-vu32 Run_Control[50];//运行数据寄存器
+vu32 Run_Control[55];//运行数据寄存器
 vu32 Transition_Date[10];//过渡变量
 //============================函数声明===============================//
 vu16 Hardware_CRC(vu8 *p_buffer,vu8 count);

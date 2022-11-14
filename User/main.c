@@ -40,6 +40,15 @@ struct bitDefine
 } flagA, flagB,flagC,flagD,flagE,flagF,flagG;
 vu16 date_dac;
 RCC_ClocksTypeDef getrccclock;
+iapfun jump2app; 
+u8 bootflag;
+//设置栈顶地址
+//addr:栈顶地址
+__asm void MSR_MSP(u32 addr) 
+{
+    MSR MSP, r0 			//set Main Stack value
+    BX r14
+}
 
 size_t SCPI_Write(scpi_t * context, const char * data, size_t len) {
   (void) context;	
@@ -96,8 +105,22 @@ scpi_result_t SCPI_SystemCommTcpipControlQ(scpi_t * context) {
     return SCPI_RES_ERR;
 }
 
+//跳转到应用程序段
+//appxaddr:用户代码起始地址.
+void iap_load_app(u32 appxaddr)
+{
+	if(((*(vu32*)appxaddr)&0x2FFE0000)==0x20000000)	//检查栈顶地址是否合法.
+	{ 
+		jump2app=(iapfun)*(vu32*)(appxaddr+4);		//用户代码区第二个字为程序开始地址(复位地址)		
+		MSR_MSP(*(vu32*)appxaddr);					//初始化APP堆栈指针(用户代码区的第一个字用于存放栈顶地址)
+		jump2app();									//跳转到APP.
+	}
+}		
+
 int main(void)
 {
+	NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x10000);
+	__enable_irq();
 	RCC_Configuration();
 	SysTick_Init();
 	GPIO_Conf();
@@ -121,6 +144,8 @@ int main(void)
 					scpi_error_queue_data, SCPI_ERROR_QUEUE_SIZE);
 //	IO_FAN_OFF;
 //	ADDR = 1;
+	BOOTMODE=0;
+	Write_bootmode();
 	while(1)
 	{
 //		RCC_GetClocksFreq(&getrccclock);
@@ -160,6 +185,12 @@ int main(void)
 		} 
 		Temp_Comapre();//风扇
 		worke_mode();//工作模式切换
+		if(BOOTLOAD == 1)
+		{
+			bootflag=1;
+			Write_bootflag();
+			iap_load_app(FLASH_BOOT_ADDR);
+		}
 	}
 }
 
