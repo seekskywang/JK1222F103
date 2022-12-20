@@ -146,6 +146,7 @@ int main(void)
 //	ADDR = 1;
 	BOOTMODE=0;
 	Write_bootmode();
+	MES_VOLT_MAX=12;
 	while(1)
 	{
 //		RCC_GetClocksFreq(&getrccclock);
@@ -189,6 +190,7 @@ int main(void)
 		{
 			bootflag=1;
 			Write_bootflag();
+			__disable_irq();
 			iap_load_app(FLASH_BOOT_ADDR);
 		}
 	}

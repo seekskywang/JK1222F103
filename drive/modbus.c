@@ -28,6 +28,8 @@ u8 testflag;
 u8 dynaonflag;
 uint32_t x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,x6,y6;
 CAL CalPara;
+vu32 CatchI[100];
+vu16 catcount;
 /*************************校准参数************************************/
 vu8 DAC_Flag;//DAC是否加载标志
 vu32 Modify_A_READ;
@@ -50,6 +52,7 @@ vu16 Contr_DACVlue;//DAC加载值
 vu32 Correct_Parametet[26];//校准参数
 vu32 Correct_Strong[26];//校准系数
 vu8 coefficient[13];
+u16 setcount;
 /*************************变量定义***********************************/
 vu32 Run_Control[55];//运行数据寄存器
 vu32 Transition_Date[10];//过渡变量
@@ -193,6 +196,7 @@ void UART_Action(void)
 					Transmit_BUFFERsize = 8;					     //设置发送字节数长度
 					UART_SEND_flag=1;
 					UART2_Send();
+					setcount++;
 				}
 				Flag_Save_SW = 1;
 				if(MODE == 4 && onoff_ch == 1 && dynaonflag == 0)
@@ -1670,6 +1674,7 @@ void UART1_Action(void)
 					var32=(var32<<16)+var16;
 					Run_Control[UART_Buffer_Rece1[3]+var8] = var32;			    //将数据写入指定的地址
 				}
+				SET_Resist/=100;//上位机设置电阻缩小100倍
 				if(Run_Control[15] != 1)
 				{
 					testflag ++;
@@ -1871,7 +1876,8 @@ static float Bias_Para(u8 sw,u8 mode)
 		case 0:result=(float)SET_Current;break;
 		case 1:result=(float)SET_Voltage;break;
 		case 2:result=(float)SET_R_Current;break;
-		case 3:result=(float)SET_P_Current;break;	
+		case 3:result=(float)SET_P_Current;break;
+		case 5:result=(float)SET_R_Current;break;			
 	}
 	if(sw)
 		result/=10;
@@ -2138,6 +2144,11 @@ void Transformation_ADC(void)
 		{
 			Current = 0;
 		}
+		CatchI[catcount]=Current;
+		if(catcount < 99)
+			catcount++;
+		else
+			catcount = 0;
 	}
 	else//高档位
 	{
@@ -2627,25 +2638,147 @@ void Transformation_ADC(void)
 			}
 			else if(MODE==5)//LED模式 实际加载为CR模式  LED模式电压档位默认切换为高档位
 			{
-				if(TIME_1MS_flag==1)
+				if(ledmode == 0)
 				{
-					SET_I_TRAN=SET_I_TRAN+I_Rise_Time;
-					if(SET_I_TRAN>=SET_R_Current)
+					if(TIME_1MS_flag==1)
 					{
-						SET_I_TRAN=SET_R_Current;
+						SET_I_TRAN=SET_I_TRAN+I_Rise_Time;
+						if(SET_I_TRAN>=SET_R_Current)
+						{
+							SET_I_TRAN=SET_R_Current;
+						}
+					}
+					var32 = SET_I_TRAN;
+	//				var32 = var32 * CalPara.SetCL + CalPara.OffsetSetCL;
+					var32=var32<<12;   
+					if ((Polar2 & 0x04) == 0)			   
+					{
+						if (var32 < SET_ReadA_Offset_LOW) var32 = 0;
+						else var32 = var32 - SET_ReadA_Offset_LOW;
+					}
+					else var32 = var32 + SET_ReadA_Offset_LOW;
+					var32 = var32/SET_CorrectionA_LOW;
+					var32=var32>>1;
+				}else{
+					if(SET_V_TRAN!=SET_Voltage)
+					{
+						TIME_1MS_OVER=0;
+					}
+					if(TIME_1MS_flag==1)//CV模式电压下降率调节
+					{
+						TIME_1MS_flag=0;
+						if(V_Gear_SW==0)//低档位
+						{
+							
+							if(CV_Down_Time >= SET_V_TRAN)
+							{
+								SET_V_TRAN=SET_Voltage;
+								TIME_1MS_OVER=1;//结束爬升标志
+							}else{
+								SET_V_TRAN=SET_V_TRAN-CV_Down_Time;
+								if(SET_V_TRAN<=SET_Voltage)
+								{
+									SET_V_TRAN=SET_Voltage;
+									TIME_1MS_OVER=1;//结束爬升标志
+								}
+							}
+						}else if(V_Gear_SW==1){//高档位
+							
+							if(CV_Down_Time/10 >= SET_V_TRAN)
+							{
+								SET_V_TRAN=SET_Voltage/10;
+								TIME_1MS_OVER=1;//结束爬升标志
+							}else{
+								SET_V_TRAN=SET_V_TRAN-CV_Down_Time/10;
+								if(SET_V_TRAN<=SET_Voltage/10)
+								{
+									SET_V_TRAN=SET_Voltage/10;
+									TIME_1MS_OVER=1;//结束爬升标志
+								}
+							}
+						}
+					} 
+					if(V_Gear_SW==0)//低档位
+					{ 
+						var32 = SET_V_TRAN;
+			//			var32 = var32 * CalPara.SetVL + CalPara.OffsetSetVL;
+						
+						var32=var32<<12; 
+						if ((Polar0 & 0x04) == 0)			   
+						{
+							if (var32 < SET_ReadV_Offset_LOW) var32 = 0;
+							else var32 = var32 - SET_ReadV_Offset_LOW;
+						}
+						else var32 = var32 + SET_ReadV_Offset_LOW;
+						var32 = var32/SET_CorrectionV_LOW;
+						var32=var32>>1;
+						Contr_DACVlue = var32;
+					}
+					else//高档位
+					{ 
+						var32 = SET_V_TRAN;
+						
+						
+						var32=var32<<12; 
+						if(SET_Voltage<200000)
+						{
+			//				var32 = var32 * CalPara.SetVM + CalPara.OffsetSetVM;
+							if ((Polar1 & 0x04) == 0)			   
+							{
+								if (var32 < SET_ReadV_Offset_HIG) var32 = 0;
+								else var32 = var32 - SET_ReadV_Offset_HIG;
+							}
+							else var32 = var32 + SET_ReadV_Offset_HIG;
+							var32 = var32/SET_CorrectionV_HIG;
+							var32=var32>>1;
+							Contr_DACVlue = var32;
+						}else if(SET_Voltage>=200000 && SET_Voltage<400000){
+			//				var32 = var32 * CalPara.SetVH + CalPara.OffsetSetVH;
+							if ((Polar4 & 0x04) == 0)			   
+							{
+								if (var32 < SET_ReadV_Offset_MID_HIG) var32 = 0;
+								else var32 = var32 - SET_ReadV_Offset_MID_HIG;
+							}
+							else var32 = var32 + SET_ReadV_Offset_MID_HIG;
+							var32 = var32/SET_CorrectionV_MID_HIG;
+							var32=var32>>1;
+							Contr_DACVlue = var32;
+						}else if(SET_Voltage>=400000 && SET_Voltage<600000){
+			//				var32 = var32 * CalPara.SetVH + CalPara.OffsetSetVH;
+							if ((Polar10 & 0x04) == 0)			   
+							{
+								if (var32 < SET_ReadV_Offset_MID_HIG1) var32 = 0;
+								else var32 = var32 - SET_ReadV_Offset_MID_HIG1;
+							}
+							else var32 = var32 + SET_ReadV_Offset_MID_HIG1;
+							var32 = var32/SET_CorrectionV_MID_HIG1;
+							var32=var32>>1;
+							Contr_DACVlue = var32;
+						}else if(SET_Voltage>=600000 && SET_Voltage<800000){
+			//				var32 = var32 * CalPara.SetVH + CalPara.OffsetSetVH;
+							if ((Polar11 & 0x04) == 0)			   
+							{
+								if (var32 < SET_ReadV_Offset_MID_HIG2) var32 = 0;
+								else var32 = var32 - SET_ReadV_Offset_MID_HIG2;
+							}
+							else var32 = var32 + SET_ReadV_Offset_MID_HIG2;
+							var32 = var32/SET_CorrectionV_MID_HIG2;
+							var32=var32>>1;
+							Contr_DACVlue = var32;
+						}else if(SET_Voltage>=800000){
+			//				var32 = var32 * CalPara.SetVH + CalPara.OffsetSetVH;
+							if ((Polar12 & 0x04) == 0)			   
+							{
+								if (var32 < SET_ReadV_Offset_MID_HIG3) var32 = 0;
+								else var32 = var32 - SET_ReadV_Offset_MID_HIG3;
+							}
+							else var32 = var32 + SET_ReadV_Offset_MID_HIG3;
+							var32 = var32/SET_CorrectionV_MID_HIG3;
+							var32=var32>>1;
+							Contr_DACVlue = var32;
+						}
 					}
 				}
-				var32 = SET_I_TRAN;
-//				var32 = var32 * CalPara.SetCL + CalPara.OffsetSetCL;
-				var32=var32<<12;   
-				if ((Polar2 & 0x04) == 0)			   
-				{
-					if (var32 < SET_ReadA_Offset_LOW) var32 = 0;
-					else var32 = var32 - SET_ReadA_Offset_LOW;
-				}
-				else var32 = var32 + SET_ReadA_Offset_LOW;
-				var32 = var32/SET_CorrectionA_LOW;
-				var32=var32>>1;
 			}
 			else if(MODE==6)//短路模式
 			{

@@ -50,7 +50,7 @@ extern vu8 t_KEYON;
 extern vu16 t_0_5S;
 extern vu16 t_1S;
 extern vu16 t_5S;
-extern vu8 t_USART;
+extern vu16 t_USART;
 extern vu8 Setcontr_ADDR;//设置参数存入FLASH位置
 extern vu8 UART1_Buffer_Rece_flag;
 extern vu8 UART3_Buffer_Rece_flag;
@@ -186,6 +186,7 @@ typedef  void (*iapfun)(void);				//定义一个函数类型的参数.
 #define FLASH_BOOT_ADDR		0x08000000  	//BOOTLOAD地址(存放在FLASH)
 extern CAL CalPara;
 extern u8 bootflag;
+extern u8 ledmode;
 extern vu32 Correct_Parametet[26];//校准系数
 #define  REG_CorrectionV_LOW       Correct_Parametet[0]
 #define  REG_CorrectionV_HIG       Correct_Parametet[1]
@@ -302,24 +303,26 @@ extern vu16 SWDelay;
 ////#define POWER_MAX   600000   //电流低档位最高限制功率
 ////=============================================================================
 //============================================================================= 
-////1200W
-//#define ILOW1   30000   //电流低档位跳档值1
-//#define ILOW2   50000   //电流低档位跳档值2
-//#define ILOW3   100000   //电流低档位跳档值3
 
-//#define IHIGH1   100000   //电流低档位跳档值1
-//#define IHIGH2   200000   //电流低档位跳档值2
-//#define IHIGH3   300000   //电流低档位跳档值3
-//#define IHIGH4   400000   //电流低档位跳档值4
-//#define SWDELAY   1000 
-////============================================================================= 
-//#define Receive_BUFFERSIZE   10
-//#define V_LOW_MAX   120000   //电压低档最高电压
-//#define V_HIG_MAX   120000   //电压高档最高电压
-//#define I_LOW_MAX   60000   //电流低档位最高限制电流
-//#define POWER_MAX   1200000   //电流低档位最高限制功率
 
-////3200W
+//3200W
+#define ILOW1   60000   //电流低档位跳档值1
+#define ILOW2   100000   //电流低档位跳档值2
+#define ILOW3   240000   //电流低档位跳档值3
+
+#define IHIGH1   240000   //电流低档位跳档值1
+#define IHIGH2   600000   //电流低档位跳档值2
+#define IHIGH3   1000000   //电流低档位跳档值3
+#define IHIGH4   2000000   //电流低档位跳档值4
+#define SWDELAY   1000 
+//============================================================================= 
+#define Receive_BUFFERSIZE   10
+#define V_LOW_MAX   150000   //电压低档最高电压
+#define V_HIG_MAX   150000   //电压高档最高电压
+#define I_LOW_MAX   240000   //电流低档位最高限制电流
+#define POWER_MAX   3200000   //电流低档位最高限制功率
+
+////2400W
 //#define ILOW1   60000   //电流低档位跳档值1
 //#define ILOW2   100000   //电流低档位跳档值2
 //#define ILOW3   240000   //电流低档位跳档值3
@@ -334,46 +337,29 @@ extern vu16 SWDelay;
 //#define V_LOW_MAX   150000   //电压低档最高电压
 //#define V_HIG_MAX   150000   //电压高档最高电压
 //#define I_LOW_MAX   240000   //电流低档位最高限制电流
-//#define POWER_MAX   3200000   //电流低档位最高限制功率
-
-////2400W
-//#define ILOW1   60000   //电流低档位跳档值1
-//#define ILOW2   100000   //电流低档位跳档值2
-//#define ILOW3   240000   //电流低档位跳档值3
-
-//#define IHIGH1   240000   //电流低档位跳档值1
-//#define IHIGH2   600000   //电流低档位跳档值2
-//#define IHIGH3   1000000   //电流低档位跳档值3
-//#define IHIGH4   2000000   //电流低档位跳档值4
-//#define SWDELAY   1000 
-////============================================================================= 
-//#define Receive_BUFFERSIZE   10
-//#define V_LOW_MAX   120000   //电压低档最高电压
-//#define V_HIG_MAX   120000   //电压高档最高电压
-//#define I_LOW_MAX   240000   //电流低档位最高限制电流
 //#define POWER_MAX   2400000   //电流低档位最高限制功率
 
-//400W
-#define ILOW1   30000   //电流低档位跳档值1
-#define ILOW2   50000   //电流低档位跳档值2
-#define ILOW3   100000   //电流低档位跳档值3
+////400W
+//#define ILOW1   1000   //电流低档位跳档值1
+//#define ILOW2   20000   //电流低档位跳档值2
+//#define ILOW3   50000   //电流低档位跳档值3
 
-#define IHIGH1   100000   //电流低档位跳档值1
-#define IHIGH2   200000   //电流低档位跳档值2
-#define IHIGH3   300000   //电流低档位跳档值3
-#define IHIGH4   400000   //电流低档位跳档值4
-#define SWDELAY   1000 
-//============================================================================= 
-#define Receive_BUFFERSIZE   10
-#define V_LOW_MAX   120000   //电压低档最高电压
-#define V_HIG_MAX   120000   //电压高档最高电压
-#define I_LOW_MAX   40000   //电流低档位最高限制电流
-#define POWER_MAX   400000   //电流低档位最高限制功率
+//#define IHIGH1   100000   //电流低档位跳档值1
+//#define IHIGH2   150000   //电流低档位跳档值2
+//#define IHIGH3   200000   //电流低档位跳档值3
+//#define IHIGH4   300000   //电流低档位跳档值4
+//#define SWDELAY   1000 
+////============================================================================= 
+//#define Receive_BUFFERSIZE   100
+//#define V_LOW_MAX   150000   //电压低档最高电压
+//#define V_HIG_MAX   150000   //电压高档最高电压
+//#define I_LOW_MAX   40000   //电流低档位最高限制电流
+//#define POWER_MAX   400000   //电流低档位最高限制功率
 
 ////600W
-//#define ILOW1   30000   //电流低档位跳档值1
-//#define ILOW2   50000   //电流低档位跳档值2
-//#define ILOW3   100000   //电流低档位跳档值3
+//#define ILOW1   1000   //电流低档位跳档值1
+//#define ILOW2   30000   //电流低档位跳档值2
+//#define ILOW3   70000   //电流低档位跳档值3
 
 //#define IHIGH1   100000   //电流低档位跳档值1
 //#define IHIGH2   200000   //电流低档位跳档值2
@@ -382,26 +368,46 @@ extern vu16 SWDelay;
 //#define SWDELAY   1000 
 ////============================================================================= 
 //#define Receive_BUFFERSIZE   10
-//#define V_LOW_MAX   120000   //电压低档最高电压
-//#define V_HIG_MAX   120000   //电压高档最高电压
+//#define V_LOW_MAX   150000   //电压低档最高电压
+//#define V_HIG_MAX   150000   //电压高档最高电压
 //#define I_LOW_MAX   60000   //电流低档位最高限制电流
 //#define POWER_MAX   600000   //电流低档位最高限制功率
 
-////800W
-//#define ILOW1   30000   //电流低档位跳档值1
-//#define ILOW2   50000   //电流低档位跳档值2
-//#define ILOW3   100000   //电流低档位跳档值3
 
-//#define IHIGH1   100000   //电流低档位跳档值1
-//#define IHIGH2   200000   //电流低档位跳档值2
-//#define IHIGH3   300000   //电流低档位跳档值3
-//#define IHIGH4   400000   //电流低档位跳档值4
+////800W
+//#define ILOW1   20000   //电流低档位跳档值1
+//#define ILOW2   40000   //电流低档位跳档值2
+//#define ILOW3   90000   //电流低档位跳档值3
+
+//#define IHIGH1   200000   //电流低档位跳档值1
+//#define IHIGH2   400000   //电流低档位跳档值2
+//#define IHIGH3   500000   //电流低档位跳档值3
+//#define IHIGH4   600000   //电流低档位跳档值4
 //#define SWDELAY   1000 
 ////============================================================================= 
 //#define Receive_BUFFERSIZE   10
-//#define V_LOW_MAX   120000   //电压低档最高电压
-//#define V_HIG_MAX   120000   //电压高档最高电压
-//#define I_LOW_MAX   60000   //电流低档位最高限制电流
+//#define V_LOW_MAX   150000   //电压低档最高电压
+//#define V_HIG_MAX   150000   //电压高档最高电压
+//#define I_LOW_MAX   80000   //电流低档位最高限制电流
 //#define POWER_MAX   800000   //电流低档位最高限制功率
+
+////1200W
+//#define ILOW1   30000   //电流低档位跳档值1
+//#define ILOW2   60000   //电流低档位跳档值2
+//#define ILOW3   130000   //电流低档位跳档值3
+
+//#define IHIGH1   200000   //电流低档位跳档值1
+//#define IHIGH2   400000   //电流低档位跳档值2
+//#define IHIGH3   600000   //电流低档位跳档值3
+//#define IHIGH4   800000   //电流低档位跳档值4
+//#define SWDELAY   1000 
+////============================================================================= 
+//#define Receive_BUFFERSIZE   10
+//#define V_LOW_MAX   150000   //电压低档最高电压
+//#define V_HIG_MAX   150000   //电压高档最高电压
+//#define I_LOW_MAX   120000   //电流低档位最高限制电流 
+//#define POWER_MAX   1200000   //电流低档位最高限制功率
+
+
 #endif
 /******************* (C) COPYRIGHT 2015 KUNKIN *****END OF FILE*************************/

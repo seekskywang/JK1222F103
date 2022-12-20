@@ -26,6 +26,7 @@ extern struct bitDefine
 vu8 Von_CONT;//拉载开启门槛单次计数器
 vu8 oldmode;
 vu16 SWDelay;
+u8 ledmode;
 /***************************************
 函数名:Sence_SW_CONT
 函数输入:
@@ -187,9 +188,20 @@ void worke_mode(void)
 	}
 	else if(MODE==5)//LED模式 LED模式电压档位默认切换到高档位
 	{
-		GPIO_ResetBits(GPIOB,GPIO_Pin_0);//CC模式
+		if(oldmode != MODE)
+		{
+			TIME_1MS_OVER=0;//打开爬升标志
+			TIME_1MS_flag=0;//清零时间标志
+			SWDelay = SWDELAY;
+		}
+		if(ledmode == 0)
+		{
+			GPIO_ResetBits(GPIOB,GPIO_Pin_0);//CC模式
+		}else{
+			GPIO_SetBits(GPIOB,GPIO_Pin_0);//CV模式
+		}
 		V_Gear_SW=1;
-		GPIO_SetBits(GPIOA,GPIO_Pin_11);//电压档位为高档
+//		GPIO_SetBits(GPIOA,GPIO_Pin_11);//电压档位为高档
 	}
 	else if(MODE==6)//短路模式
 	{
@@ -222,6 +234,7 @@ void worke_mode(void)
 		dynaflagA = 0;
 		dynaflagB = 0;
 		dynaonflag = 0;
+		ledmode=0;
 	}
 	else if(onoff_ch==1)
 	{
@@ -292,21 +305,47 @@ void worke_mode(void)
 		}
 		else if(MODE==5)//LED模式
 		{
-			static vu32 LED_ON_V;
+			static vu32 LED_ON_V;//LED加载电压
+			static vu32 LED_Rd;//LED等效电阻
 			LED_ON_V=0;
-			LED_ON_V=(LED_VO*100)*LED_RD;
-			LED_ON_V=LED_VO-(LED_ON_V/10000);//通过RD系数计算出LED加载门槛电压
-			if(Voltage>=LED_ON_V)//判断电压是否大于LED导通电压
+			LED_ON_V=(LED_VO/10*100)*(LED_RD/100);
+			LED_ON_V=LED_VO/10-(LED_ON_V/10000);//通过RD系数计算出LED加载门槛电压
+			if(ledmode==0)//Led以CR模式运行
 			{
-				Cont_coeff_LEDMODE(LED_ON_V);
-				GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
-			}
-			else
-			{
-				GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
-				SET_I_TRAN=0;
-				TIME_1MS_OVER=0;//打开爬升标志
-				TIME_1MS_flag=0;//清零时间标志
+				if(Voltage>=LED_ON_V)//判断电压是否大于LED导通电压
+				{
+					LED_Rd = LED_RD * (LED_VO/LED_IO);//计算等效电阻
+					SET_R_Current = ((double)(Voltage*10 - LED_VO)/(double)(LED_Rd))*10000;//计算当前电压的通过电流
+					
+	//				Cont_coeff_LEDMODE(LED_ON_V);
+					GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+				}
+				else
+				{
+					if(Voltage < 10)
+					{
+						ledmode=1;//Led以CV模式运行
+						if(I_Gear_SW == 1)
+						{
+							SET_Voltage = (Current*10 * LED_Rd)/10000 + LED_VO;
+						}else{
+							SET_Voltage = (Current * LED_Rd)/10000 + LED_VO;
+						}
+					}
+	//				GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+	//				SET_I_TRAN=0;
+	// 				TIME_1MS_OVER=0;//打开爬升标志
+	//				TIME_1MS_flag=0;//清零时间标志
+				}
+			}else if(ledmode == 1){
+				if(I_Gear_SW == 1)
+				{
+					if(Current*10>SET_R_Current)
+						ledmode=0;
+				}else{
+					if(Current>SET_R_Current)
+						ledmode=0;
+				}
 			}
 		}
 		else if(MODE==6)//短路模式
