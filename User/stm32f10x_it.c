@@ -534,15 +534,20 @@ void TIM4_IRQHandler(void)
 {	
 	TIM_ClearITPendingBit(TIM4,TIM_IT_Update);//清除中断标志位
 	testcount++;
-	if(TIME_1MS_OVER==0)//开启爬升或者下降计时标志
+	if(onoff_ch == 1)
 	{
-		TIME_1MS_flag=1;//1MS定时标志
-		
-	}
-	else 
-	{
-		TIME_1MS_flag=0;
-		
+		if(TIME_1MS_OVER==0)//开启爬升或者下降计时标志
+		{
+			TIME_1MS_flag=1;//1MS定时标志
+			
+		}
+		else 
+		{
+			TIME_1MS_flag=0;
+			
+		}
+	}else{
+		TIME_1MS_flag = 0;
 	}
 	if(powprtflag == 1)
 	{
