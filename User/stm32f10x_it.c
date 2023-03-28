@@ -54,6 +54,7 @@ vu32 timecount;
 vu32 testcount;
 vu8 dynatrigflag;
 extern __IO int32_t OS_TimeMS;
+extern vu32 powprtflag,powprtcount;
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -325,7 +326,7 @@ void USART2_IRQHandler(void)
 					{
 						UART_Buffer_Rece_flag=0;
 						UART_Action();//处理数据
-						Baud_SET();//设置串口波特率
+//						Baud_SET();//设置串口波特率
 						Write_ADDR();
 					}
 					return ;
@@ -341,7 +342,7 @@ void USART2_IRQHandler(void)
 					{
 						UART_Buffer_Rece_flag=0;
 						UART_Action();//处理数据
-						Baud_SET();//设置串口波特率
+//						Baud_SET();//设置串口波特率
 						Write_ADDR();
 					}
 					return ;
@@ -542,6 +543,10 @@ void TIM4_IRQHandler(void)
 	{
 		TIME_1MS_flag=0;
 		
+	}
+	if(powprtflag == 1)
+	{
+		powprtcount ++;
 	}
 	if(MODE==4 && onoff_ch == 1)
 	{

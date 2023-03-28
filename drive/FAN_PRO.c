@@ -25,6 +25,8 @@ extern struct bitDefine
 vu16 PWM_VALU;
 vu16 VP_T,IP_T;
 vu16 PR_T1,PR_T2,PR_T3,PR_T4;
+vu32 powprtflag=0;
+vu32 powprtcount=0;
 /**************************************************************************************/
 //void Temp_Comapre(void)	  //温度来控制风扇
 //{
@@ -65,15 +67,33 @@ void Temp_Comapre(void)	  //温度来控制风扇
 void All_protect(void)
 {
 	 vu32 temp_power;
-	
+//	 double maxbuf;
   /*************过功率保护***************/
-	if(Power_DATE > POWER_MAX)
+//	maxbuf = (double)(POWER_MAX)*0.9;
+	if(Power_DATE > POWER_MAX*0.9)
 	{
-		PR_T1=0;
-		onoff_ch=0;
-		GPIO_SetBits(GPIOA,GPIO_Pin_5);//OFF
-		protect_Flage=1;//过功率保护
+//		PR_T1=0;
+		powprtflag = 1;
+		if(Power_DATE > POWER_MAX)
+		{
+			PR_T1=0;
+			onoff_ch=0;
+			GPIO_SetBits(GPIOA,GPIO_Pin_5);//OFF
+			protect_Flage=1;//过功率保护
+		}else{
+			if(powprtcount > 9000000)
+			{
+				PR_T1=0;
+				onoff_ch=0;
+				GPIO_SetBits(GPIOA,GPIO_Pin_5);//OFF
+				protect_Flage=1;//过功率保护
+			}
+		}
+	}else{
+		powprtflag = 0;
+		powprtcount = 0;
 	}
+	
 	if((I_Gear_SW==0)&&(V_Gear_SW==1))
 	{
 		temp_power=Current/10;
