@@ -34,8 +34,5 @@
 ..\output\menu.o: ..\Include\my_register.h
 ..\output\menu.o: ..\Include\usart.h
 ..\output\menu.o: ..\Include\modbus.h
-..\output\menu.o: ..\Include\my_register.h
 ..\output\menu.o: ..\Include\flash.h
-..\output\menu.o: ..\Include\my_register.h
 ..\output\menu.o: ..\Include\menu.h
-..\output\menu.o: ..\Include\my_register.h

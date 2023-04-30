@@ -34,4 +34,3 @@
 ..\output\fan_pro.o: ..\Include\my_register.h
 ..\output\fan_pro.o: ..\Include\beep.h
 ..\output\fan_pro.o: ..\Include\sys_io_cfg.h
-..\output\fan_pro.o: ..\Include\my_register.h

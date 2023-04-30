@@ -6,12 +6,12 @@
  * 注意		 ：头文件中只能有声明，不能有定义
  * 修改日期：2014-12-9
 *********************************************************************/
-
+#ifndef __my_register_h__
+#define __my_register_h__
 #include "STM32F10x.h"
 #include "me_scpi.h"
 
-#ifndef __my_register_h__
-#define __my_register_h__
+
 //=============================================================================
 
 //=============================================================================
@@ -269,6 +269,7 @@ extern vu32 Correct_Strong[26];//校准系数
 #define  SET_ReadA_Offset_HIG1       Correct_Strong[18]
 #define  SET_ReadA_Offset_HIG2   	Correct_Strong[19]
 //---------------------------
+#define  TOTALVERSION    10
 extern vu8 UART_Buffer_Rece[200];
 extern vu8 UART_Buffer_Send[200];
 extern vu8 UART_Buffer_Rece1[200];
@@ -278,23 +279,28 @@ extern vu8 dynaflagB;
 extern vu8 dynatrigflag;
 extern u8 dynaonflag;
 extern vu16 SWDelay;
-extern vu32 ilow1[9];
-extern vu32 ilow2[9];
-extern vu32 ilow3[9];
+extern vu32 ilow1[TOTALVERSION];
+extern vu32 ilow2[TOTALVERSION];
+extern vu32 ilow3[TOTALVERSION];
 
-extern vu32 ihigh1[9];
-extern vu32 ihigh2[9];
-extern vu32 ihigh3[9];
-extern vu32 ihigh4[9];
+extern vu32 ihigh1[TOTALVERSION];
+extern vu32 ihigh2[TOTALVERSION];
+extern vu32 ihigh3[TOTALVERSION];
+extern vu32 ihigh4[TOTALVERSION];
 
-extern vu32 vlowmax[9];
-extern vu32 vhigmax[9];
-extern vu32 ilowmax[9];
-extern vu32 powermax[9];
+extern vu32 vlowmax[TOTALVERSION];
+extern vu32 vhigmax[TOTALVERSION];
+extern vu32 ilowmax[TOTALVERSION];
+extern vu32 powermax[TOTALVERSION];
 //250V60A1200W;150V120A1200W;250V120A1200W;3200W;2400W;400W;600W;800W;1200W;
-static u8 versiontrans[10] = {8,7,6,5,4,3,9,2,0,1};
+static u8 versiontrans[TOTALVERSION+1] = {8,7,6,5,4,3,0/*500V*/,2,0,1,9};
 #define VERSION   versiontrans[HARDVERSION]  
-//0-250V60A1200W;1-150V120A1200W;2-250V120A1200W;3-3200W;4-2400W;5-400W;6-600W;7-800W;8-1200W;
+/*0-250V60A1200W;1-150V120A1200W;
+	2-250V120A1200W;
+	3-3200W;4-2400W;5-400W;6-600W;
+	7-800W;8-1200W;9-150V120A2400W;
+
+*/
 #define ILOW1   ilow1[VERSION]   //电流低档位跳档值1
 #define ILOW2   ilow2[VERSION]   //电流低档位跳档值2
 #define ILOW3   ilow3[VERSION]   //电流低档位跳档值3

@@ -34,5 +34,3 @@
 ..\output\at24c01.o: ..\Include\me_scpi.h
 ..\output\at24c01.o: ..\Include\my_register.h
 ..\output\at24c01.o: ..\Include\AT24C01.h
-..\output\at24c01.o: ..\Include\my_register.h
-..\output\at24c01.o: ..\Include\my_register.h

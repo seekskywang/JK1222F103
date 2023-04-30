@@ -33,4 +33,3 @@
 ..\output\bsp_systick.o: ..\Include\me_scpi.h
 ..\output\bsp_systick.o: ..\Include\me_scpi.h
 ..\output\bsp_systick.o: ..\Include\my_register.h
-..\output\bsp_systick.o: ..\Include\my_register.h

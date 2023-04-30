@@ -34,4 +34,3 @@
 ..\output\ad7689.o: ..\Include\me_scpi.h
 ..\output\ad7689.o: ..\Include\my_register.h
 ..\output\ad7689.o: ..\Include\GPIO.h
-..\output\ad7689.o: ..\Include\my_register.h

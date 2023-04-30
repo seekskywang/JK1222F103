@@ -33,6 +33,4 @@
 ..\output\flash.o: ..\Include\me_scpi.h
 ..\output\flash.o: ..\Include\my_register.h
 ..\output\flash.o: ..\Include\AT24C01.h
-..\output\flash.o: ..\Include\my_register.h
 ..\output\flash.o: ..\Include\flash.h
-..\output\flash.o: ..\Include\my_register.h

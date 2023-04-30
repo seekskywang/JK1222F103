@@ -34,7 +34,5 @@
 ..\output\key.o: ..\Include\my_register.h
 ..\output\key.o: ..\Include\beep.h
 ..\output\key.o: ..\Include\flash.h
-..\output\key.o: ..\Include\my_register.h
 ..\output\key.o: ..\Include\gpio.h
 ..\output\key.o: ..\Include\key.h
-..\output\key.o: ..\Include\my_register.h

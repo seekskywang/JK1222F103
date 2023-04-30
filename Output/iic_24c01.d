@@ -33,4 +33,3 @@
 ..\output\iic_24c01.o: ..\Include\me_scpi.h
 ..\output\iic_24c01.o: ..\Include\me_scpi.h
 ..\output\iic_24c01.o: ..\Include\my_register.h
-..\output\iic_24c01.o: ..\Include\my_register.h
