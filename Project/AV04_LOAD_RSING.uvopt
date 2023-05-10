@@ -136,6 +136,11 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
+          <Key>DLGUARM</Key>
+          <Name>猬fw尖?尖??n_</Name>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
           <Key>UL2CM3</Key>
           <Name>UL2CM3(-O14 -S0 -C0 -N00("ARM Cortex-M3") -D00(1BA00477) -L00(4) -FO7 -FD20000000 -FC800 -FN1 -FF0STM32F10x_128 -FS08000000 -FL020000)</Name>
         </SetRegEntry>
@@ -617,6 +622,36 @@
           <WinNumber>1</WinNumber>
           <ItemText>UART_Buffer_Rece1</ItemText>
         </Ww>
+        <Ww>
+          <count>89</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>var32,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>90</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Run_Control,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>91</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>DAC_Flag</ItemText>
+        </Ww>
+        <Ww>
+          <count>92</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Ad7689_Fit_Vmon</ItemText>
+        </Ww>
+        <Ww>
+          <count>93</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Vmon_value,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>94</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>SET_V_TRAN,0x0A</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -1087,7 +1122,7 @@
 
   <Group>
     <GroupName>CMSIS</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1155,7 +1190,7 @@
 
   <Group>
     <GroupName>Libraries</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1775,7 +1810,7 @@
 
   <Group>
     <GroupName>libscpi</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

@@ -1877,7 +1877,8 @@ static float Bias_Para(u8 sw,u8 mode)
 		case 1:result=(float)SET_Voltage;break;
 		case 2:result=(float)SET_R_Current;break;
 		case 3:result=(float)SET_P_Current;break;
-		case 5:result=(float)SET_R_Current;break;			
+		case 5:result=(float)SET_R_Current;break;	
+		case 6:result=(float)SET_S_Current;break;	
 	}
 	if(sw)
 		result/=10;
@@ -2482,7 +2483,16 @@ void Transformation_ADC(void)
 //					SET_P_Current=(SET_Power*100000)/(Voltage*10);//CP模式电流高档最小分辨率为0.001瓦
 					SET_P_Current=(vu32)((((float)(SET_Power)/1000)/((float)Voltage/1000))*10000);
 				}
-				var32 = SET_P_Current;
+				if(TIME_1MS_flag==1)
+				{
+					SET_I_TRAN=SET_I_TRAN+I_Rise_Time;
+					if(SET_I_TRAN>=SET_P_Current)
+					{
+						SET_I_TRAN=SET_P_Current;
+					}
+				}
+				var32 = SET_I_TRAN;
+//				var32 = SET_P_Current;
 //				var32 = var32 * CalPara.SetCL + CalPara.OffsetSetCL;
 				if(SET_P_Current < ILOW1)
 				{
@@ -2782,8 +2792,9 @@ void Transformation_ADC(void)
 			}
 			else if(MODE==6)//短路模式
 			{
+				
 				var32 = SET_S_Current;
-//				var32 = var32 * CalPara.SetCL + CalPara.OffsetSetCL;
+				
 				var32=var32<<12;   
 				if ((Polar2 & 0x04) == 0)			   
 				{
@@ -2794,7 +2805,17 @@ void Transformation_ADC(void)
 				var32 = var32/SET_CorrectionA_LOW;
 				var32=var32>>1;
 			}
-			Contr_DACVlue = var32;
+			if(MODE != 6)
+			{
+				if(SET_I_TRAN==0)
+				{
+					Contr_DACVlue=0;
+				}else{
+					Contr_DACVlue = var32;
+				}
+			}else{
+				Contr_DACVlue = var32;
+			}
 			var32 = 0;
 		}
 		else//高档
@@ -2884,7 +2905,15 @@ void Transformation_ADC(void)
 				{
 					SET_R_Current=(Voltage*10)/SET_Resist;//CR模式电流高档最小分辨率为0.01欧
 				}
-				var32 = SET_R_Current;
+				if(TIME_1MS_flag==1)
+				{
+					SET_I_TRAN=SET_I_TRAN+I_Rise_Time/10;
+					if(SET_I_TRAN>=SET_R_Current)
+					{
+						SET_I_TRAN=SET_R_Current;
+					}
+				}
+				var32 = SET_I_TRAN;
 //				var32 = var32 * CalPara.SetCM + CalPara.OffsetSetCM;
 				if(SET_R_Current<IHIGH2)//分段控制，第一段
 				{
@@ -2959,7 +2988,16 @@ void Transformation_ADC(void)
 				{
 					SET_P_Current=(SET_Power*1000)/Voltage;//CP模式电流高档最小分辨率为0.01瓦
 				}
-				var32 = SET_P_Current;
+				if(TIME_1MS_flag==1)
+				{
+					SET_I_TRAN=SET_I_TRAN+I_Rise_Time/10;
+					if(SET_I_TRAN>=SET_P_Current)
+					{
+						SET_I_TRAN=SET_P_Current;
+					}
+				}
+				var32 = SET_I_TRAN;
+//				var32 = SET_P_Current;
 //				var32 = var32 * CalPara.SetCM + CalPara.OffsetSetCM;
 				if(SET_P_Current<IHIGH2)//分段控制，第一段
 				{
@@ -3239,7 +3277,17 @@ void Transformation_ADC(void)
 				var32 = var32/SET_CorrectionA_HIG;
 				var32=var32>>1;
 			}
-			Contr_DACVlue = var32;
+			if(MODE != 6)
+			{
+				if(SET_I_TRAN==0)
+				{
+					Contr_DACVlue=0;
+				}else{
+					Contr_DACVlue = var32;
+				}
+			}else{
+				Contr_DACVlue = var32;
+			}
 			var32=0;
 //			if(SET_Current==0)
 //			{

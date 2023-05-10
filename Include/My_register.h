@@ -317,6 +317,7 @@ static u8 versiontrans[TOTALVERSION+1] = {8,7,6,5,4,3,0/*500V*/,2,0,1,9};
 #define I_LOW_MAX   ilowmax[VERSION]   //电流低档位最高限制电流
 #define POWER_MAX   powermax[VERSION]   //电流低档位最高限制功率
 
+#define VONOFFMIN 		50
 ////============================================================================= 
 
 //#define ILOW1   60000   //电流低档位跳档值1

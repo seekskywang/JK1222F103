@@ -27,6 +27,7 @@ vu8 Von_CONT;//拉载开启门槛单次计数器
 vu8 oldmode;
 vu16 SWDelay;
 u8 ledmode;
+u8 voffflag;
 /***************************************
 函数名:Sence_SW_CONT
 函数输入:
@@ -214,11 +215,11 @@ void worke_mode(void)
 		GPIO_ResetBits(GPIOB,GPIO_Pin_0);//CC模式拉载
 		if(I_Gear_SW==0)
 		{
-			SET_S_Current=199000;
+			SET_S_Current=I_LOW_MAX;
 		}
 		else
 		{
-			SET_S_Current=180000;//短路模式下直接加载最大电流值
+			SET_S_Current=I_LOW_MAX;//短路模式下直接加载最大电流值
 		}
 	}
 	oldmode = MODE;
@@ -230,11 +231,12 @@ void worke_mode(void)
 		TIME_1MS_flag=0;//清零时间标志
 		SET_I_TRAN=0;
 		Von_CONT=0;//清除开启门槛计数器
-		SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用
+		SET_V_TRAN=V_HIG_MAX;//对设置值清零用于每次打开负载后爬升率作用
 		dynaflagA = 0;
 		dynaflagB = 0;
 		dynaonflag = 0;
 		ledmode=0;
+		voffflag = 0;
 	}
 	else if(onoff_ch==1)
 	{
@@ -242,64 +244,136 @@ void worke_mode(void)
 		{
 			if(V_Gear_SW==1)//电压高档位
 			{
-				if(Voltage<VOFF_Voltage)//判断测量电压是否小于卸载电压
+				if(VOFF_Voltage == 0)
 				{
-					onoff_ch = 0;
-					GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
-					SET_I_TRAN=0;
-					SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用
-					TIME_1MS_OVER=0;//打开爬升标志
-					TIME_1MS_flag=0;//清零时间标志
+					if(Voltage < VONOFFMIN && DAC_Flag == 0x00)
+					{
+						voffflag = 1;
+						GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+						SET_I_TRAN=0;
+						SET_V_TRAN=V_HIG_MAX;//对设置值清零用于每次打开负载后爬升率作用
+						TIME_1MS_OVER=0;//打开爬升标志
+						TIME_1MS_flag=0;//清零时间标志
+					}else{
+						GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+						voffflag = 0;
+					}
+				}else if(VOFF_Voltage != 0){
+					if(Voltage<VOFF_Voltage && DAC_Flag == 0x00)//判断测量电压是否小于卸载电压
+					{
+						onoff_ch = 0;
+	//					voffflag = 1;
+						GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+						SET_I_TRAN=0;
+						SET_V_TRAN=V_HIG_MAX;//对设置值清零用于每次打开负载后爬升率作用
+						TIME_1MS_OVER=0;//打开爬升标志
+						TIME_1MS_flag=0;//清零时间标志
+					}
+					else 
+					{
+						GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+//						voffflag = 0;
+					}
 				}
-				else 
+				if(VON_Voltage == 0)
 				{
-					GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
-				}
-				if((Voltage>VON_Voltage)&&(Von_CONT==0))
-				{
-					GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
-					Von_CONT=1;
-				}
-				else if((Voltage<VON_Voltage)&&(Von_CONT==0))
-				{
-					onoff_ch = 0;
-					GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
-					SET_I_TRAN=0;
-					SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用
-					TIME_1MS_OVER=0;//打开爬升标志
-					TIME_1MS_flag=0;//清零时间标志
-					Von_CONT=0;//清除开启门槛计数器
+					if((Voltage>=VONOFFMIN)&&(Von_CONT==0))
+					{
+						GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+						Von_CONT=1;
+					}
+					else if((Voltage<VONOFFMIN)&&(Von_CONT==0) && DAC_Flag == 0x00)
+					{
+						GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+						SET_I_TRAN=0;
+						SET_V_TRAN=V_HIG_MAX;//对设置值清零用于每次打开负载后爬升率作用
+						TIME_1MS_OVER=0;//打开爬升标志
+						TIME_1MS_flag=0;//清零时间标志
+						Von_CONT=0;//清除开启门槛计数器
+					}
+				}else if(VON_Voltage != 0){
+					if((Voltage>=VON_Voltage)&&(Von_CONT==0))
+					{
+						GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+						Von_CONT=1;
+					}
+					else if((Voltage<VON_Voltage)&&(Von_CONT==0) && DAC_Flag == 0x00)
+					{
+						onoff_ch = 0;
+						GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+						SET_I_TRAN=0;
+						SET_V_TRAN=V_HIG_MAX;//对设置值清零用于每次打开负载后爬升率作用
+						TIME_1MS_OVER=0;//打开爬升标志
+						TIME_1MS_flag=0;//清零时间标志
+						Von_CONT=0;//清除开启门槛计数器
+					}
 				}
 			}
 			else if(V_Gear_SW==0)//电压低档位VON VOFF都*10，因为设定参数只支持高档位设定
 			{
-				if(Voltage<(VOFF_Voltage*10))//判断测量电压是否小于卸载电压
+				if(VOFF_Voltage == 0)
 				{
-					onoff_ch = 0;
-					GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
-					SET_I_TRAN=0;
-					SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用
-					TIME_1MS_OVER=0;//打开爬升标志
-					TIME_1MS_flag=0;//清零时间标志
+					if(Voltage < VONOFFMIN*10 && DAC_Flag == 0x00)
+					{
+						voffflag = 1;
+						GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+						SET_I_TRAN=0;
+						SET_V_TRAN=V_HIG_MAX;//对设置值清零用于每次打开负载后爬升率作用
+						TIME_1MS_OVER=0;//打开爬升标志
+						TIME_1MS_flag=0;//清零时间标志
+					}else{
+						GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+						voffflag = 0;
+					}
+				}else if(VOFF_Voltage != 0){
+					if(Voltage<(VOFF_Voltage*10) && DAC_Flag == 0x00)//判断测量电压是否小于卸载电压
+					{
+						onoff_ch = 0;
+						voffflag = 1;
+						GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+						SET_I_TRAN=0;
+						SET_V_TRAN=V_HIG_MAX;//对设置值清零用于每次打开负载后爬升率作用
+						TIME_1MS_OVER=0;//打开爬升标志
+						TIME_1MS_flag=0;//清零时间标志
+					}
+					else 
+					{
+						GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+						voffflag = 0;
+					}
 				}
-				else 
+				if(VON_Voltage == 0)
 				{
-					GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
-				}
-				if((Voltage>(VON_Voltage*10))&&(Von_CONT==0))
-				{
-					GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
-					Von_CONT=1;
-				}
-				else if((Voltage<(VON_Voltage*10))&&(Von_CONT==0))
-				{
-					onoff_ch = 0;
-					GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
-					SET_I_TRAN=0;
-					SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用
-					TIME_1MS_OVER=0;//打开爬升标志
-					TIME_1MS_flag=0;//清零时间标志
-					Von_CONT=0;//清除开启门槛计数器
+					if((Voltage>=VONOFFMIN*10)&&(Von_CONT==0))
+					{
+						GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+						Von_CONT=1;
+					}
+					else if((Voltage<(VONOFFMIN*10))&&(Von_CONT==0) && DAC_Flag == 0x00)
+					{
+						GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+						SET_I_TRAN=0;
+						SET_V_TRAN=V_HIG_MAX;//对设置值清零用于每次打开负载后爬升率作用
+						TIME_1MS_OVER=0;//打开爬升标志
+						TIME_1MS_flag=0;//清零时间标志
+						Von_CONT=0;//清除开启门槛计数器
+					}
+				}else if(VON_Voltage != 0){
+					if((Voltage>=(VON_Voltage*10))&&(Von_CONT==0))
+					{
+						GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+						Von_CONT=1;
+					}
+					else if((Voltage<(VON_Voltage*10))&&(Von_CONT==0) && DAC_Flag == 0x00)
+					{
+						onoff_ch = 0;
+						GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+						SET_I_TRAN=0;
+						SET_V_TRAN=V_HIG_MAX;//对设置值清零用于每次打开负载后爬升率作用
+						TIME_1MS_OVER=0;//打开爬升标志
+						TIME_1MS_flag=0;//清零时间标志
+						Von_CONT=0;//清除开启门槛计数器
+					}
 				}
 			}
 		}
@@ -354,72 +428,161 @@ void worke_mode(void)
 		}else if(MODE == 4){//动态模式
 			if(V_Gear_SW==1)//电压高档位
 			{
-				if(Voltage<VOFF_Voltage)//判断测量电压是否小于卸载电压
+				if(VOFF_Voltage == 0)
 				{
-					onoff_ch = 0;
-					GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
-					SET_I_TRAN=0;
-					SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用
-					TIME_1MS_OVER=0;//打开爬升标志
-					TIME_1MS_flag=0;//清零时间标志
-					dynaflagA = 0;
-					dynaflagB = 0;
+					if(Voltage<VONOFFMIN && DAC_Flag == 0x00)//判断测量电压是否小于卸载电压
+					{
+//						onoff_ch = 0;
+						voffflag = 1;
+						GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+						SET_I_TRAN=0;
+						SET_V_TRAN=V_HIG_MAX;//对设置值清零用于每次打开负载后爬升率作用
+						TIME_1MS_OVER=0;//打开爬升标志
+						TIME_1MS_flag=0;//清零时间标志
+						dynaflagA = 0;
+						dynaflagB = 0;
+					}
+					else 
+					{
+						voffflag = 0;
+						GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+					}
+				}else if(VOFF_Voltage != 0){
+					if(Voltage<VOFF_Voltage && DAC_Flag == 0x00)//判断测量电压是否小于卸载电压
+					{
+						onoff_ch = 0;
+						voffflag = 1;
+						GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+						SET_I_TRAN=0;
+						SET_V_TRAN=V_HIG_MAX;//对设置值清零用于每次打开负载后爬升率作用
+						TIME_1MS_OVER=0;//打开爬升标志
+						TIME_1MS_flag=0;//清零时间标志
+						dynaflagA = 0;
+						dynaflagB = 0;
+					}
+					else 
+					{
+						voffflag = 0;
+						GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+					}
 				}
-				else 
+				
+				if(VOFF_Voltage == 0)
 				{
-					GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
-				}
-				if((Voltage>VON_Voltage)&&(Von_CONT==0))
-				{
-					GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
-					Von_CONT=1;
-				}
-				else if((Voltage<VON_Voltage)&&(Von_CONT==0))
-				{
-					onoff_ch = 0;
-					GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
-					SET_I_TRAN=0;
-					SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用
-					TIME_1MS_OVER=0;//打开爬升标志
-					TIME_1MS_flag=0;//清零时间标志
-					Von_CONT=0;//清除开启门槛计数器
-					dynaflagA = 0;
-					dynaflagB = 0;
+					if((Voltage>=VONOFFMIN)&&(Von_CONT==0))
+					{
+						GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+						Von_CONT=1;
+					}
+					else if((Voltage<VONOFFMIN)&&(Von_CONT==0) && DAC_Flag == 0x00)
+					{
+						onoff_ch = 0;
+						GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+						SET_I_TRAN=0;
+						SET_V_TRAN=V_HIG_MAX;//对设置值清零用于每次打开负载后爬升率作用
+						TIME_1MS_OVER=0;//打开爬升标志
+						TIME_1MS_flag=0;//清零时间标志
+						Von_CONT=0;//清除开启门槛计数器
+						dynaflagA = 0;
+						dynaflagB = 0;
+					}
+				}else if(VOFF_Voltage != 0){
+					if((Voltage>=VON_Voltage)&&(Von_CONT==0))
+					{
+						GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+						Von_CONT=1;
+					}
+					else if((Voltage<VON_Voltage)&&(Von_CONT==0) && DAC_Flag == 0x00)
+					{
+						onoff_ch = 0;
+						GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+						SET_I_TRAN=0;
+						SET_V_TRAN=V_HIG_MAX;//对设置值清零用于每次打开负载后爬升率作用
+						TIME_1MS_OVER=0;//打开爬升标志
+						TIME_1MS_flag=0;//清零时间标志
+						Von_CONT=0;//清除开启门槛计数器
+						dynaflagA = 0;
+						dynaflagB = 0;
+					}
 				}
 			}
 			else if(V_Gear_SW==0)//电压低档位VON VOFF都*10，因为设定参数只支持高档位设定
 			{
-				if(Voltage<(VOFF_Voltage*10))//判断测量电压是否小于卸载电压
+				if(VOFF_Voltage == 0)
 				{
-					onoff_ch = 0;
-					GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
-					SET_I_TRAN=0;
-					SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用
-					TIME_1MS_OVER=0;//打开爬升标志
-					TIME_1MS_flag=0;//清零时间标志
-					dynaflagA = 0;
-					dynaflagB = 0;
+					if(Voltage<VONOFFMIN*10 && DAC_Flag == 0x00)//判断测量电压是否小于卸载电压
+					{
+//						onoff_ch = 0;
+						voffflag = 1;
+						GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+						SET_I_TRAN=0;
+						SET_V_TRAN=V_HIG_MAX;//对设置值清零用于每次打开负载后爬升率作用
+						TIME_1MS_OVER=0;//打开爬升标志
+						TIME_1MS_flag=0;//清零时间标志
+						dynaflagA = 0;
+						dynaflagB = 0;
+					}
+					else 
+					{
+						voffflag = 0;
+						GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+					}
+				}else if(VOFF_Voltage != 0){
+					if(Voltage<(VOFF_Voltage*10) && DAC_Flag == 0x00)//判断测量电压是否小于卸载电压
+					{
+						onoff_ch = 0;
+						voffflag = 1;
+						GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+						SET_I_TRAN=0;
+						SET_V_TRAN=V_HIG_MAX;//对设置值清零用于每次打开负载后爬升率作用
+						TIME_1MS_OVER=0;//打开爬升标志
+						TIME_1MS_flag=0;//清零时间标志
+						dynaflagA = 0;
+						dynaflagB = 0;
+					}
+					else 
+					{
+						voffflag = 0;
+						GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+					}
 				}
-				else 
+				
+				if(VOFF_Voltage == 0)
 				{
-					GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
-				}
-				if((Voltage>(VON_Voltage*10))&&(Von_CONT==0))
-				{
-					GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
-					Von_CONT=1;
-				}
-				else if((Voltage<(VON_Voltage*10))&&(Von_CONT==0))
-				{
-					onoff_ch = 0;
-					GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
-					SET_I_TRAN=0;
-					SET_V_TRAN=Voltage;//对设置值清零用于每次打开负载后爬升率作用
-					TIME_1MS_OVER=0;//打开爬升标志
-					TIME_1MS_flag=0;//清零时间标志
-					Von_CONT=0;//清除开启门槛计数器
-					dynaflagA = 0;
-					dynaflagB = 0;
+					if((Voltage>=VONOFFMIN*10)&&(Von_CONT==0))
+					{
+						GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+						Von_CONT=1;
+					}
+					else if((Voltage<VONOFFMIN*10)&&(Von_CONT==0) && DAC_Flag == 0x00)
+					{
+						GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+						SET_I_TRAN=0;
+						SET_V_TRAN=V_HIG_MAX;//对设置值清零用于每次打开负载后爬升率作用
+						TIME_1MS_OVER=0;//打开爬升标志
+						TIME_1MS_flag=0;//清零时间标志
+						Von_CONT=0;//清除开启门槛计数器
+						dynaflagA = 0;
+						dynaflagB = 0;
+					}
+				}else if(VOFF_Voltage != 0){
+					if((Voltage>(VON_Voltage*10))&&(Von_CONT==0))
+					{
+						GPIO_ResetBits(GPIOA,GPIO_Pin_5);//打开负载
+						Von_CONT=1;
+					}
+					else if((Voltage<(VON_Voltage*10))&&(Von_CONT==0) && DAC_Flag == 0x00)
+					{
+						onoff_ch = 0;
+						GPIO_SetBits(GPIOA,GPIO_Pin_5);//关闭负载
+						SET_I_TRAN=0;
+						SET_V_TRAN=V_HIG_MAX;//对设置值清零用于每次打开负载后爬升率作用
+						TIME_1MS_OVER=0;//打开爬升标志
+						TIME_1MS_flag=0;//清零时间标志
+						Von_CONT=0;//清除开启门槛计数器
+						dynaflagA = 0;
+						dynaflagB = 0;
+					}
 				}
 			}
 		}

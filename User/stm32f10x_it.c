@@ -55,6 +55,8 @@ vu32 testcount;
 vu8 dynatrigflag;
 extern __IO int32_t OS_TimeMS;
 extern vu32 powprtflag,powprtcount;
+extern u8 voffflag;
+extern vu8 Von_CONT;
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -534,7 +536,7 @@ void TIM4_IRQHandler(void)
 {	
 	TIM_ClearITPendingBit(TIM4,TIM_IT_Update);//清除中断标志位
 	testcount++;
-	if(onoff_ch == 1)
+	if(onoff_ch == 1 && voffflag == 0 && Von_CONT == 1)
 	{
 		if(TIME_1MS_OVER==0)//开启爬升或者下降计时标志
 		{
