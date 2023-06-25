@@ -2,7 +2,7 @@
 ..\output\iwdg.o: ..\Libraries\FWlib\inc\stm32f10x_iwdg.h
 ..\output\iwdg.o: ..\Libraries\CMSIS\inc\stm32f10x.h
 ..\output\iwdg.o: ..\Libraries\CMSIS\inc\core_cm3.h
-..\output\iwdg.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\iwdg.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\iwdg.o: ..\Libraries\CMSIS\inc\system_stm32f10x.h
 ..\output\iwdg.o: ..\User\stm32f10x_conf.h
 ..\output\iwdg.o: ..\Libraries\FWlib\inc\stm32f10x_adc.h

@@ -2,7 +2,7 @@
 ..\output\stm32f10x_it.o: ..\User\stm32f10x_it.h
 ..\output\stm32f10x_it.o: ..\Libraries\CMSIS\inc\stm32f10x.h
 ..\output\stm32f10x_it.o: ..\Libraries\CMSIS\inc\core_cm3.h
-..\output\stm32f10x_it.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\stm32f10x_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\stm32f10x_it.o: ..\Libraries\CMSIS\inc\system_stm32f10x.h
 ..\output\stm32f10x_it.o: ..\User\stm32f10x_conf.h
 ..\output\stm32f10x_it.o: ..\Libraries\FWlib\inc\stm32f10x_adc.h
@@ -38,14 +38,14 @@
 ..\output\stm32f10x_it.o: ..\Include\modbus.h
 ..\output\stm32f10x_it.o: ..\Include\usart.h
 ..\output\stm32f10x_it.o: ..\Include\flash.h
-..\output\stm32f10x_it.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\output\stm32f10x_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ..\output\stm32f10x_it.o: ..\libscpi\inc\scpi/scpi.h
 ..\output\stm32f10x_it.o: ..\libscpi\inc\scpi/parser.h
 ..\output\stm32f10x_it.o: ..\libscpi\inc\scpi/types.h
-..\output\stm32f10x_it.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+..\output\stm32f10x_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 ..\output\stm32f10x_it.o: ..\libscpi\inc\scpi/config.h
 ..\output\stm32f10x_it.o: ..\libscpi\inc\scpi/cc.h
-..\output\stm32f10x_it.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+..\output\stm32f10x_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 ..\output\stm32f10x_it.o: ..\libscpi\inc\scpi/ieee488.h
 ..\output\stm32f10x_it.o: ..\libscpi\inc\scpi/error.h
 ..\output\stm32f10x_it.o: ..\libscpi\inc\scpi/constants.h

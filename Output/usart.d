@@ -2,7 +2,7 @@
 ..\output\usart.o: ..\Include\my_register.h
 ..\output\usart.o: ..\Libraries\CMSIS\inc\STM32F10x.h
 ..\output\usart.o: ..\Libraries\CMSIS\inc\core_cm3.h
-..\output\usart.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\usart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\usart.o: ..\Libraries\CMSIS\inc\system_stm32f10x.h
 ..\output\usart.o: ..\User\stm32f10x_conf.h
 ..\output\usart.o: ..\Libraries\FWlib\inc\stm32f10x_adc.h
@@ -32,5 +32,5 @@
 ..\output\usart.o: ..\Include\me_scpi.h
 ..\output\usart.o: ..\Include\me_scpi.h
 ..\output\usart.o: ..\Include\my_register.h
-..\output\usart.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-..\output\usart.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\output\usart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\output\usart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

@@ -2,7 +2,7 @@
 ..\output\slave_usart.o: ..\Include\my_register.h
 ..\output\slave_usart.o: ..\Libraries\CMSIS\inc\STM32F10x.h
 ..\output\slave_usart.o: ..\Libraries\CMSIS\inc\core_cm3.h
-..\output\slave_usart.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\slave_usart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\slave_usart.o: ..\Libraries\CMSIS\inc\system_stm32f10x.h
 ..\output\slave_usart.o: ..\User\stm32f10x_conf.h
 ..\output\slave_usart.o: ..\Libraries\FWlib\inc\stm32f10x_adc.h

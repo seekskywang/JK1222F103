@@ -2,7 +2,7 @@
 ..\output\modbus.o: ..\Include\my_register.h
 ..\output\modbus.o: ..\Libraries\CMSIS\inc\STM32F10x.h
 ..\output\modbus.o: ..\Libraries\CMSIS\inc\core_cm3.h
-..\output\modbus.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\modbus.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\modbus.o: ..\Libraries\CMSIS\inc\system_stm32f10x.h
 ..\output\modbus.o: ..\User\stm32f10x_conf.h
 ..\output\modbus.o: ..\Libraries\FWlib\inc\stm32f10x_adc.h
@@ -35,4 +35,4 @@
 ..\output\modbus.o: ..\Include\usart.h
 ..\output\modbus.o: ..\Include\modbus.h
 ..\output\modbus.o: ..\Include\flash.h
-..\output\modbus.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\output\modbus.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

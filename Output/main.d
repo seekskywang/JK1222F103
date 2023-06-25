@@ -2,7 +2,7 @@
 ..\output\main.o: ..\Include\my_register.h
 ..\output\main.o: ..\Libraries\CMSIS\inc\STM32F10x.h
 ..\output\main.o: ..\Libraries\CMSIS\inc\core_cm3.h
-..\output\main.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\main.o: ..\Libraries\CMSIS\inc\system_stm32f10x.h
 ..\output\main.o: ..\User\stm32f10x_conf.h
 ..\output\main.o: ..\Libraries\FWlib\inc\stm32f10x_adc.h
@@ -50,12 +50,12 @@
 ..\output\main.o: ..\Include\FAN_PRO.h
 ..\output\main.o: ..\libscpi\inc\scpi/scpi.h
 ..\output\main.o: ..\libscpi\inc\scpi/parser.h
-..\output\main.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ..\output\main.o: ..\libscpi\inc\scpi/types.h
-..\output\main.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+..\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 ..\output\main.o: ..\libscpi\inc\scpi/config.h
 ..\output\main.o: ..\libscpi\inc\scpi/cc.h
-..\output\main.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+..\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 ..\output\main.o: ..\libscpi\inc\scpi/ieee488.h
 ..\output\main.o: ..\libscpi\inc\scpi/error.h
 ..\output\main.o: ..\libscpi\inc\scpi/constants.h
