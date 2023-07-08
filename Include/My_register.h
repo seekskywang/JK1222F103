@@ -129,7 +129,7 @@ extern vu32 Run_Control[55];
 
 #define COMM_MODE					Run_Control[44]   //通讯方式选择
 #define HARDVERSION				Run_Control[45]   //5V//#define Class_5						Run_Control[45]   //5V
-#define Class_9						Run_Control[46]   //9V
+#define TCP						  	Run_Control[46]   //9V
 #define Class_12					Run_Control[47]   //12V
 #define Class_15					Run_Control[48]   //15V
 #define Class_20					Run_Control[49]   //20V
