@@ -647,6 +647,16 @@
           <WinNumber>1</WinNumber>
           <ItemText>SET_V_TRAN,0x0A</ItemText>
         </Ww>
+        <Ww>
+          <count>95</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>UART_Buffer_Send1</ItemText>
+        </Ww>
+        <Ww>
+          <count>96</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>\\AV04_LOAD_RSING\../drive/modbus.c\Run_Control</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>

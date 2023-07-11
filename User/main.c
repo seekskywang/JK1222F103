@@ -161,7 +161,9 @@ int main(void)
 //	ADDR = 1;
 	BOOTMODE=0;
 	Write_bootmode();
-	MES_VOLT_MAX=12;
+	MES_VOLT_MAX=14;//硬件版本
+	//1.3增加modbusrtu标准协议选择
+	//1.4读取命令标准协议CRC问题修正
 	while(1)
 	{
 //		RCC_GetClocksFreq(&getrccclock);
