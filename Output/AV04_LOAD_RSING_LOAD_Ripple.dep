@@ -673,7 +673,7 @@ I (..\Libraries\FWlib\inc\stm32f10x_spi.h)(0x4D783BB4)
 I (..\Libraries\FWlib\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\Libraries\FWlib\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\Libraries\FWlib\inc\misc.h)(0x4D783BB4)
-F (..\User\main.c)(0x64ACC6A2)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O1 --apcs=interwork --split_sections -I ..\drive -I ..\Include -I ..\Libraries\CMSIS\inc -I ..\Libraries\CMSIS\src -I ..\Libraries\FWlib\inc -I ..\Libraries\FWlib\src -I ..\User -I ..\libscpi\inc --no-multibyte-chars --diag_suppress=870-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F10x-D__UVISION_VERSION="538" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\output\main.o --omf_browse ..\output\main.crf --depend ..\output\main.d)
+F (..\User\main.c)(0x64B4CE22)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O1 --apcs=interwork --split_sections -I ..\drive -I ..\Include -I ..\Libraries\CMSIS\inc -I ..\Libraries\CMSIS\src -I ..\Libraries\FWlib\inc -I ..\Libraries\FWlib\src -I ..\User -I ..\libscpi\inc --no-multibyte-chars --diag_suppress=870-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F10x-D__UVISION_VERSION="538" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\output\main.o --omf_browse ..\output\main.crf --depend ..\output\main.d)
 I (..\Include\my_register.h)(0x64A8F6AD)
 I (..\Libraries\CMSIS\inc\STM32F10x.h)(0x521C341D)
 I (..\Libraries\CMSIS\inc\core_cm3.h)(0x60750E92)
@@ -1172,7 +1172,7 @@ I (..\Include\beep.h)(0x5CC703D7)
 I (..\Include\flash.h)(0x64A8F6AD)
 I (..\Include\gpio.h)(0x5C6A55DE)
 I (..\Include\key.h)(0x5C6A55DE)
-F (..\drive\modbus.c)(0x64ACC652)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O1 --apcs=interwork --split_sections -I ..\drive -I ..\Include -I ..\Libraries\CMSIS\inc -I ..\Libraries\CMSIS\src -I ..\Libraries\FWlib\inc -I ..\Libraries\FWlib\src -I ..\User -I ..\libscpi\inc --no-multibyte-chars --diag_suppress=870-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F10x-D__UVISION_VERSION="538" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\output\modbus.o --omf_browse ..\output\modbus.crf --depend ..\output\modbus.d)
+F (..\drive\modbus.c)(0x64B4CE0C)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -W -O1 --apcs=interwork --split_sections -I ..\drive -I ..\Include -I ..\Libraries\CMSIS\inc -I ..\Libraries\CMSIS\src -I ..\Libraries\FWlib\inc -I ..\Libraries\FWlib\src -I ..\User -I ..\libscpi\inc --no-multibyte-chars --diag_suppress=870-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\ST\STM32F10x-D__UVISION_VERSION="538" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\output\modbus.o --omf_browse ..\output\modbus.crf --depend ..\output\modbus.d)
 I (..\Include\my_register.h)(0x64A8F6AD)
 I (..\Libraries\CMSIS\inc\STM32F10x.h)(0x521C341D)
 I (..\Libraries\CMSIS\inc\core_cm3.h)(0x60750E92)

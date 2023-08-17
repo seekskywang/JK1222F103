@@ -2113,20 +2113,20 @@ static void Bias_Correction(void)
 			para=Bias_Para(V_Gear_SW,MODE);
 			if((float)Voltage>para)
 			{
-				if(((float)Voltage-para)/para < 0.005)
+				if(((float)Voltage-para)/para < 0.01)
 					Voltage=para;
 			}else{
-				if((para-(float)Voltage)/para < 0.005)
+				if((para-(float)Voltage)/para < 0.01)
 					Voltage=para;
 			}
 		}else{
 			para=Bias_Para(I_Gear_SW,MODE);
 			if((float)Current>para)
 			{
-				if(((float)Current-para)/para < 0.005)
+				if(((float)Current-para)/para < 0.01)
 					Current=para;
 			}else{
-				if((para-(float)Current)/para < 0.005)
+				if((para-(float)Current)/para < 0.01)
 					Current=para;
 			}
 		}
