@@ -269,7 +269,7 @@ extern vu32 Correct_Strong[26];//校准系数
 #define  SET_ReadA_Offset_HIG1       Correct_Strong[18]
 #define  SET_ReadA_Offset_HIG2   	Correct_Strong[19]
 //---------------------------
-#define  TOTALVERSION    12
+#define  TOTALVERSION    13
 extern vu8 UART_Buffer_Rece[200];
 extern vu8 UART_Buffer_Send[200];
 extern vu8 UART_Buffer_Rece1[200];
@@ -293,7 +293,7 @@ extern vu32 vhigmax[TOTALVERSION];
 extern vu32 ilowmax[TOTALVERSION];
 extern vu32 powermax[TOTALVERSION];
 //250V60A1200W;150V120A1200W;250V120A1200W;3200W;2400W;400W;600W;800W;1200W;
-static u8 versiontrans[TOTALVERSION+1] = {8,7,6,5,4,3,0/*500V*/,2,0,1,9,10,11};
+static u8 versiontrans[TOTALVERSION+1] = {8,7,6,5,4,3,0/*500V*/,2,0,1,9,10,11,12};
 #define VERSION   versiontrans[HARDVERSION]  
 /*0-250V60A1200W;1-150V120A1200W;
 	2-250V120A1200W;
