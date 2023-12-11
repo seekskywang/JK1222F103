@@ -136,6 +136,11 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
+          <Key>DLGUARM</Key>
+          <Name>€w貭?€w貭?</Name>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
           <Key>UL2CM3</Key>
           <Name>UL2CM3(-O14 -S0 -C0 -N00("ARM Cortex-M3") -D00(1BA00477) -L00(4) -FO7 -FD20000000 -FC800 -FN1 -FF0STM32F10x_128 -FS08000000 -FL020000)</Name>
         </SetRegEntry>
@@ -656,6 +661,41 @@
           <count>96</count>
           <WinNumber>1</WinNumber>
           <ItemText>\\AV04_LOAD_RSING\../drive/modbus.c\Run_Control</ItemText>
+        </Ww>
+        <Ww>
+          <count>97</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>ILOW1,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>98</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>ILOW2,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>99</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>ILOW3,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>100</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>IHIGH1,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>101</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>IHIGH2,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>102</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>IHIGH3,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>103</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>IHIGH4,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -1195,7 +1235,7 @@
 
   <Group>
     <GroupName>Libraries</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1847,7 +1887,7 @@
       <GroupNumber>6</GroupNumber>
       <FileNumber>57</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\libscpi\src\fifo.c</PathWithFileName>

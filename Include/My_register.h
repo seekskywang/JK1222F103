@@ -130,9 +130,9 @@ extern vu32 Run_Control[55];
 #define COMM_MODE					Run_Control[44]   //通讯方式选择
 #define HARDVERSION				Run_Control[45]   //5V//#define Class_5						Run_Control[45]   //5V
 #define TCP						  	Run_Control[46]   //9V
-#define Class_12					Run_Control[47]   //12V
-#define Class_15					Run_Control[48]   //15V
-#define Class_20					Run_Control[49]   //20V
+#define FACMAXPOW					Run_Control[47]   //出厂功率
+#define FACMAXVOL 				Run_Control[48]   //出厂电压
+#define FACMAXCUR					Run_Control[49]   //出厂电流
 #define BOOTLOAD					Run_Control[50]   //跳转进入BOOT程序标志
 #define BOOTMODE					Run_Control[52]   //开机启动模式：0-直接进入APP，1-进入BOOTLOADER
 /***********以上寄存器可读可写*****************************************/
@@ -301,25 +301,34 @@ static u8 versiontrans[TOTALVERSION+1] = {8,7,6,5,4,3,0/*500V*/,2,0,1,9,10,11,12
 	7-800W;8-1200W;9-150V120A2400W;
 	;10-150V150A4000W;;11-150V500A6400W;
 */
-#define ILOW1   ilow1[VERSION]   //电流低档位跳档值1
-#define ILOW2   ilow2[VERSION]   //电流低档位跳档值2
-#define ILOW3   ilow3[VERSION]   //电流低档位跳档值3
+//#define ILOW1   ilow1[VERSION]   //电流低档位跳档值1
+//#define ILOW2   ilow2[VERSION]   //电流低档位跳档值2
+//#define ILOW3   ilow3[VERSION]   //电流低档位跳档值3
 
-#define IHIGH1   ihigh1[VERSION]   //电流低档位跳档值1
-#define IHIGH2   ihigh2[VERSION]   //电流低档位跳档值2
-#define IHIGH3   ihigh3[VERSION]   //电流低档位跳档值3
-#define IHIGH4   ihigh4[VERSION]   //电流低档位跳档值4
+//#define IHIGH1   ihigh1[VERSION]   //电流低档位跳档值1
+//#define IHIGH2   ihigh2[VERSION]   //电流低档位跳档值2
+//#define IHIGH3   ihigh3[VERSION]   //电流低档位跳档值3
+//#define IHIGH4   ihigh4[VERSION]   //电流低档位跳档值4
+
+#define ILOW1   FACMAXCUR/400	   //电流低档位跳档值1
+#define ILOW2   FACMAXCUR/20     //电流低档位跳档值2
+#define ILOW3   FACMAXCUR/10   	 //电流低档位跳档值3
+
+#define IHIGH1   (u32)((double)FACMAXCUR*0.2)   //电流低档位跳档值1
+#define IHIGH2   (u32)((double)FACMAXCUR*0.4)   //电流低档位跳档值2
+#define IHIGH3   (u32)((double)FACMAXCUR*0.5)  	//电流低档位跳档值3
+#define IHIGH4   (u32)((double)FACMAXCUR*0.7)   //电流低档位跳档值4
 #define SWDELAY   1000 
 //============================================================================= 
 #define Receive_BUFFERSIZE   10
-#define V_LOW_MAX   vlowmax[VERSION]   //电压低档最高电压
-#define V_HIG_MAX   vhigmax[VERSION]   //电压高档最高电压
-#define I_LOW_MAX   ilowmax[VERSION]   //电流低档位最高限制电流
-#define POWER_MAX   powermax[VERSION]   //电流低档位最高限制功率
+#define V_LOW_MAX   FACMAXVOL/10   			//电压低档最高电压
+#define V_HIG_MAX   FACMAXVOL/10   			//电压高档最高电压
+#define I_LOW_MAX   FACMAXCUR/10    		//电流低档位最高限制电流
+#define POWER_MAX   FACMAXPOW/10  				//电流低档位最高限制功率
 
 #define VONOFFMIN 		50
 ////============================================================================= 
-
+	
 //#define ILOW1   60000   //电流低档位跳档值1
 //#define ILOW2   100000   //电流低档位跳档值2
 //#define ILOW3   240000   //电流低档位跳档值3
