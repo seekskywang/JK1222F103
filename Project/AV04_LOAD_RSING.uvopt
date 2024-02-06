@@ -137,7 +137,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>€w貭?€w貭?</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -696,6 +695,11 @@
           <count>103</count>
           <WinNumber>1</WinNumber>
           <ItemText>IHIGH4,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>104</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>TESTMODE,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -1855,7 +1859,7 @@
 
   <Group>
     <GroupName>libscpi</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

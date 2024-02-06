@@ -25,6 +25,9 @@ vu16 Ad7689_Fit_Vmon[100];
 vu16 END_Fit_Imon[20];
 vu16 END_Fit_Vmon[20];
 vu16 Imax;
+vu16 Vfilter[2] = {100,3};
+vu16 Ifilter[2] = {100,3};
+	
 void AD7689_InitializeSPI2(void)
 {
 	SPI_InitTypeDef  SPI_InitStructure;
@@ -149,49 +152,38 @@ void AD7689_Scan_CH(void)
 	V_cont++;
 	if(MODE==5)//Ledģʽ
 	{
-		if(I_cont>10)
+		if(I_cont>2)
 		{
 			I_cont=0;
-			sum1=0;
-			for(f=0;f<10;f++)
-			{
-				sum1 +=Ad7689_Fit_Imon[f];
-			}
-			
-			Imon_value=sum1/10;
-		}
-	}else{
-		if(I_cont>49)
-		{
-			I_cont=0;
-			sum1=0;
-			for(f=0;f<50;f++)
-			{
-				sum1 +=Ad7689_Fit_Imon[f];
-			}
-			
-			END_Fit_Imon[var_chI]=sum1/50;
-			var_chI++;
-		}
-		if(var_chI>2)
-		{
-			var_chI=0;
 			sum1=0;
 			for(f=0;f<3;f++)
 			{
-				sum1 +=END_Fit_Imon[f];
+				sum1 +=Ad7689_Fit_Imon[f];
 			}
+			
 			Imon_value=sum1/3;
 		}
+	}else{
+		if(I_cont>Ifilter[TESTMODE]-1)
+		{
+			I_cont=0;
+			sum1=0;
+			for(f=0;f<Ifilter[TESTMODE];f++)
+			{
+				sum1 +=Ad7689_Fit_Imon[f];
+			}
+			
+			Imon_value=sum1/Ifilter[TESTMODE];
+		}
 	}
-	if(V_cont>99)
+	if(V_cont>Vfilter[TESTMODE]-1)
 	{
 		V_cont=0;
 		sum1=0;
-		for(d=0;d<100;d++)
+		for(d=0;d<Vfilter[TESTMODE];d++)
 		{
 			sum1 +=Ad7689_Fit_Vmon[d];
 		}
-		Vmon_value=sum1/100;
+		Vmon_value=sum1/Vfilter[TESTMODE];
 	}
 }

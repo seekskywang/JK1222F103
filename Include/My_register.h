@@ -135,6 +135,7 @@ extern vu32 Run_Control[55];
 #define FACMAXCUR					Run_Control[49]   //出厂电流
 #define BOOTLOAD					Run_Control[50]   //跳转进入BOOT程序标志
 #define BOOTMODE					Run_Control[52]   //开机启动模式：0-直接进入APP，1-进入BOOTLOADER
+#define TESTMODE					Run_Control[53]   //测试模式：0-精准，1-快速
 /***********以上寄存器可读可写*****************************************/
 typedef struct {
 	float TestVL;//测量电压低档k

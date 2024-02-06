@@ -346,7 +346,7 @@ void USART2_IRQHandler(void)
 					return ;
 				}
 			}else if(UART_Buffer_Rece[1]== 0x10){
-				if(UART_Buffer_Size==132+28)//参数设置
+				if(UART_Buffer_Size==132+16+28)//参数设置
 				{
 					UART_Buffer_Size=0;	  	   		   
 					UART_Buffer_Rece_flag=1;

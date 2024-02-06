@@ -161,12 +161,13 @@ int main(void)
 //	ADDR = 1;
 	BOOTMODE=0;
 	Write_bootmode();
-	MES_VOLT_MAX=17;//硬件版本
+	MES_VOLT_MAX=18;//硬件版本
 	//1.3增加modbusrtu标准协议选择
 	//1.4读取命令标准协议CRC问题修正
 	//1.5误差修成改为1%
 	//1.6增加2000W-150V-120A版本
 	//1.7仪器出厂参数可以自定义设置
+	//1.8减少滤波次数增加数据采集灵敏度
 	while(1)
 	{
 //		RCC_GetClocksFreq(&getrccclock);
